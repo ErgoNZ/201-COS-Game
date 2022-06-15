@@ -14,13 +14,12 @@ namespace Grid_based_map
     public partial class Form1 : Form
     {
         Graphics g;
-
+        Rectangle[] Tile = new Rectangle[9];
         public Form1()
         {
             InitializeComponent();
             int tileX, tileY;
-            Rectangle Tile;
-            Tile = new Rectangle(0, 0, 200, 200);
+            Tile[0] = new Rectangle(0, 0, 200, 200);
             int[,,] Tiles = new int[5, 5, 2]
             {
                 { {1,3},{2,3},{4, 5},{6,7},{25,10} },
@@ -29,25 +28,28 @@ namespace Grid_based_map
                 { {2,6},{4,8},{4,9},{123,546},{234,234} },
                 { {7,3},{1,2},{3,5},{1267,1254},{467,615} }
             };
-            for (int h = 0; h < 5; h++)
+            for (int h = 0; h < 3; h++)
             {
-                for (int w = 0; w < 5; w++)
+                for (int w = 0; w < 3; w++)
                 {
-                    Debug.WriteLine(Tiles[h, w, 0]);
-                    for (int d = 1; d < 2; d++)
-                    {
-                        Debug.WriteLine(Tiles[h, w, d]);
-                    }
+                    Tile[w+h] = new Rectangle(0 + (200 * h), 0 +(200*w), 200, 200);
+                    Debug.WriteLine(h);
+                    Debug.WriteLine(w);
                 }
+
             }
         }  
 
         private void panel1_Paint(object sender, PaintEventArgs e)
         {
             g = e.Graphics;
-            g.FillRectangle(Brushes.Green, Tiles);
-            g.DrawRectangle(Pens.Black, Tiles);
-            tile1.DrawTile(g);
+            for (int i = 0; i < 9; i++)
+            {
+                g.FillRectangle(Brushes.Green, Tile[i]);
+                g.DrawRectangle(Pens.Black, Tile[i]);
+                Debug.WriteLine(Tile[i]);
+            }
+            
         }
     }
 }
