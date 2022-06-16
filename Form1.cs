@@ -16,24 +16,29 @@ namespace Grid_based_map
     {
         Graphics g;
         Rectangle[] Tile = new Rectangle[25];
+        Rectangle Player;
         int TileID = 0;
         int[,,] Tiles = new int[10, 10, 2]
             {
-                { {1,3},{1,3},{2,5},{2,7},{2,1}, {2,3},{2,3},{2,5},{2,7},{2,1}  },
-                { {1,2},{1,2},{1,7},{2,8},{2,6}, {2,2},{2,2},{1,7},{2,8},{2,6}  },
-                { {1,4},{2,1},{1,2},{2,6},{2,3}, {1,4},{2,1},{1,2},{2,6},{2,3}  },
-                { {1,6},{1,8},{1,9},{1,5},{2,7}, {1,6},{1,8},{1,9},{1,5},{2,7}  },
-                { {1,3},{1,2},{1,5},{1,9},{1,5}, {1,3},{1,2},{1,5},{1,9},{1,5}  },
-                { {2,3},{2,3},{2,5},{2,7},{2,1}, {2,3},{2,3},{2,5},{2,7},{2,1}  },
-                { {2,2},{2,2},{1,7},{2,8},{2,6}, {2,2},{2,2},{1,7},{2,8},{2,6}  },
-                { {1,4},{2,1},{1,2},{2,6},{2,3}, {1,4},{2,1},{1,2},{2,6},{2,3}  },
-                { {1,6},{1,8},{1,9},{1,5},{2,7}, {1,6},{1,8},{1,9},{1,5},{2,7}  },
-                { {1,3},{1,2},{1,5},{1,9},{1,5}, {1,3},{1,2},{1,5},{1,9},{1,5}  }
+                { {1,0},{1,0},{2,0},{2,0},{2,0}, {2,0},{2,0},{2,0},{2,0},{2,0}  },
+                { {1,0},{1,0},{1,0},{2,0},{2,0}, {2,0},{2,0},{1,0},{2,0},{2,0}  },
+                { {1,0},{2,0},{1,0},{2,0},{2,0}, {1,0},{2,0},{1,0},{2,0},{2,0}  },
+                { {1,0},{1,0},{1,0},{1,0},{2,0}, {1,0},{1,0},{1,0},{1,0},{2,0}  },
+                { {1,0},{1,0},{1,0},{1,0},{1,0}, {1,0},{1,0},{1,0},{1,0},{1,0}  },
+                { {2,0},{2,0},{2,0},{2,0},{2,0}, {2,0},{2,0},{2,0},{2,0},{2,0}  },
+                { {2,0},{2,0},{1,0},{2,0},{2,0}, {2,0},{2,0},{1,0},{2,0},{2,0}  },
+                { {1,0},{2,0},{1,0},{2,0},{2,0}, {1,0},{2,0},{1,0},{2,0},{2,0}  },
+                { {1,0},{1,0},{1,0},{1,0},{2,0}, {1,0},{1,0},{1,0},{1,0},{2,0}  },
+                { {1,0},{1,0},{1,0},{1,0},{1,0}, {1,0},{1,0},{1,0},{1,0},{1,0}  }
             };
-        int[,] ViewRange = new int[5, 5];
+        int[,,] PlayerTiles = new int[10, 10, 2];
+
+        int[,,] ViewRange = new int[5, 5,2];
         int tileX=5, tileY=5;
+        int PlayerX =2, PlayerY=2, PlayerXPos=5, PlayerYPos=5;
         Brush Grass = Brushes.Green;
         Brush Water = Brushes.Blue;
+        Brush Unexplored = Brushes.DarkGray;
         public Form1()
         {
             InitializeComponent();
@@ -43,6 +48,8 @@ namespace Grid_based_map
 
         public void DrawGrid()
         {
+            Player = new Rectangle(30 + (120 * PlayerX), 30 + (120 * PlayerY), 60, 60);
+            Tiles[PlayerXPos, PlayerYPos, 1] = 1;
             for (int i = 0; i < 25; i++)
             {
                 Tile[i] = Rectangle.Empty;
@@ -62,7 +69,8 @@ namespace Grid_based_map
             {
                 for (int X = -2; X < 3; X++)
                 {
-                    ViewRange[X+2, Y+2] = Tiles[tileY + X, tileX + Y, 0];
+                    ViewRange[X+2, Y+2,0] = Tiles[tileY + X, tileX + Y, 0];
+                    ViewRange[X + 2, Y + 2, 1] = Tiles[tileY + X, tileX + Y, 1];
                 }
             }
             panel1.Invalidate();
@@ -86,6 +94,23 @@ namespace Grid_based_map
             {
                 tileY++;
             }
+
+            if (e.KeyData == Keys.A && PlayerXPos > 0)
+            {
+                PlayerXPos--;
+            }
+            if (e.KeyData == Keys.D && PlayerXPos < 8)
+            {
+                PlayerXPos++;
+            }
+            if (e.KeyData == Keys.W && PlayerYPos > 0)
+            {
+                PlayerYPos--;
+            }
+            if (e.KeyData == Keys.S && PlayerYPos < 8)
+            {
+                PlayerYPos++;
+            }
             DrawGrid();
         }
 
@@ -93,22 +118,28 @@ namespace Grid_based_map
         {
             g = e.Graphics;
             TileID = 0;
-            for (int h = 0; h < 5; h++)
-            {
-                for (int w = 0; w < 5; w++)
-                {
-                    if (ViewRange[h,w]==1)
+           for (int h = 0; h < 5; h++)
+           {
+               for (int w = 0; w < 5; w++)
+               {
+                   if (ViewRange[h,w,0]==1)
+                   {
+                       g.FillRectangle(Grass, Tile[TileID]);
+                   }
+                   else
+                   {
+                       g.FillRectangle(Water, Tile[TileID]);
+                   }
+                   if(ViewRange[h,w,1]==1)
                     {
-                        g.FillRectangle(Grass, Tile[TileID]);
+                        PlayerX = w;
+                        PlayerY = h;
                     }
-                    else
-                    {
-                        g.FillRectangle(Water, Tile[TileID]);
-                    }
-                    g.DrawRectangle(Pens.Black, Tile[TileID]);
-                    TileID++;
-                }
-            }
+                   g.DrawRectangle(Pens.Black, Tile[TileID]);
+                   TileID++;
+               }
+           }
+            g.FillRectangle(Brushes.Red, Player);
         }
     }
 }
