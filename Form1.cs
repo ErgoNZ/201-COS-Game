@@ -35,7 +35,7 @@ namespace Grid_based_map
 
         int[,,] ViewRange = new int[5, 5,2];
         int tileX=5, tileY=5;
-        int PlayerX =2, PlayerY=2, PlayerXPos=5, PlayerYPos=5;
+        int PlayerX =-1, PlayerY=-1, PlayerXPos=0, PlayerYPos=0;
         Brush Grass = Brushes.Green;
         Brush Water = Brushes.Blue;
         Brush Unexplored = Brushes.DarkGray;
@@ -48,8 +48,8 @@ namespace Grid_based_map
 
         public void DrawGrid()
         {
-            Player = new Rectangle(30 + (120 * PlayerX), 30 + (120 * PlayerY), 60, 60);
-            Tiles[PlayerXPos, PlayerYPos, 1] = 1;
+            Player = Rectangle.Empty;
+            Tiles[PlayerYPos, PlayerXPos, 1] = 1;
             for (int i = 0; i < 25; i++)
             {
                 Tile[i] = Rectangle.Empty;
@@ -78,6 +78,7 @@ namespace Grid_based_map
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
+
             if (e.KeyData == Keys.Left && tileX>2)
             {
                 tileX--;
@@ -94,7 +95,7 @@ namespace Grid_based_map
             {
                 tileY++;
             }
-
+            Tiles[PlayerYPos, PlayerXPos, 1] = 0;
             if (e.KeyData == Keys.A && PlayerXPos > 0)
             {
                 PlayerXPos--;
@@ -116,6 +117,8 @@ namespace Grid_based_map
 
         private void panel1_Paint(object sender, PaintEventArgs e)
         {
+            PlayerX = -1;
+            PlayerY = -1;
             g = e.Graphics;
             TileID = 0;
            for (int h = 0; h < 5; h++)
@@ -134,12 +137,16 @@ namespace Grid_based_map
                     {
                         PlayerX = w;
                         PlayerY = h;
+                        Debug.WriteLine(ViewRange[PlayerX, PlayerY, 1]);
+                        Player = new Rectangle(30 + 120 * PlayerX, 30 + 120 * PlayerY, 60, 60);
+                        g.FillRectangle(Brushes.Red, Player);
                     }
                    g.DrawRectangle(Pens.Black, Tile[TileID]);
                    TileID++;
                }
            }
-            g.FillRectangle(Brushes.Red, Player);
+            Debug.WriteLine(PlayerX +"," +PlayerY);
+            Debug.WriteLine(PlayerXPos +","+ PlayerYPos+","+Tiles[PlayerXPos,PlayerYPos,1]);
         }
     }
 }
