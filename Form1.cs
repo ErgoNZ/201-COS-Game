@@ -18,6 +18,7 @@ namespace Grid_based_map
         Rectangle[] Tile = new Rectangle[25];
         Rectangle Player;
         int TileID = 0;
+        //0= free movement 1= no movement 2= Cannot move left 3= Cannot move right 4= up 5= down
         int[,,] Tiles = new int[10, 10, 3]
             {
                 { {1,0,0},{1,0,0},{2,0,1},{2,0,1},{2,0,1}, {2,0,1},{2,0,0},{2,0,1},{2,0,1},{2,0,1}  },
@@ -100,19 +101,20 @@ namespace Grid_based_map
             }
             //Movement of the player
             Tiles[PlayerYPos, PlayerXPos, 1] = 0;
-            if (e.KeyData == Keys.A && PlayerXPos > 0 && Tiles[PlayerYPos, PlayerXPos-1,2] == 0)
+            //0= free movement 1= no movement 2= Cannot move left 3= Cannot move right 4= up 5= down
+            if (e.KeyData == Keys.A && PlayerXPos > 0 && Tiles[PlayerYPos, PlayerXPos-1,2] != 1 && Tiles[PlayerYPos, PlayerXPos - 1, 2] !=2)
             {
                 PlayerXPos--;
             }
-            if (e.KeyData == Keys.D && PlayerXPos < 9 && Tiles[PlayerYPos, PlayerXPos+1, 2] == 0)
+            if (e.KeyData == Keys.D && PlayerXPos < 9 && Tiles[PlayerYPos, PlayerXPos+1, 2] != 1 && Tiles[PlayerYPos, PlayerXPos + 1, 2] != 3)
             {
                 PlayerXPos++;
             }
-            if (e.KeyData == Keys.W && PlayerYPos > 0 && Tiles[PlayerYPos-1, PlayerXPos, 2] == 0)
+            if (e.KeyData == Keys.W && PlayerYPos > 0 && Tiles[PlayerYPos-1, PlayerXPos, 2] != 1 && Tiles[PlayerYPos - 1, PlayerXPos, 2] != 4)
             {
                 PlayerYPos--;
             }
-            if (e.KeyData == Keys.S && PlayerYPos < 9 && Tiles[PlayerYPos+1, PlayerXPos, 2] == 0)
+            if (e.KeyData == Keys.S && PlayerYPos < 9 && Tiles[PlayerYPos+1, PlayerXPos, 2] != 1 && Tiles[PlayerYPos + 1, PlayerXPos, 2] != 5)
             {
                 PlayerYPos++;
             }
