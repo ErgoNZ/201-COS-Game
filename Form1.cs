@@ -19,6 +19,7 @@ namespace Grid_based_map
         Rectangle Player;
         int TileID = 0;
         //0= free movement 1= no movement 2= Cannot move left 3= Cannot move right 4= up 5= down
+        //(x,0,0) is a visual indicator, (0,x,0) Repersents the player pos, (0,0,x) is the type of movemnt restriction the tile has.
         int[,,] Tiles = new int[10, 10, 3]
             {
                 { {1,0,0},{1,0,0},{2,0,1},{2,0,1},{2,0,1}, {2,0,1},{2,0,0},{2,0,1},{2,0,1},{2,0,1}  },
@@ -33,10 +34,10 @@ namespace Grid_based_map
                 { {1,0,0},{1,0,0},{1,0,0},{1,0,0},{1,0,0}, {1,0,0},{1,0,0},{1,0,0},{1,0,0},{1,0,0}  }
             };
         int[,,] PlayerTiles = new int[10, 10, 2];
-
         int[,,] ViewRange = new int[5, 5,2];
         int tileX=5, tileY=5;
         int PlayerX =-1, PlayerY=-1, PlayerXPos=0, PlayerYPos=0;
+        bool CharOnScrn;
         Brush Grass = Brushes.Green;
         Brush Water = Brushes.Blue;
         Brush Unexplored = Brushes.DarkGray;
@@ -48,7 +49,7 @@ namespace Grid_based_map
         }
 
         public void DrawGrid()
-        { //Remove the info for the player as it may not be needed
+        {   //Remove the info for the player as it may not be needed
             Player = Rectangle.Empty;
             //Updating current player position
             Tiles[PlayerYPos, PlayerXPos, 1] = 1;
@@ -78,6 +79,11 @@ namespace Grid_based_map
             }
             //Refresh the panel to show changes
             panel1.Invalidate();
+        }
+
+        public void CameraSnap()
+        {
+
         }
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)
@@ -126,6 +132,7 @@ namespace Grid_based_map
         { //removing the player from the screen so the position can be correctly updated
             PlayerX = -1;
             PlayerY = -1;
+            CharOnScrn = false;
             g = e.Graphics;
             TileID = 0;
             //Colouring tiles based off their visual indicator
@@ -148,6 +155,7 @@ namespace Grid_based_map
                         PlayerY = h;
                         Player = new Rectangle(30 + 120 * PlayerX, 30 + 120 * PlayerY, 60, 60);
                         g.FillRectangle(Brushes.Red, Player);
+                        CharOnScrn = true;
                     }
                    g.DrawRectangle(Pens.Black, Tile[TileID]);
                    TileID++;
