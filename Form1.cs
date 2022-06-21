@@ -108,24 +108,36 @@ namespace Grid_based_map
         {
             cameraControl = false;
             //Movement of the camera
-            if (e.KeyData == Keys.Left && tileX>2)
+            if (e.KeyData == Keys.Left)
             {
-                tileX--;
+                 if (tileX > 2)
+                {
+                    tileX--;
+                }
                 cameraControl = true;
             }
-            if (e.KeyData == Keys.Right && tileX < 7)
+            if (e.KeyData == Keys.Right)
             {
-                tileX++;
+                if (tileX < 7)
+                {
+                    tileX++;
+                }
                 cameraControl = true;
             }
-            if (e.KeyData == Keys.Up && tileY > 2)
+            if (e.KeyData == Keys.Up)
             {
-                tileY--;
+                if (tileY > 2)
+                {
+                    tileY--;
+                }
                 cameraControl = true;
             }
-            if (e.KeyData == Keys.Down && tileY < 7)
+            if (e.KeyData == Keys.Down)
             {
-                tileY++;
+                if (tileY < 7)
+                {
+                    tileY++;
+                }
                 cameraControl = true;
             }
             //Movement of the player
