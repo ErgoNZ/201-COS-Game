@@ -37,7 +37,7 @@ namespace Grid_based_map
         int[,,] ViewRange = new int[5, 5,2];
         int tileX=5, tileY=5;
         int PlayerX =-1, PlayerY=-1, PlayerXPos=0, PlayerYPos=0;
-        bool CharOnScrn;
+        bool CharOnScrn,cameraControl;
         Brush Grass = Brushes.Green;
         Brush Water = Brushes.Blue;
         Brush Unexplored = Brushes.DarkGray;
@@ -49,7 +49,8 @@ namespace Grid_based_map
         }
 
         public void DrawGrid()
-        {   //Remove the info for the player as it may not be needed
+        {
+            //Remove the info for the player as it may not be needed
             Player = Rectangle.Empty;
             //Updating current player position
             Tiles[PlayerYPos, PlayerXPos, 1] = 1;
@@ -83,46 +84,99 @@ namespace Grid_based_map
 
         public void CameraSnap()
         {
-
+                tileX = PlayerXPos;
+                tileY = PlayerYPos;
+                if(tileX>7)
+                {
+                    tileX = 7;
+                }
+                if(tileX<2)
+                {
+                    tileX = 2;
+                }
+                if(tileY>7)
+                {
+                    tileY = 7;
+                }
+                if (tileY < 2)
+                {
+                    tileY = 2;
+                }
         }
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
+            cameraControl = false;
             //Movement of the camera
             if (e.KeyData == Keys.Left && tileX>2)
             {
                 tileX--;
+                cameraControl = true;
             }
             if (e.KeyData == Keys.Right && tileX < 7)
             {
                 tileX++;
+                cameraControl = true;
             }
             if (e.KeyData == Keys.Up && tileY > 2)
             {
                 tileY--;
+                cameraControl = true;
             }
             if (e.KeyData == Keys.Down && tileY < 7)
             {
                 tileY++;
+                cameraControl = true;
             }
             //Movement of the player
             Tiles[PlayerYPos, PlayerXPos, 1] = 0;
             //0= free movement 1= no movement 2= Cannot move left 3= Cannot move right 4= up 5= down
-            if (e.KeyData == Keys.A && PlayerXPos > 0 && Tiles[PlayerYPos, PlayerXPos-1,2] != 1 && Tiles[PlayerYPos, PlayerXPos - 1, 2] !=2)
+            if(CharOnScrn== true)
             {
-                PlayerXPos--;
+                if (e.KeyData == Keys.A && PlayerXPos > 0 && Tiles[PlayerYPos, PlayerXPos - 1, 2] != 1 && Tiles[PlayerYPos, PlayerXPos - 1, 2] != 2)
+                {
+                    PlayerXPos--;
+                    cameraControl = false;
+                    if (tileX > 2)
+                    {
+                        tileX--;
+                    }
+                }
+                if (e.KeyData == Keys.D && PlayerXPos < 9 && Tiles[PlayerYPos, PlayerXPos + 1, 2] != 1 && Tiles[PlayerYPos, PlayerXPos + 1, 2] != 3)
+                {
+                    PlayerXPos++;
+                    cameraControl = false;
+                    if (tileX < 7)
+                    {
+                        tileX++;
+                    }
+                }
+                if (e.KeyData == Keys.W && PlayerYPos > 0 && Tiles[PlayerYPos - 1, PlayerXPos, 2] != 1 && Tiles[PlayerYPos - 1, PlayerXPos, 2] != 4)
+                {
+                    PlayerYPos--;
+                    cameraControl = false;
+                    if (tileY > 2)
+                    {
+                        tileY--;
+                    }
+                }
+                if (e.KeyData == Keys.S && PlayerYPos < 9 && Tiles[PlayerYPos + 1, PlayerXPos, 2] != 1 && Tiles[PlayerYPos + 1, PlayerXPos, 2] != 5)
+                {
+                    PlayerYPos++;
+                    cameraControl = false;
+                    if (tileY < 7)
+                    {
+                        tileY++;
+                    }
+                }
             }
-            if (e.KeyData == Keys.D && PlayerXPos < 9 && Tiles[PlayerYPos, PlayerXPos+1, 2] != 1 && Tiles[PlayerYPos, PlayerXPos + 1, 2] != 3)
+            if (cameraControl == false)
             {
-                PlayerXPos++;
+                CameraSnap();
             }
-            if (e.KeyData == Keys.W && PlayerYPos > 0 && Tiles[PlayerYPos-1, PlayerXPos, 2] != 1 && Tiles[PlayerYPos - 1, PlayerXPos, 2] != 4)
+            else if(e.KeyData == Keys.C)
             {
-                PlayerYPos--;
-            }
-            if (e.KeyData == Keys.S && PlayerYPos < 9 && Tiles[PlayerYPos+1, PlayerXPos, 2] != 1 && Tiles[PlayerYPos + 1, PlayerXPos, 2] != 5)
-            {
-                PlayerYPos++;
+                CameraSnap();
             }
             //Call the DrawGrid method to refresh the players current view and update any tiles as needed
             DrawGrid();
