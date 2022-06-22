@@ -16,7 +16,7 @@ namespace Grid_based_map
     { //Seting up all required variables for the game to function
         Graphics g;
         Rectangle[] Tile = new Rectangle[25];
-        Rectangle Player;
+        public Rectangle Player;
         int TileID = 0;
         //0= free movement 1= no movement 2= Cannot move left 3= Cannot move right 4= up 5= down
         //(x,0,0) is a visual indicator, (0,x,0) Repersents the player pos, (0,0,x) is the type of movemnt restriction the tile has.
