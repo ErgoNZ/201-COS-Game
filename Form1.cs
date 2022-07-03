@@ -27,6 +27,7 @@ namespace Grid_based_map
         {
             InitializeComponent();
             typeof(Panel).InvokeMember("DoubleBuffered", BindingFlags.SetProperty | BindingFlags.Instance | BindingFlags.NonPublic, null, panel1, new object[] { true });
+            Map.LoadMap();
             DrawGrid();
         }
 
