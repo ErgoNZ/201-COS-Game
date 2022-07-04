@@ -17,7 +17,7 @@ namespace Grid_based_map
         Graphics g;
         Rectangle[] Tile = new Rectangle[25];
         int TileID = 0;
-        public int tileX = 5, tileY = 5;
+        public int tileX = 2, tileY = 2;
         bool CharOnScrn, cameraControl;
         Player Character = new Player();
         MapData Map = new MapData();
@@ -45,7 +45,7 @@ namespace Grid_based_map
             }
             if (e.KeyData == Keys.Right)
             {
-                if (tileX < 7)
+                if (tileX < Map.XLimit-3)
                 {
                     tileX++;
                 }
@@ -61,7 +61,7 @@ namespace Grid_based_map
             }
             if (e.KeyData == Keys.Down)
             {
-                if (tileY < 7)
+                if (tileY < Map.YLimit-3)
                 {
                     tileY++;
                 }
@@ -81,11 +81,11 @@ namespace Grid_based_map
                         tileX--;
                     }
                 }
-                if (e.KeyData == Keys.D && Character.PlayerXPos < 9 && Map.Tiles[Character.PlayerYPos, Character.PlayerXPos + 1, 2] != 1 && Map.Tiles[Character.PlayerYPos, Character.PlayerXPos + 1, 2] != 3)
+                if (e.KeyData == Keys.D && Character.PlayerXPos < Map.XLimit-1 && Map.Tiles[Character.PlayerYPos, Character.PlayerXPos + 1, 2] != 1 && Map.Tiles[Character.PlayerYPos, Character.PlayerXPos + 1, 2] != 3)
                 {
                     Character.PlayerXPos++;
                     cameraControl = false;
-                    if (tileX < 7)
+                    if (tileX < Map.XLimit-3)
                     {
                         tileX++;
                     }
@@ -99,11 +99,11 @@ namespace Grid_based_map
                         tileY--;
                     }
                 }
-                if (e.KeyData == Keys.S && Character.PlayerYPos < 9 && Map.Tiles[Character.PlayerYPos + 1, Character.PlayerXPos, 2] != 1 && Map.Tiles[Character.PlayerYPos + 1, Character.PlayerXPos, 2] != 5)
+                if (e.KeyData == Keys.S && Character.PlayerYPos < Map.YLimit && Map.Tiles[Character.PlayerYPos + 1, Character.PlayerXPos, 2] != 1 && Map.Tiles[Character.PlayerYPos + 1, Character.PlayerXPos, 2] != 5)
                 {
                     Character.PlayerYPos++;
                     cameraControl = false;
-                    if (tileY < 7)
+                    if (tileY < Map.YLimit-3)
                     {
                         tileY++;
                     }
@@ -157,17 +157,17 @@ namespace Grid_based_map
         {
             tileX = Character.PlayerXPos;
             tileY = Character.PlayerYPos;
-            if (tileX > 7)
+            if (tileX > Map.XLimit-3)
             {
-                tileX = 7;
+                tileX = Map.XLimit-3;
             }
             if (tileX < 2)
             {
                 tileX = 2;
             }
-            if (tileY > 7)
+            if (tileY > Map.YLimit - 3)
             {
-                tileY = 7;
+                tileY = Map.YLimit - 3;
             }
             if (tileY < 2)
             {
@@ -190,8 +190,8 @@ namespace Grid_based_map
                    {
                        g.FillRectangle(Grass, Tile[TileID]);
                    }
-                   else
-                   {
+                   else if (Map.ViewRange[h, w, 0] == 2)
+                    {
                        g.FillRectangle(Water, Tile[TileID]);
                    }
                    //finding players position in relation to the cameras position
