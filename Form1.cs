@@ -27,7 +27,7 @@ namespace Grid_based_map
         {
             InitializeComponent();
             typeof(Panel).InvokeMember("DoubleBuffered", BindingFlags.SetProperty | BindingFlags.Instance | BindingFlags.NonPublic, null, panel1, new object[] { true });
-            Map.LoadMap();
+            Map.LoadMap("TestMap");
             DrawGrid();
         }
 
@@ -116,6 +116,15 @@ namespace Grid_based_map
             else if (e.KeyData == Keys.C)
             {
                 CameraSnap();
+            }
+
+            if (e.KeyData == Keys.B)
+            {
+                Map.LoadMap("TestMap1");
+            }
+            if (e.KeyData == Keys.N)
+            {
+                Map.LoadMap("TestMap");
             }
             //Call the DrawGrid method to refresh the players current view and update any tiles as needed
             DrawGrid();
