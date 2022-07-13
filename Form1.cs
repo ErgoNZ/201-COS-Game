@@ -21,6 +21,7 @@ namespace Grid_based_map
         bool CharOnScrn, cameraControl;
         Player Character = new Player();
         MapData Map = new MapData();
+        Inventory Inv = new Inventory();
         Brush Grass = Brushes.Green;
         Brush Water = Brushes.Blue;
         public Form1()
@@ -28,6 +29,14 @@ namespace Grid_based_map
             InitializeComponent();
             typeof(Panel).InvokeMember("DoubleBuffered", BindingFlags.SetProperty | BindingFlags.Instance | BindingFlags.NonPublic, null, panel1, new object[] { true });
             Map.LoadMap("TestMap");
+            Inv.AddItem("Mace", 1);
+            Inv.AddItem("Apple", 3);
+            Inv.AddItem("Apple", 2);
+            Inv.AddItem("Sword", 5);
+            Inv.AddItem("Sword", -1);
+            Inv.AddItem("Mace", 1);
+            Inv.AddItem("IllegalObject", -2);
+            Inv.PrintInv();
             DrawGrid();
         }
 
@@ -120,11 +129,13 @@ namespace Grid_based_map
 
             if (e.KeyData == Keys.B)
             {
-                Map.LoadMap("TestMap1");
+                Inv.Sort("Alphebetical");
+                Inv.PrintInv();
             }
             if (e.KeyData == Keys.N)
             {
-                Map.LoadMap("TestMap");
+                Inv.Sort("Amount");
+                Inv.PrintInv();
             }
             //Call the DrawGrid method to refresh the players current view and update any tiles as needed
             DrawGrid();
