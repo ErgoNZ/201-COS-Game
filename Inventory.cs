@@ -15,7 +15,10 @@ namespace Grid_based_map
             //Checking if the player doesn't have any items in their inventory.
             if (InvData.Count==0)
             {
-                InvData.Add(new Tuple<string, int>(ItemName, ItemAmount));
+                if (ItemAmount > 0)
+                {
+                    InvData.Add(new Tuple<string, int>(ItemName, ItemAmount));
+                }
             }
             else
             {
@@ -25,17 +28,20 @@ namespace Grid_based_map
                 {
                     if (tuple.Item1 == ItemName)
                     {
-                        InvData.Insert(Index, new Tuple<string, int>(ItemName, ItemAmount + tuple.Item2));
-                        //This just removes the leftover starting item entry from the inventroy so only the new value shows.
-                        InvData.RemoveAt(Index + 1);
-                        break;
+                        if (ItemAmount > 0)
+                        {
+                            InvData.Insert(Index, new Tuple<string, int>(ItemName, ItemAmount + tuple.Item2));
+                            //This just removes the leftover starting item entry from the inventory so only the new value shows.
+                            InvData.RemoveAt(Index + 1);
+                            break;
+                        }
                     }
-                    //if the item being added isn't already in the players inventory and the item amount isn't a negitive number add it.
+                    //if the item being added isn't already in the players inventory and the item amount isn't a negative number add it.
                     else if(Index==InvCount-1)
                     {
-                        if (ItemAmount! >= 0)
+                        if (ItemAmount > 0)
                         {
-                           InvData.Add(new Tuple<string, int>(ItemName, ItemAmount));
+                            InvData.Add(new Tuple<string, int>(ItemName, ItemAmount));
                         }
                         break;
                     }

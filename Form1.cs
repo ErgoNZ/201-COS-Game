@@ -18,7 +18,7 @@ namespace Grid_based_map
         Rectangle[] Tile = new Rectangle[25];
         int TileID = 0;
         public int tileX = 2, tileY = 2;
-        bool CharOnScrn, cameraControl;
+        bool CharOnScrn, cameraControl,InMenu;
         Player Character = new Player();
         MapData Map = new MapData();
         Inventory Inv = new Inventory();
@@ -29,116 +29,113 @@ namespace Grid_based_map
             InitializeComponent();
             typeof(Panel).InvokeMember("DoubleBuffered", BindingFlags.SetProperty | BindingFlags.Instance | BindingFlags.NonPublic, null, panel1, new object[] { true });
             Map.LoadMap("TestMap");
-            Inv.AddItem("Mace", 1);
-            Inv.AddItem("Apple", 3);
-            Inv.AddItem("Apple", 2);
-            Inv.AddItem("Sword", 5);
-            Inv.AddItem("Sword", -1);
-            Inv.AddItem("Mace", 1);
-            Inv.AddItem("IllegalObject", -2);
             Inv.PrintInv();
             DrawGrid();
         }
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
-            cameraControl = false;
-            //Movement of the camera
-            if (e.KeyData == Keys.Left)
+            if (!InMenu)
             {
-                if (tileX > 2)
+                cameraControl = false;
+                //Movement of the camera
+                if (e.KeyData == Keys.Left)
                 {
-                    tileX--;
-                }
-                cameraControl = true;
-            }
-            if (e.KeyData == Keys.Right)
-            {
-                if (tileX < Map.XLimit-3)
-                {
-                    tileX++;
-                }
-                cameraControl = true;
-            }
-            if (e.KeyData == Keys.Up)
-            {
-                if (tileY > 2)
-                {
-                    tileY--;
-                }
-                cameraControl = true;
-            }
-            if (e.KeyData == Keys.Down)
-            {
-                if (tileY < Map.YLimit-3)
-                {
-                    tileY++;
-                }
-                cameraControl = true;
-            }
-            //Movement of the player
-            Map.Tiles[Character.PlayerYPos, Character.PlayerXPos, 1] = 0;
-            //0= free movement 1= no movement 2= Cannot move left 3= Cannot move right 4= up 5= down
-            if (CharOnScrn == true)
-            {
-                if (e.KeyData == Keys.A && Character.PlayerXPos > 0 && Map.Tiles[Character.PlayerYPos, Character.PlayerXPos - 1, 2] != 1 && Map.Tiles[Character.PlayerYPos, Character.PlayerXPos - 1, 2] != 2)
-                {
-                    Character.PlayerXPos--;
-                    cameraControl = false;
                     if (tileX > 2)
                     {
                         tileX--;
                     }
+                    cameraControl = true;
                 }
-                if (e.KeyData == Keys.D && Character.PlayerXPos < Map.XLimit-1 && Map.Tiles[Character.PlayerYPos, Character.PlayerXPos + 1, 2] != 1 && Map.Tiles[Character.PlayerYPos, Character.PlayerXPos + 1, 2] != 3)
+                if (e.KeyData == Keys.Right)
                 {
-                    Character.PlayerXPos++;
-                    cameraControl = false;
-                    if (tileX < Map.XLimit-3)
+                    if (tileX < Map.XLimit - 3)
                     {
                         tileX++;
                     }
+                    cameraControl = true;
                 }
-                if (e.KeyData == Keys.W && Character.PlayerYPos > 0 && Map.Tiles[Character.PlayerYPos - 1, Character.PlayerXPos, 2] != 1 && Map.Tiles[Character.PlayerYPos - 1, Character.PlayerXPos, 2] != 4)
+                if (e.KeyData == Keys.Up)
                 {
-                    Character.PlayerYPos--;
-                    cameraControl = false;
                     if (tileY > 2)
                     {
                         tileY--;
                     }
+                    cameraControl = true;
                 }
-                if (e.KeyData == Keys.S && Character.PlayerYPos < Map.YLimit && Map.Tiles[Character.PlayerYPos + 1, Character.PlayerXPos, 2] != 1 && Map.Tiles[Character.PlayerYPos + 1, Character.PlayerXPos, 2] != 5)
+                if (e.KeyData == Keys.Down)
                 {
-                    Character.PlayerYPos++;
-                    cameraControl = false;
-                    if (tileY < Map.YLimit-3)
+                    if (tileY < Map.YLimit - 3)
                     {
                         tileY++;
                     }
+                    cameraControl = true;
                 }
-            }
-            if (cameraControl == false)
-            {
-                CameraSnap();
-            }
-            else if (e.KeyData == Keys.C)
-            {
-                CameraSnap();
-            }
+                //Movement of the player
+                Map.Tiles[Character.PlayerYPos, Character.PlayerXPos, 1] = 0;
+                //0= free movement 1= no movement 2= Cannot move left 3= Cannot move right 4= up 5= down
+                if (CharOnScrn == true)
+                {
+                    if (e.KeyData == Keys.A && Character.PlayerXPos > 0 && Map.Tiles[Character.PlayerYPos, Character.PlayerXPos - 1, 2] != 1 && Map.Tiles[Character.PlayerYPos, Character.PlayerXPos - 1, 2] != 2)
+                    {
+                        Character.PlayerXPos--;
+                        cameraControl = false;
+                        if (tileX > 2)
+                        {
+                            tileX--;
+                        }
+                    }
+                    if (e.KeyData == Keys.D && Character.PlayerXPos < Map.XLimit - 1 && Map.Tiles[Character.PlayerYPos, Character.PlayerXPos + 1, 2] != 1 && Map.Tiles[Character.PlayerYPos, Character.PlayerXPos + 1, 2] != 3)
+                    {
+                        Character.PlayerXPos++;
+                        cameraControl = false;
+                        if (tileX < Map.XLimit - 3)
+                        {
+                            tileX++;
+                        }
+                    }
+                    if (e.KeyData == Keys.W && Character.PlayerYPos > 0 && Map.Tiles[Character.PlayerYPos - 1, Character.PlayerXPos, 2] != 1 && Map.Tiles[Character.PlayerYPos - 1, Character.PlayerXPos, 2] != 4)
+                    {
+                        Character.PlayerYPos--;
+                        cameraControl = false;
+                        if (tileY > 2)
+                        {
+                            tileY--;
+                        }
+                    }
+                    if (e.KeyData == Keys.S && Character.PlayerYPos < Map.YLimit && Map.Tiles[Character.PlayerYPos + 1, Character.PlayerXPos, 2] != 1 && Map.Tiles[Character.PlayerYPos + 1, Character.PlayerXPos, 2] != 5)
+                    {
+                        Character.PlayerYPos++;
+                        cameraControl = false;
+                        if (tileY < Map.YLimit - 3)
+                        {
+                            tileY++;
+                        }
+                    }
+                }
+                if (cameraControl == false)
+                {
+                    CameraSnap();
+                }
+                else if (e.KeyData == Keys.C)
+                {
+                    CameraSnap();
+                }
 
-            if (e.KeyData == Keys.B)
-            {
-                Inv.Sort("Alphebetical");
-                Inv.PrintInv();
-            }
-            if (e.KeyData == Keys.N)
-            {
-                Inv.Sort("Amount");
-                Inv.PrintInv();
-            }
-            //Call the DrawGrid method to refresh the players current view and update any tiles as needed
-            DrawGrid();
+                if (e.KeyData == Keys.B)
+                {
+                    Inv.Sort("Alphebetical");
+                    Inv.PrintInv();
+                }
+                if (e.KeyData == Keys.N)
+                {
+                    Inv.Sort("Amount");
+                    Inv.PrintInv();
+                }
+                //Call the DrawGrid method to refresh the players current view and update any tiles as needed
+                DrawGrid();
+            }            
+
         }
         public void DrawGrid()
         {
