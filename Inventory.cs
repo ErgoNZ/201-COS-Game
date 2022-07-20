@@ -50,6 +50,32 @@ namespace Grid_based_map
                 }
             }        
         }
+        public void DelItem(string ItemName, int ItemAmount)
+        {
+            foreach (Tuple<string, int> tuple in InvData)
+            {
+                int Index = 0;
+                if (tuple.Item1 == ItemName)
+                {                    
+                    if (ItemAmount > 0 && tuple.Item2-ItemAmount >= 0)
+                    {
+                        if (tuple.Item2 - ItemAmount == 0)
+                        {
+                            InvData.RemoveAt(Index);
+                            break;
+                        }
+                        else
+                        {
+                            InvData.Insert(Index, new Tuple<string, int>(ItemName, tuple.Item2 - ItemAmount));
+                            //This just removes the leftover starting item entry from the inventory so only the new value shows.
+                            InvData.RemoveAt(Index + 1);
+                            break;
+                        }
+                    }
+                }
+                Index++;
+            }
+        }
         public void Sort(string SortBy)
         {
             //Sorts by amount of items
