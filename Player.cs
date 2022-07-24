@@ -9,6 +9,7 @@ namespace Grid_based_map
     {
        public Rectangle Char;
        public int PlayerX = -1, PlayerY = -1, PlayerXPos = 0, PlayerYPos = 0;
-       
+       public int Hp, Def, Spd, Atk;
+       public string Name="Player";
     }
 }

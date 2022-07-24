@@ -24,12 +24,14 @@ namespace Grid_based_map
         Inventory Inv = new Inventory();
         Brush Grass = Brushes.Green;
         Brush Water = Brushes.Blue;
+        Font General = new Font(FontFamily.GenericMonospace,16 ,FontStyle.Regular);
         public Form1()
         {
             InitializeComponent();
-            typeof(Panel).InvokeMember("DoubleBuffered", BindingFlags.SetProperty | BindingFlags.Instance | BindingFlags.NonPublic, null, panel1, new object[] { true });
+            typeof(Panel).InvokeMember("DoubleBuffered", BindingFlags.SetProperty | BindingFlags.Instance | BindingFlags.NonPublic, null, Map_Pnl, new object[] { true });
             Map.LoadMap("TestMap");
             Inv.PrintInv();
+            UpdateInfo();
             DrawGrid();
         }
 
@@ -134,7 +136,11 @@ namespace Grid_based_map
                 }
                 //Call the DrawGrid method to refresh the players current view and update any tiles as needed
                 DrawGrid();
-            }            
+            }
+            else
+            {
+
+            }
 
         }
         public void DrawGrid()
@@ -168,8 +174,9 @@ namespace Grid_based_map
                 }
             }
             //Refresh the panel to show changes
-            panel1.Invalidate();
+            Map_Pnl.Invalidate();
         }
+
         public void CameraSnap()
         {
             tileX = Character.PlayerXPos;
@@ -224,6 +231,15 @@ namespace Grid_based_map
                    TileID++;
                }
            }
+        }
+        private void Info_Pnl_Paint(object sender, PaintEventArgs e)
+        {
+            g = e.Graphics;
+            g.DrawString(Character.Name,General,null,600);
+        }
+        private void UpdateInfo()
+        {
+            Info_Pnl.Invalidate();
         }
     }
 }
