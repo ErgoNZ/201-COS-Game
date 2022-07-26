@@ -16,12 +16,36 @@ namespace Grid_based_map
     { //Seting up all required variables for the game to function
         Graphics g;
         Rectangle[] Tile = new Rectangle[25];
-        Rectangle PlayerName = new Rectangle(25, 12, 250, 50),
-        PlayerLvl = new Rectangle(0,25,250,50)    
-            ;
+        Rectangle PlayerName = new Rectangle(25, 0, 250, 50),
+                  PlayerLvl = new Rectangle(25, 40, 100, 50),
+                  FilePlayTime = new Rectangle(150, 40, 150, 50),
+                  vert = new Rectangle(150, 0, 1, 600),
+                  Sec1 = new Rectangle(0, 0, 300, 100),
+                  Sec2 = new Rectangle(0,100,300,125),
+                  PlayerHp = new Rectangle(25,95,250,50),
+                  PlayerAtk = new Rectangle(25,125,100,50),
+                  PlayerDef = new Rectangle(25, 175, 100, 50),
+                  PlayerSpd = new Rectangle(175, 125, 100, 50),
+                  PlayerCrit = new Rectangle(175, 175, 100, 50),
+                  Sec3 = new Rectangle(0,225,300,275),
+
+                  Sec4 = new Rectangle(0,500,300,100)
+
+                                                               ;
         int TileID = 0;
         public int tileX = 2, tileY = 2;
         bool CharOnScrn, cameraControl,InMenu;
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            Map_Pnl.Focus();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            Map_Pnl.Focus();
+        }
+
         Player Character = new Player();
         MapData Map = new MapData();
         Inventory Inv = new Inventory();
@@ -33,7 +57,6 @@ namespace Grid_based_map
         {
             InitializeComponent();
             typeof(Panel).InvokeMember("DoubleBuffered", BindingFlags.SetProperty | BindingFlags.Instance | BindingFlags.NonPublic, null, Map_Pnl, new object[] { true });
-            Info_Pnl.Invalidate();
             Map.LoadMap("TestMap");
             Inv.PrintInv();
             DrawGrid();
@@ -147,7 +170,6 @@ namespace Grid_based_map
             {
 
             }
-
         }
         public void DrawGrid()
         {
@@ -243,8 +265,21 @@ namespace Grid_based_map
             Center.Alignment = StringAlignment.Center;
             Center.LineAlignment= StringAlignment.Center;
             g = e.Graphics;
+            g.FillRectangle(Brushes.SaddleBrown, Sec1);
+            g.FillRectangle(Brushes.Brown, Sec2);
+            g.FillRectangle(Brushes.RosyBrown, Sec3);
+            g.FillRectangle(Brushes.SaddleBrown, Sec4);
             g.DrawString(Character.Name, General, Brushes.Black,PlayerName,Center);
-            g.DrawString("LVL: 3", General, Brushes.Black, PlayerLvl, Center);
+            g.DrawString("LVL:" + Character.Lvl, General, Brushes.Black, PlayerLvl, Center);
+            //Placeholder playtime display
+            g.DrawString("PlayTime: 1:30:27" , General, Brushes.Black, FilePlayTime, Center);
+            g.DrawString("Hp:"+Character.Hp+"/"+Character.MaxHp, General, Brushes.Black, PlayerHp, Center);
+            g.DrawString("Atk:" + Character.Atk, General, Brushes.Black, PlayerAtk, Center);
+            g.DrawString("Def:" + Character.Def, General, Brushes.Black, PlayerDef, Center);
+            g.DrawString("Spd:" + Character.Spd, General, Brushes.Black, PlayerSpd, Center);
+            g.DrawString("Crit:" + Character.Crit + "%", General, Brushes.Black, PlayerCrit, Center);
+            g.FillRectangle(Grass, vert);
+
         }
     }
 }
