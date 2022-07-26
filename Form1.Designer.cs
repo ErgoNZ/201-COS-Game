@@ -43,7 +43,7 @@ namespace Grid_based_map
             // 
             // Info_Pnl
             // 
-            this.Info_Pnl.BackColor = System.Drawing.Color.Peru;
+            this.Info_Pnl.BackColor = System.Drawing.Color.Transparent;
             this.Info_Pnl.Location = new System.Drawing.Point(600, 0);
             this.Info_Pnl.Name = "Info_Pnl";
             this.Info_Pnl.Size = new System.Drawing.Size(300, 600);

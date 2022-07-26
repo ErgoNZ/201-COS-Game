@@ -16,6 +16,9 @@ namespace Grid_based_map
     { //Seting up all required variables for the game to function
         Graphics g;
         Rectangle[] Tile = new Rectangle[25];
+        Rectangle PlayerName = new Rectangle(25, 12, 250, 50),
+        PlayerLvl = new Rectangle(0,25,250,50)    
+            ;
         int TileID = 0;
         public int tileX = 2, tileY = 2;
         bool CharOnScrn, cameraControl,InMenu;
@@ -25,16 +28,16 @@ namespace Grid_based_map
         Brush Grass = Brushes.Green;
         Brush Water = Brushes.Blue;
         Font General = new Font(FontFamily.GenericMonospace,16 ,FontStyle.Regular);
+        StringFormat Center = new StringFormat();
         public Form1()
         {
             InitializeComponent();
             typeof(Panel).InvokeMember("DoubleBuffered", BindingFlags.SetProperty | BindingFlags.Instance | BindingFlags.NonPublic, null, Map_Pnl, new object[] { true });
+            Info_Pnl.Invalidate();
             Map.LoadMap("TestMap");
             Inv.PrintInv();
-            UpdateInfo();
             DrawGrid();
         }
-
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
             if (!InMenu)
@@ -105,7 +108,7 @@ namespace Grid_based_map
                             tileY--;
                         }
                     }
-                    if (e.KeyData == Keys.S && Character.PlayerYPos < Map.YLimit && Map.Tiles[Character.PlayerYPos + 1, Character.PlayerXPos, 2] != 1 && Map.Tiles[Character.PlayerYPos + 1, Character.PlayerXPos, 2] != 5)
+                    if (e.KeyData == Keys.S && Character.PlayerYPos < Map.YLimit - 1 && Map.Tiles[Character.PlayerYPos + 1, Character.PlayerXPos, 2] != 1 && Map.Tiles[Character.PlayerYPos + 1, Character.PlayerXPos, 2] != 5)
                     {
                         Character.PlayerYPos++;
                         cameraControl = false;
@@ -128,13 +131,16 @@ namespace Grid_based_map
                 {
                     Inv.Sort("Alphebetical");
                     Inv.PrintInv();
+                    Character.Name = "B";
                 }
                 if (e.KeyData == Keys.N)
                 {
                     Inv.Sort("Amount");
                     Inv.PrintInv();
+                    Character.Name = "N";
                 }
                 //Call the DrawGrid method to refresh the players current view and update any tiles as needed
+                Info_Pnl.Invalidate();
                 DrawGrid();
             }
             else
@@ -234,12 +240,11 @@ namespace Grid_based_map
         }
         private void Info_Pnl_Paint(object sender, PaintEventArgs e)
         {
+            Center.Alignment = StringAlignment.Center;
+            Center.LineAlignment= StringAlignment.Center;
             g = e.Graphics;
-            g.DrawString(Character.Name,General,null,600);
-        }
-        private void UpdateInfo()
-        {
-            Info_Pnl.Invalidate();
+            g.DrawString(Character.Name, General, Brushes.Black,PlayerName,Center);
+            g.DrawString("LVL: 3", General, Brushes.Black, PlayerLvl, Center);
         }
     }
 }
