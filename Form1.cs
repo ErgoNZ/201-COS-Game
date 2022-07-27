@@ -36,14 +36,14 @@ namespace Grid_based_map
         public int tileX = 2, tileY = 2;
         bool CharOnScrn, cameraControl,InMenu;
 
-        private void button2_Click(object sender, EventArgs e)
+        private void button1_MouseLeave(object sender, EventArgs e)
         {
-            Map_Pnl.Focus();
+            button1.BackColor = Color.Wheat;
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void button1_MouseEnter(object sender, EventArgs e)
         {
-            Map_Pnl.Focus();
+            button1.BackColor = Color.FloralWhite;
         }
 
         Player Character = new Player();
@@ -58,6 +58,9 @@ namespace Grid_based_map
             InitializeComponent();
             typeof(Panel).InvokeMember("DoubleBuffered", BindingFlags.SetProperty | BindingFlags.Instance | BindingFlags.NonPublic, null, Map_Pnl, new object[] { true });
             Map.LoadMap("TestMap");
+            Inv.AddItem("apple",6);
+            Inv.AddItem("appleX", 3);
+            Inv.DelItem("appleX", 3);
             Inv.PrintInv();
             DrawGrid();
         }
@@ -280,6 +283,15 @@ namespace Grid_based_map
             g.DrawString("Crit:" + Character.Crit + "%", General, Brushes.Black, PlayerCrit, Center);
             g.FillRectangle(Grass, vert);
 
+        }
+        private void button2_Click(object sender, EventArgs e)
+        {
+            Map_Pnl.Focus();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            Map_Pnl.Focus();
         }
     }
 }

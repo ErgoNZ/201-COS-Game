@@ -51,9 +51,9 @@ namespace Grid_based_map
         }
         public void DelItem(string ItemName, int ItemAmount)
         {
+            int Index = 0;
             foreach (Tuple<string, int> tuple in InvData)
             {
-                int Index = 0;
                 if (tuple.Item1 == ItemName)
                 {                    
                     if (ItemAmount > 0 && tuple.Item2-ItemAmount >= 0)
@@ -72,7 +72,10 @@ namespace Grid_based_map
                         }
                     }
                 }
-                Index++;
+                else
+                {
+                    Index++;
+                }
             }
         }
         public void Sort(string SortBy)
