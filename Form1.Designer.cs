@@ -57,8 +57,7 @@ namespace Grid_based_map
             // 
             // button2
             // 
-            this.button2.BackColor = System.Drawing.Color.AntiqueWhite;
-            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.button2.BackColor = System.Drawing.Color.Wheat;
             this.button2.Location = new System.Drawing.Point(160, 510);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(130, 80);
@@ -67,6 +66,8 @@ namespace Grid_based_map
             this.button2.Text = "button2";
             this.button2.UseVisualStyleBackColor = false;
             this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.button2.MouseEnter += new System.EventHandler(this.button2_MouseEnter);
+            this.button2.MouseLeave += new System.EventHandler(this.button2_MouseLeave);
             // 
             // button1
             // 

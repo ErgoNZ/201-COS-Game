@@ -34,17 +34,7 @@ namespace Grid_based_map
                                                                ;
         int TileID = 0;
         public int tileX = 2, tileY = 2;
-        bool CharOnScrn, cameraControl,InMenu;
-
-        private void button1_MouseLeave(object sender, EventArgs e)
-        {
-            button1.BackColor = Color.Wheat;
-        }
-
-        private void button1_MouseEnter(object sender, EventArgs e)
-        {
-            button1.BackColor = Color.FloralWhite;
-        }
+        bool CharOnScrn, cameraControl,InMenu;      
 
         Player Character = new Player();
         MapData Map = new MapData();
@@ -292,6 +282,25 @@ namespace Grid_based_map
         private void button1_Click(object sender, EventArgs e)
         {
             Map_Pnl.Focus();
+        }
+        private void button1_MouseLeave(object sender, EventArgs e)
+        {
+            button1.BackColor = Color.Wheat;
+        }
+
+        private void button1_MouseEnter(object sender, EventArgs e)
+        {
+            button1.BackColor = Color.FloralWhite;
+        }
+
+        private void button2_MouseEnter(object sender, EventArgs e)
+        {
+            button2.BackColor = Color.FloralWhite;
+        }
+
+        private void button2_MouseLeave(object sender, EventArgs e)
+        {
+            button2.BackColor = Color.Wheat;
         }
     }
 }

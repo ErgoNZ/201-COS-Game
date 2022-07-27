@@ -10,7 +10,6 @@ namespace Grid_based_map
         public void AddItem(string ItemName, int ItemAmount)
         {
             int Index = 0, InvCount= InvData.Count;
-            Debug.WriteLine(InvData.Count);
             //Checking if the player doesn't have any items in their inventory.
             if (InvData.Count==0)
             {
@@ -45,7 +44,6 @@ namespace Grid_based_map
                         break;
                     }
                     Index++;
-                    Debug.WriteLine(Index);
                 }
             }        
         }
