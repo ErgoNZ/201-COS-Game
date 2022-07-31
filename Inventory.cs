@@ -5,9 +5,9 @@ namespace Grid_based_map
 {
     class Inventory
     {
-        public List<Tuple<string, int>> InvData = new List<Tuple<string, int>>();
+        public List<Tuple<string, int,string,bool>> InvData = new List<Tuple<string, int,string,bool>>();
 
-        public void AddItem(string ItemName, int ItemAmount)
+        public void AddItem(string ItemName, int ItemAmount, string ItemType, bool Equipabble)
         {
             int Index = 0, InvCount= InvData.Count;
             //Checking if the player doesn't have any items in their inventory.
@@ -15,20 +15,20 @@ namespace Grid_based_map
             {
                 if (ItemAmount > 0)
                 {
-                    InvData.Add(new Tuple<string, int>(ItemName, ItemAmount));
+                    InvData.Add(new Tuple<string, int,string,bool>(ItemName, ItemAmount,ItemType,Equipabble));
                 }
             }
             else
             {
                 //This checks all current items in the inventory and attempts to find if the item being added already exists
                 //and instead increases it by the amount being added.
-                foreach (Tuple<string, int> tuple in InvData)
+                foreach (Tuple<string, int,string,bool> tuple in InvData)
                 {
                     if (tuple.Item1 == ItemName)
                     {
                         if (ItemAmount > 0)
                         {
-                            InvData.Insert(Index, new Tuple<string, int>(ItemName, ItemAmount + tuple.Item2));
+                            InvData.Insert(Index, new Tuple<string, int,string,bool>(ItemName, ItemAmount + tuple.Item2,ItemType,Equipabble));
                             //This just removes the leftover starting item entry from the inventory so only the new value shows.
                             InvData.RemoveAt(Index + 1);
                             break;
@@ -39,7 +39,7 @@ namespace Grid_based_map
                     {
                         if (ItemAmount > 0)
                         {
-                            InvData.Add(new Tuple<string, int>(ItemName, ItemAmount));
+                            InvData.Add(new Tuple<string, int,string,bool>(ItemName, ItemAmount,ItemType,Equipabble));
                         }
                         break;
                     }
@@ -47,10 +47,10 @@ namespace Grid_based_map
                 }
             }        
         }
-        public void DelItem(string ItemName, int ItemAmount)
+        public void DelItem(string ItemName, int ItemAmount, string ItemType, bool Equipabble)
         {
             int Index = 0;
-            foreach (Tuple<string, int> tuple in InvData)
+            foreach (Tuple<string, int,string,bool> tuple in InvData)
             {
                 if (tuple.Item1 == ItemName)
                 {                    
@@ -63,7 +63,7 @@ namespace Grid_based_map
                         }
                         else
                         {
-                            InvData.Insert(Index, new Tuple<string, int>(ItemName, tuple.Item2 - ItemAmount));
+                            InvData.Insert(Index, new Tuple<string, int,string,bool>(ItemName, tuple.Item2 - ItemAmount,ItemType,Equipabble));
                             //This just removes the leftover starting item entry from the inventory so only the new value shows.
                             InvData.RemoveAt(Index + 1);
                             break;
@@ -75,6 +75,11 @@ namespace Grid_based_map
                     Index++;
                 }
             }
+        }
+
+        public void Categorise(string Category)
+        {
+
         }
         public void Sort(string SortBy)
         {
@@ -92,10 +97,12 @@ namespace Grid_based_map
         public void PrintInv()
         {
             //Debugging method to check current inventory
-            foreach (Tuple<string, int> tuple in InvData)
+            foreach (Tuple<string, int,string,bool> tuple in InvData)
             {
                 Debug.WriteLine("Name:"+tuple.Item1);
                 Debug.WriteLine("Amount:" + tuple.Item2);
+                Debug.WriteLine("Type:" + tuple.Item3);
+                Debug.WriteLine("Equipabble:" + tuple.Item4);
             }
         }
     }

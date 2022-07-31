@@ -40,6 +40,25 @@ namespace Grid_based_map
         MapData Map = new MapData();
         Inventory Inv = new Inventory();
         Brush Grass = Brushes.Green;
+
+        private void Key_btn_Click(object sender, EventArgs e)
+        {
+            Inv.Categorise("Key");
+            Map_Pnl.Focus();
+        }
+
+        private void Item_btn_Click(object sender, EventArgs e)
+        {
+            Inv.Categorise("Item");
+            Map_Pnl.Focus();
+        }
+
+        private void Gear_btn_Click(object sender, EventArgs e)
+        {
+            Inv.Categorise("Gear");
+            Map_Pnl.Focus();
+        }
+
         Brush Water = Brushes.Blue;
         Font General = new Font(FontFamily.GenericMonospace,16 ,FontStyle.Regular);
         StringFormat Center = new StringFormat();
@@ -48,9 +67,9 @@ namespace Grid_based_map
             InitializeComponent();
             typeof(Panel).InvokeMember("DoubleBuffered", BindingFlags.SetProperty | BindingFlags.Instance | BindingFlags.NonPublic, null, Map_Pnl, new object[] { true });
             Map.LoadMap("TestMap");
-            Inv.AddItem("apple",6);
-            Inv.AddItem("appleX", 3);
-            Inv.DelItem("appleX", 3);
+            Inv.AddItem("apple",6,"Item",false);
+            Inv.AddItem("appleX", 3, "Item", false);
+            Inv.DelItem("appleX", 3,"Item",false);
             Inv.PrintInv();
             DrawGrid();
         }
