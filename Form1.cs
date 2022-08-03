@@ -67,8 +67,8 @@ namespace Grid_based_map
             InitializeComponent();
             typeof(Panel).InvokeMember("DoubleBuffered", BindingFlags.SetProperty | BindingFlags.Instance | BindingFlags.NonPublic, null, Map_Pnl, new object[] { true });
             Map.LoadMap("TestMap");
-            Inv.AddItem("apple",6,"Item",false);
-            Inv.AddItem("appleX", 3, "Item", false);
+            Inv.AddItem("apple",6,"Item",false,"Apple");
+            Inv.AddItem("appleX", 3, "Item", false,"Apple");
             Inv.DelItem("appleX", 3,"Item",false);
             Inv.PrintInv();
             DrawGrid();
@@ -301,25 +301,6 @@ namespace Grid_based_map
         private void button1_Click(object sender, EventArgs e)
         {
             Map_Pnl.Focus();
-        }
-        private void button1_MouseLeave(object sender, EventArgs e)
-        {
-            button1.BackColor = Color.Wheat;
-        }
-
-        private void button1_MouseEnter(object sender, EventArgs e)
-        {
-            button1.BackColor = Color.FloralWhite;
-        }
-
-        private void button2_MouseEnter(object sender, EventArgs e)
-        {
-            button2.BackColor = Color.FloralWhite;
-        }
-
-        private void button2_MouseLeave(object sender, EventArgs e)
-        {
-            button2.BackColor = Color.Wheat;
         }
     }
 }

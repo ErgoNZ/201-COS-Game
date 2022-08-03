@@ -1,15 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 namespace Grid_based_map
 {
     class Inventory
-    {
+    {   // The tuple is set up like this Name, Amount of item, Item type, Equipabble?, Tuple(Hp,Atk,Def,Spd,Crit,Element?)Note:Nested tuple!
+        //                               string,  int,          string,    Bool,             Multiple ints,      String
+        //^^^ this is planned result once everything is up and running
         public List<Tuple<string, int,string,bool>> InvData = new List<Tuple<string, int,string,bool>>();
 
-        public void AddItem(string ItemName, int ItemAmount, string ItemType, bool Equipabble)
+        public void AddItem(string ItemName, int ItemAmount, string ItemType, bool Equipabble, string FileName)
         {
-            int Index = 0, InvCount= InvData.Count;
+            //string ItemType , Equipabble, ;
+            using (StreamReader MapReader = new StreamReader("../../../Items/" + FileName + ".txt"))
+            {
+                string line;
+                int LineNum;
+                while ((line = MapReader.ReadLine()) != null)
+                {
+
+                }
+            }
+                int Index = 0, InvCount= InvData.Count;
             //Checking if the player doesn't have any items in their inventory.
             if (InvData.Count==0)
             {

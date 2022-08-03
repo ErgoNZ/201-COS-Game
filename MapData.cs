@@ -21,7 +21,7 @@ namespace Grid_based_map
                 int h = 0, w = 0;
                 int LineNum = 0;
                 // Read and display lines from the file until the end of the file is reached.
-                using (StreamReader MapReader = new StreamReader("../../../"+ ReqMap + ".txt"))
+                using (StreamReader MapReader = new StreamReader("../../../Maps/"+ ReqMap + ".txt"))
                     {
                        string line;
                     while ((line = MapReader.ReadLine()) != null)
