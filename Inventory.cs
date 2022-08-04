@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Drawing;
 namespace Grid_based_map
 {
     class Inventory
@@ -9,6 +10,8 @@ namespace Grid_based_map
         //                               string,  int,          string,    Bool,             Multiple ints,      String
         //^^^ this is planned result once everything is up and running
         public List<Tuple<string, int,string,bool>> InvData = new List<Tuple<string, int,string,bool>>();
+        public List<Tuple<string, int, string, bool>> CategoryData = new List<Tuple<string, int, string, bool>>();
+        public int CatergisedAmount;
 
         public void AddItem(string ItemName, int ItemAmount, string ItemType, bool Equipabble, string FileName)
         {
@@ -17,10 +20,10 @@ namespace Grid_based_map
             {
                 string line;
                 int LineNum;
-                while ((line = MapReader.ReadLine()) != null)
-                {
-
-                }
+               // while ((line = MapReader.ReadLine()) != null)
+               // {
+               //
+               // }
             }
                 int Index = 0, InvCount= InvData.Count;
             //Checking if the player doesn't have any items in their inventory.
@@ -92,7 +95,18 @@ namespace Grid_based_map
 
         public void Categorise(string Category)
         {
-
+            CategoryData.Clear();
+            CatergisedAmount = 0;
+            if(Category == "Gear")
+            {
+                foreach (Tuple<string, int, string, bool> tuple in InvData)
+                {
+                    if(tuple.Item3 == "Weapon" || tuple.Item3 == "Helmet" || tuple.Item3 == "Chestplate" || tuple.Item3 == "leggings"|| tuple.Item3 == "Boots")
+                    {
+                        CategoryData.Add(new Tuple<string, int, string, bool>(tuple.Item1,tuple.Item2,tuple.Item3,tuple.Item4));
+                    }
+                }
+            }
         }
         public void Sort(string SortBy)
         {

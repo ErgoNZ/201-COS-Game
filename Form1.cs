@@ -34,29 +34,51 @@ namespace Grid_based_map
                                                                ;
         int TileID = 0;
         public int tileX = 2, tileY = 2;
-        bool CharOnScrn, cameraControl,InMenu;      
+        bool CharOnScrn, cameraControl,InMenu;
+        List<Tuple<Rectangle,Rectangle,string>> Items = new List<Tuple<Rectangle,Rectangle,string>>();
 
         Player Character = new Player();
         MapData Map = new MapData();
         Inventory Inv = new Inventory();
         Brush Grass = Brushes.Green;
 
+        private void Item_Pnl_Paint(object sender, PaintEventArgs e)
+        {
+            g = e.Graphics;
+            int count=0;
+            foreach(Tuple<string, int, string, bool> tuple in Inv.CategoryData)
+            {
+                Items.Add(new Tuple<Rectangle,Rectangle,string>(new Rectangle (0,30*count,30,30), new Rectangle(30, 30 * count, 111, 30), tuple.Item1));
+                count++;
+            }
+            foreach(Tuple<Rectangle,Rectangle,string> tuple in Items)
+            {
+                g.DrawRectangle(Pens.Black, tuple.Item1);
+                g.DrawRectangle(Pens.Black, tuple.Item2);
+                g.DrawString(tuple.Item3, General, Brushes.Black, tuple.Item2, Center);
+              // Finish this! g.DrawImage(tuple.Item3 + ".png", tuple.Item1.X,tuple.Item1.Y);
+            }
+        }
+
         private void Key_btn_Click(object sender, EventArgs e)
         {
             Inv.Categorise("Key");
             Map_Pnl.Focus();
+            Item_Pnl.Invalidate();
         }
 
         private void Item_btn_Click(object sender, EventArgs e)
         {
             Inv.Categorise("Item");
             Map_Pnl.Focus();
+            Item_Pnl.Invalidate();
         }
 
         private void Gear_btn_Click(object sender, EventArgs e)
         {
             Inv.Categorise("Gear");
             Map_Pnl.Focus();
+            Item_Pnl.Invalidate();
         }
 
         Brush Water = Brushes.Blue;
