@@ -20,7 +20,6 @@ namespace Grid_based_map
         Rectangle PlayerName = new Rectangle(25, 0, 250, 50),
                   PlayerLvl = new Rectangle(25, 40, 100, 50),
                   FilePlayTime = new Rectangle(150, 40, 150, 50),
-                  vert = new Rectangle(150, 0, 1, 600),
                   Sec1 = new Rectangle(0, 0, 300, 100),
                   Sec2 = new Rectangle(0,100,300,125),
                   PlayerHp = new Rectangle(25,95,250,50),
@@ -33,20 +32,17 @@ namespace Grid_based_map
                   Sec4 = new Rectangle(0,500,300,100)
 
                                                                ;
-        int TileID = 0;
+        int TileID = 0, Selected_Item;
         public int tileX = 2, tileY = 2;
         bool CharOnScrn, cameraControl,InMenu;
         string SelectedCat, OldCat;
         Image Error_Image = Image.FromFile("../../../Items/Images/Error.png");
-        List<Tuple<Rectangle,Rectangle,string>> Items = new List<Tuple<Rectangle,Rectangle,string>>();
+        List<Tuple<Rectangle,Rectangle,string,Rectangle,int>> Items = new List<Tuple<Rectangle,Rectangle,string,Rectangle,int>>();
 
         Player Character = new Player();
         MapData Map = new MapData();
         Inventory Inv = new Inventory();
         Brush Grass = Brushes.Green;
-
-
-
         Brush Water = Brushes.Blue;
         Font General = new Font(FontFamily.GenericMonospace,16 ,FontStyle.Regular);
         StringFormat Center = new StringFormat();
@@ -284,7 +280,6 @@ namespace Grid_based_map
             g.DrawString("Def:" + Character.Def, General, Brushes.Black, PlayerDef, Center);
             g.DrawString("Spd:" + Character.Spd, General, Brushes.Black, PlayerSpd, Center);
             g.DrawString("Crit:" + Character.Crit + "%", General, Brushes.Black, PlayerCrit, Center);
-            g.FillRectangle(Grass, vert);
 
         }
 
@@ -304,73 +299,106 @@ namespace Grid_based_map
         //
         private void Item_Pnl_Paint(object sender, PaintEventArgs e)
         {
+            //usual shorting of e.grahpics down to g
             g = e.Graphics;
-            //rectangles keep positions because of this translation listed below.
+            //Displace all objects drawn on panel by the scroll amount
             g.TranslateTransform(Item_Pnl.AutoScrollPosition.X, Item_Pnl.AutoScrollPosition.Y);
-            //This code runs through all items in the selected category and draws the images associated with them + their names.
-            foreach (Tuple<Rectangle, Rectangle, string> tuple in Items)
+            //Check every tuple in the Items list
+            int count = 0;
+            foreach (Tuple<Rectangle, Rectangle, string,Rectangle,int> tuple in Items)
             {
-                g.DrawRectangle(Pens.Black, tuple.Item1);
-                g.DrawRectangle(Pens.Black, tuple.Item2);
+
+                //Draws the UI for each item
+                if (count == Selected_Item)
+                {
+                    g.DrawRectangle(Pens.Blue, tuple.Item1);
+                    g.DrawRectangle(Pens.Blue, tuple.Item2);
+                    g.DrawRectangle(Pens.Blue, tuple.Item4);
+                }
+                else
+                {
+                    g.DrawRectangle(Pens.Black, tuple.Item1);
+                    g.DrawRectangle(Pens.Black, tuple.Item2);
+                    g.DrawRectangle(Pens.Black, tuple.Item4);
+                }
                 g.DrawString(tuple.Item3, General, Brushes.Black, tuple.Item2, Center);
+                g.DrawString(tuple.Item5+"", General, Brushes.Black, tuple.Item4, Center);
                 Image Item_Image;
+                //Does this file path exist?
                 bool FileExists = File.Exists("../../../Items/Images/" + tuple.Item3 + ".png");
                 if(FileExists == true)
                 {
+                    //Draws image as intended with no errors
                     Item_Image = Image.FromFile("../../../Items/Images/" + tuple.Item3 + ".png");
                     g.DrawImage(Item_Image, tuple.Item1.X + 1, tuple.Item1.Y + 1);
                 }
                 else
                 {
+                    //Draws error image when the items image cannot be found
                     g.DrawImage(Error_Image, tuple.Item1.X + 1, tuple.Item1.Y + 1);
-                }               
+                }
+                count++;
             }
+            //Replace old category state with the new one for future referencing
             OldCat = SelectedCat;
         }
        private void InventoryUISetUp()
         {
             int count = 0;
+            Inv.Categorise(SelectedCat);
+            Map_Pnl.Focus();
             if (SelectedCat != OldCat)
             {
                 Items.Clear();
             }
             foreach (Tuple<string, int, string, bool> tuple in Inv.CategoryData)
             {
-                Items.Add(new Tuple<Rectangle, Rectangle, string>(new Rectangle(0, 30 * count, 31, 31), new Rectangle(30, 30 * count, 269, 31), tuple.Item1));
+                //Sets up every rectangle and attaches a name for the item id in the list being drawn
+                Items.Add(new Tuple<Rectangle, Rectangle, string,Rectangle,int>(new Rectangle(0, 30 * count, 31, 31), new Rectangle(60, 30 * count, 239, 31), tuple.Item1, new Rectangle(29,30*count,31,31), tuple.Item2));
                 count++;
             }
-            Item_Pnl.AutoScrollMinSize = new System.Drawing.Size(0, 30 * count);
+            //Scales the scroll bar with the amount of items present in selected category
+            Item_Pnl.AutoScrollMinSize = new Size(0, 30 * count);
+            //if the item count doesn't make the list go past 120px then the bar is hidden
             if(30*count <= 120)
             {
                 Item_Pnl.VerticalScroll.Visible= false;
             }
+            Item_Pnl.Invalidate();
         }
 
         private void Key_btn_Click(object sender, EventArgs e)
         {
             SelectedCat = "Key";
-            Inv.Categorise(SelectedCat);
             InventoryUISetUp();
-            Map_Pnl.Focus();
-            Item_Pnl.Invalidate();
         }
 
         private void Item_btn_Click(object sender, EventArgs e)
         {
             SelectedCat = "Item";
-            Inv.Categorise(SelectedCat);
-            InventoryUISetUp();
-            Map_Pnl.Focus();
-            Item_Pnl.Invalidate();           
+            InventoryUISetUp();          
         }
 
         private void Gear_btn_Click(object sender, EventArgs e)
         {
             SelectedCat = "Gear";
-            Inv.Categorise(SelectedCat);
-            InventoryUISetUp();
-            Map_Pnl.Focus();
-            Item_Pnl.Invalidate();          
+            InventoryUISetUp();       
+        }
+        private void Item_Pnl_MouseDown(object sender, MouseEventArgs e)
+        {
+            int count=0;
+            Point Mouse = new Point(e.X, e.Y - Item_Pnl.AutoScrollPosition.Y);
+            foreach (Tuple<Rectangle, Rectangle, string, Rectangle, int> tuple in Items)
+            {
+                if (tuple.Item2.Contains(Mouse))
+                {
+                    Selected_Item = count;
+                    Debug.WriteLine(tuple.Item3+ " "+ count);
+                    Mouse = new Point();
+                    Item_Pnl.Invalidate();
+                }
+                count++;
+            }
         }
     }
 

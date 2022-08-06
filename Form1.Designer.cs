@@ -84,6 +84,7 @@ namespace Grid_based_map
             this.Item_Pnl.TabIndex = 1;
             this.Item_Pnl.TabStop = true;
             this.Item_Pnl.Paint += new System.Windows.Forms.PaintEventHandler(this.Item_Pnl_Paint);
+            this.Item_Pnl.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Item_Pnl_MouseDown);
             // 
             // Gear_btn
             // 
