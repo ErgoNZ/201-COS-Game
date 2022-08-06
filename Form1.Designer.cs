@@ -76,6 +76,7 @@ namespace Grid_based_map
             // Item_Pnl
             // 
             this.Item_Pnl.AutoScroll = true;
+            this.Item_Pnl.AutoScrollMinSize = new System.Drawing.Size(0, 300);
             this.Item_Pnl.BackColor = System.Drawing.Color.RosyBrown;
             this.Item_Pnl.Location = new System.Drawing.Point(0, 260);
             this.Item_Pnl.Name = "Item_Pnl";

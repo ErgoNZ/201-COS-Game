@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -13,7 +14,7 @@ using System.Reflection;
 namespace Grid_based_map
 {
     public partial class Form1 : Form
-    { //Seting up all required variables for the game to function
+    { //Seting up all required variables/objects for the game to function
         Graphics g;
         Rectangle[] Tile = new Rectangle[25];
         Rectangle PlayerName = new Rectangle(25, 0, 250, 50),
@@ -35,6 +36,8 @@ namespace Grid_based_map
         int TileID = 0;
         public int tileX = 2, tileY = 2;
         bool CharOnScrn, cameraControl,InMenu;
+        string SelectedCat, OldCat;
+        Image Error_Image = Image.FromFile("../../../Items/Images/Error.png");
         List<Tuple<Rectangle,Rectangle,string>> Items = new List<Tuple<Rectangle,Rectangle,string>>();
 
         Player Character = new Player();
@@ -42,44 +45,7 @@ namespace Grid_based_map
         Inventory Inv = new Inventory();
         Brush Grass = Brushes.Green;
 
-        private void Item_Pnl_Paint(object sender, PaintEventArgs e)
-        {
-            g = e.Graphics;
-            int count=0;
-            foreach(Tuple<string, int, string, bool> tuple in Inv.CategoryData)
-            {
-                Items.Add(new Tuple<Rectangle,Rectangle,string>(new Rectangle (0,30*count,30,30), new Rectangle(30, 30 * count, 111, 30), tuple.Item1));
-                count++;
-            }
-            foreach(Tuple<Rectangle,Rectangle,string> tuple in Items)
-            {
-                g.DrawRectangle(Pens.Black, tuple.Item1);
-                g.DrawRectangle(Pens.Black, tuple.Item2);
-                g.DrawString(tuple.Item3, General, Brushes.Black, tuple.Item2, Center);
-              // Finish this! g.DrawImage(tuple.Item3 + ".png", tuple.Item1.X,tuple.Item1.Y);
-            }
-        }
 
-        private void Key_btn_Click(object sender, EventArgs e)
-        {
-            Inv.Categorise("Key");
-            Map_Pnl.Focus();
-            Item_Pnl.Invalidate();
-        }
-
-        private void Item_btn_Click(object sender, EventArgs e)
-        {
-            Inv.Categorise("Item");
-            Map_Pnl.Focus();
-            Item_Pnl.Invalidate();
-        }
-
-        private void Gear_btn_Click(object sender, EventArgs e)
-        {
-            Inv.Categorise("Gear");
-            Map_Pnl.Focus();
-            Item_Pnl.Invalidate();
-        }
 
         Brush Water = Brushes.Blue;
         Font General = new Font(FontFamily.GenericMonospace,16 ,FontStyle.Regular);
@@ -89,11 +55,26 @@ namespace Grid_based_map
             InitializeComponent();
             typeof(Panel).InvokeMember("DoubleBuffered", BindingFlags.SetProperty | BindingFlags.Instance | BindingFlags.NonPublic, null, Map_Pnl, new object[] { true });
             Map.LoadMap("TestMap");
-            Inv.AddItem("apple",6,"Item",false,"Apple");
-            Inv.AddItem("appleX", 3, "Item", false,"Apple");
-            Inv.DelItem("appleX", 3,"Item",false);
+            Inv.AddItem("apple", 6, "Item", false, "Apple");
+            Inv.AddItem("appleX", 3, "Item", false, "Apple");
+            Inv.AddItem("appleY", 3, "Item", false, "Apple");
+            Inv.AddItem("appleZ", 3, "Item", false, "Apple");
+            Inv.AddItem("appleA", 3, "Item", false, "Apple");
+            Inv.AddItem("appleB", 3, "Item", false, "Apple");
+            Inv.AddItem("appleC", 3, "Item", false, "Apple");
+            Inv.AddItem("appleD", 3, "Item", false, "Apple");
+            Inv.AddItem("appleE", 3, "Item", false, "Apple");
+            Inv.AddItem("appleF", 3, "Item", false, "Apple");
+            Inv.AddItem("appleZXY", 3, "Helmet", false, "Apple");
             Inv.PrintInv();
             DrawGrid();
+            foreach (Control ctrl in Item_Pnl.Controls)
+            {
+                if (ctrl.GetType() == typeof(VScrollBar))
+                {
+                    ctrl.Width = 1;
+                }
+            }
         }
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
@@ -184,18 +165,6 @@ namespace Grid_based_map
                     CameraSnap();
                 }
 
-                if (e.KeyData == Keys.B)
-                {
-                    Inv.Sort("Alphebetical");
-                    Inv.PrintInv();
-                    Character.Name = "B";
-                }
-                if (e.KeyData == Keys.N)
-                {
-                    Inv.Sort("Amount");
-                    Inv.PrintInv();
-                    Character.Name = "N";
-                }
                 //Call the DrawGrid method to refresh the players current view and update any tiles as needed
                 Info_Pnl.Invalidate();
                 DrawGrid();
@@ -294,6 +263,9 @@ namespace Grid_based_map
                }
            }
         }
+        //
+        //Info pannel(s) UI begins here!
+        //
         private void Info_Pnl_Paint(object sender, PaintEventArgs e)
         {
             Center.Alignment = StringAlignment.Center;
@@ -315,6 +287,8 @@ namespace Grid_based_map
             g.FillRectangle(Grass, vert);
 
         }
+
+        //Save and Quit buttons (Not functional yet)
         private void button2_Click(object sender, EventArgs e)
         {
             Map_Pnl.Focus();
@@ -324,5 +298,80 @@ namespace Grid_based_map
         {
             Map_Pnl.Focus();
         }
+
+        //
+        // Inventory UI Begins Here!
+        //
+        private void Item_Pnl_Paint(object sender, PaintEventArgs e)
+        {
+            g = e.Graphics;
+            //rectangles keep positions because of this translation listed below.
+            g.TranslateTransform(Item_Pnl.AutoScrollPosition.X, Item_Pnl.AutoScrollPosition.Y);
+            //This code runs through all items in the selected category and draws the images associated with them + their names.
+            foreach (Tuple<Rectangle, Rectangle, string> tuple in Items)
+            {
+                g.DrawRectangle(Pens.Black, tuple.Item1);
+                g.DrawRectangle(Pens.Black, tuple.Item2);
+                g.DrawString(tuple.Item3, General, Brushes.Black, tuple.Item2, Center);
+                Image Item_Image;
+                bool FileExists = File.Exists("../../../Items/Images/" + tuple.Item3 + ".png");
+                if(FileExists == true)
+                {
+                    Item_Image = Image.FromFile("../../../Items/Images/" + tuple.Item3 + ".png");
+                    g.DrawImage(Item_Image, tuple.Item1.X + 1, tuple.Item1.Y + 1);
+                }
+                else
+                {
+                    g.DrawImage(Error_Image, tuple.Item1.X + 1, tuple.Item1.Y + 1);
+                }               
+            }
+            OldCat = SelectedCat;
+        }
+       private void InventoryUISetUp()
+        {
+            int count = 0;
+            if (SelectedCat != OldCat)
+            {
+                Items.Clear();
+            }
+            foreach (Tuple<string, int, string, bool> tuple in Inv.CategoryData)
+            {
+                Items.Add(new Tuple<Rectangle, Rectangle, string>(new Rectangle(0, 30 * count, 31, 31), new Rectangle(30, 30 * count, 269, 31), tuple.Item1));
+                count++;
+            }
+            Item_Pnl.AutoScrollMinSize = new System.Drawing.Size(0, 30 * count);
+            if(30*count <= 120)
+            {
+                Item_Pnl.VerticalScroll.Visible= false;
+            }
+        }
+
+        private void Key_btn_Click(object sender, EventArgs e)
+        {
+            SelectedCat = "Key";
+            Inv.Categorise(SelectedCat);
+            InventoryUISetUp();
+            Map_Pnl.Focus();
+            Item_Pnl.Invalidate();
+        }
+
+        private void Item_btn_Click(object sender, EventArgs e)
+        {
+            SelectedCat = "Item";
+            Inv.Categorise(SelectedCat);
+            InventoryUISetUp();
+            Map_Pnl.Focus();
+            Item_Pnl.Invalidate();           
+        }
+
+        private void Gear_btn_Click(object sender, EventArgs e)
+        {
+            SelectedCat = "Gear";
+            Inv.Categorise(SelectedCat);
+            InventoryUISetUp();
+            Map_Pnl.Focus();
+            Item_Pnl.Invalidate();          
+        }
     }
+
 }
