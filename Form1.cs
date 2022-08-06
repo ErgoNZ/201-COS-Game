@@ -32,7 +32,7 @@ namespace Grid_based_map
                   Sec4 = new Rectangle(0,500,300,100)
 
                                                                ;
-        int TileID = 0, Selected_Item;
+        int TileID = 0, Selected_Item = -1;
         public int tileX = 2, tileY = 2;
         bool CharOnScrn, cameraControl,InMenu;
         string SelectedCat, OldCat;
@@ -345,6 +345,7 @@ namespace Grid_based_map
        private void InventoryUISetUp()
         {
             int count = 0;
+            Selected_Item = -1;
             Inv.Categorise(SelectedCat);
             Map_Pnl.Focus();
             if (SelectedCat != OldCat)
