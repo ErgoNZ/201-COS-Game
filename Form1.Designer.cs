@@ -72,6 +72,7 @@ namespace Grid_based_map
             this.Desc_Pnl.Name = "Desc_Pnl";
             this.Desc_Pnl.Size = new System.Drawing.Size(300, 96);
             this.Desc_Pnl.TabIndex = 2;
+            this.Desc_Pnl.Paint += new System.Windows.Forms.PaintEventHandler(this.Desc_Pnl_Paint);
             // 
             // Item_Pnl
             // 
@@ -131,6 +132,7 @@ namespace Grid_based_map
             // button2
             // 
             this.button2.BackColor = System.Drawing.Color.Wheat;
+            this.button2.FlatAppearance.BorderSize = 0;
             this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button2.Location = new System.Drawing.Point(160, 510);
             this.button2.Name = "button2";
@@ -144,6 +146,7 @@ namespace Grid_based_map
             // button1
             // 
             this.button1.BackColor = System.Drawing.Color.Wheat;
+            this.button1.FlatAppearance.BorderSize = 0;
             this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button1.Location = new System.Drawing.Point(10, 510);
             this.button1.Name = "button1";

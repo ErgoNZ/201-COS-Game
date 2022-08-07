@@ -10,8 +10,8 @@ namespace Grid_based_map
     {   // The tuple is set up like this Name, Amount of item, Item type, Equipabble?, Tuple(Hp,Atk,Def,Spd,Crit,Element?)Note:Nested tuple!
         //                               string,  int,          string,    Bool,             Multiple ints,      String
         //^^^ this is planned result once everything is up and running
-        public List<Tuple<string, int,string,bool>> InvData = new List<Tuple<string, int,string,bool>>();
-        public List<Tuple<string, int, string, bool>> CategoryData = new List<Tuple<string, int, string, bool>>();
+        public List<Tuple<string, int,string,bool,string>> InvData = new List<Tuple<string, int,string,bool,string>>();
+        public List<Tuple<string, int, string, bool,string>> CategoryData = new List<Tuple<string, int, string, bool,string>>();
         public int CatergisedAmount;
 
         public void AddItem(string ItemName, int ItemAmount, string ItemType, bool Equipabble, string FileName)
@@ -32,20 +32,20 @@ namespace Grid_based_map
             {
                 if (ItemAmount > 0)
                 {
-                    InvData.Add(new Tuple<string, int,string,bool>(ItemName, ItemAmount,ItemType,Equipabble));
+                    InvData.Add(new Tuple<string, int,string,bool,string>(ItemName, ItemAmount,ItemType,Equipabble,FileName));
                 }
             }
             else
             {
                 //This checks all current items in the inventory and attempts to find if the item being added already exists
                 //and instead increases it by the amount being added.
-                foreach (Tuple<string, int,string,bool> tuple in InvData)
+                foreach (Tuple<string, int,string,bool,string> tuple in InvData)
                 {
                     if (tuple.Item1 == ItemName)
                     {
                         if (ItemAmount > 0)
                         {
-                            InvData.Insert(Index, new Tuple<string, int,string,bool>(ItemName, ItemAmount + tuple.Item2,ItemType,Equipabble));
+                            InvData.Insert(Index, new Tuple<string, int,string,bool,string>(ItemName, ItemAmount + tuple.Item2,ItemType,Equipabble,FileName));
                             //This just removes the leftover starting item entry from the inventory so only the new value shows.
                             InvData.RemoveAt(Index + 1);
                             break;
@@ -56,7 +56,7 @@ namespace Grid_based_map
                     {
                         if (ItemAmount > 0)
                         {
-                            InvData.Add(new Tuple<string, int,string,bool>(ItemName, ItemAmount,ItemType,Equipabble));
+                            InvData.Add(new Tuple<string, int,string,bool,string>(ItemName, ItemAmount,ItemType,Equipabble,FileName));
                         }
                         break;
                     }
@@ -64,10 +64,10 @@ namespace Grid_based_map
                 }
             }        
         }
-        public void DelItem(string ItemName, int ItemAmount, string ItemType, bool Equipabble)
+        public void DelItem(string ItemName, int ItemAmount, string ItemType, bool Equipabble, string FileName)
         {
             int Index = 0;
-            foreach (Tuple<string, int,string,bool> tuple in InvData)
+            foreach (Tuple<string, int,string,bool,string> tuple in InvData)
             {
                 if (tuple.Item1 == ItemName)
                 {                    
@@ -80,7 +80,7 @@ namespace Grid_based_map
                         }
                         else
                         {
-                            InvData.Insert(Index, new Tuple<string, int,string,bool>(ItemName, tuple.Item2 - ItemAmount,ItemType,Equipabble));
+                            InvData.Insert(Index, new Tuple<string, int,string,bool,string>(ItemName, tuple.Item2 - ItemAmount,ItemType,Equipabble,FileName));
                             //This just removes the leftover starting item entry from the inventory so only the new value shows.
                             InvData.RemoveAt(Index + 1);
                             break;
@@ -100,21 +100,21 @@ namespace Grid_based_map
             CatergisedAmount = 0;
             if(Category == "Gear")
             {
-                foreach (Tuple<string, int, string, bool> tuple in InvData)
+                foreach (Tuple<string, int, string, bool,string> tuple in InvData)
                 {
                     if(tuple.Item3 == "Weapon" || tuple.Item3 == "Helmet" || tuple.Item3 == "Chestplate" || tuple.Item3 == "leggings"|| tuple.Item3 == "Boots")
                     {
-                        CategoryData.Add(new Tuple<string, int, string, bool>(tuple.Item1,tuple.Item2,tuple.Item3,tuple.Item4));
+                        CategoryData.Add(new Tuple<string, int, string, bool,string>(tuple.Item1,tuple.Item2,tuple.Item3,tuple.Item4,tuple.Item5));
                     }
                 }
             }
             if(Category == "Item")
             {
-                foreach (Tuple<string, int, string, bool> tuple in InvData)
+                foreach (Tuple<string, int, string, bool,string> tuple in InvData)
                 {
                     if (tuple.Item3 == "Item")
                     {
-                        CategoryData.Add(new Tuple<string, int, string, bool>(tuple.Item1, tuple.Item2, tuple.Item3, tuple.Item4));
+                        CategoryData.Add(new Tuple<string, int, string, bool,string>(tuple.Item1, tuple.Item2, tuple.Item3, tuple.Item4,tuple.Item5));
                     }
                 }
             }
@@ -135,7 +135,7 @@ namespace Grid_based_map
         public void PrintInv()
         {
             //Debugging method to check current inventory
-            foreach (Tuple<string, int,string,bool> tuple in InvData)
+            foreach (Tuple<string, int,string,bool,string> tuple in InvData)
             {
                 Debug.WriteLine("Name:"+tuple.Item1);
                 Debug.WriteLine("Amount:" + tuple.Item2);

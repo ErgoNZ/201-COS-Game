@@ -29,7 +29,8 @@ namespace Grid_based_map
                   PlayerCrit = new Rectangle(175, 175, 100, 50),
                   Sec3 = new Rectangle(0,225,300,275),
 
-                  Sec4 = new Rectangle(0,500,300,100)
+                  Sec4 = new Rectangle(0,500,300,100),
+                  ItemImage = new Rectangle(0,500,100,100)
 
                                                                ;
         int TileID = 0, Selected_Item = -1;
@@ -37,7 +38,8 @@ namespace Grid_based_map
         bool CharOnScrn, cameraControl,InMenu;
         string SelectedCat, OldCat;
         Image Error_Image = Image.FromFile("../../../Items/Images/Error.png");
-        List<Tuple<Rectangle,Rectangle,string,Rectangle,int>> Items = new List<Tuple<Rectangle,Rectangle,string,Rectangle,int>>();
+        Image Item_Image;
+        List<Tuple<Rectangle,Rectangle,string,Rectangle,int,string>> Items = new List<Tuple<Rectangle,Rectangle,string,Rectangle,int,string>>();
 
         Player Character = new Player();
         MapData Map = new MapData();
@@ -305,7 +307,7 @@ namespace Grid_based_map
             g.TranslateTransform(Item_Pnl.AutoScrollPosition.X, Item_Pnl.AutoScrollPosition.Y);
             //Check every tuple in the Items list
             int count = 0;
-            foreach (Tuple<Rectangle, Rectangle, string,Rectangle,int> tuple in Items)
+            foreach (Tuple<Rectangle, Rectangle, string,Rectangle,int,string> tuple in Items)
             {
 
                 //Draws the UI for each item
@@ -323,7 +325,6 @@ namespace Grid_based_map
                 }
                 g.DrawString(tuple.Item3, General, Brushes.Black, tuple.Item2, Center);
                 g.DrawString(tuple.Item5+"", General, Brushes.Black, tuple.Item4, Center);
-                Image Item_Image;
                 //Does this file path exist?
                 bool FileExists = File.Exists("../../../Items/Images/" + tuple.Item3 + ".png");
                 if(FileExists == true)
@@ -342,7 +343,20 @@ namespace Grid_based_map
             //Replace old category state with the new one for future referencing
             OldCat = SelectedCat;
         }
-       private void InventoryUISetUp()
+        private void Desc_Pnl_Paint(object sender, PaintEventArgs e)
+        {
+            g = e.Graphics;
+            int count = 0;
+            foreach(Tuple<Rectangle, Rectangle, string, Rectangle, int, string> tuple in Items)
+            {
+                if (count == Selected_Item && ItemImage !=null)
+                {
+                    g.DrawImage(Item_Image, ItemImage);
+                }
+                count++;
+            }
+        }
+        private void InventoryUISetUp()
         {
             int count = 0;
             Selected_Item = -1;
@@ -352,10 +366,10 @@ namespace Grid_based_map
             {
                 Items.Clear();
             }
-            foreach (Tuple<string, int, string, bool> tuple in Inv.CategoryData)
+            foreach (Tuple<string, int, string, bool,string> tuple in Inv.CategoryData)
             {
                 //Sets up every rectangle and attaches a name for the item id in the list being drawn
-                Items.Add(new Tuple<Rectangle, Rectangle, string,Rectangle,int>(new Rectangle(0, 30 * count, 31, 31), new Rectangle(60, 30 * count, 239, 31), tuple.Item1, new Rectangle(29,30*count,31,31), tuple.Item2));
+                Items.Add(new Tuple<Rectangle, Rectangle, string,Rectangle,int,string>(new Rectangle(0, 30 * count, 31, 31), new Rectangle(60, 30 * count, 239, 31), tuple.Item1, new Rectangle(29,30*count,31,31), tuple.Item2,tuple.Item5));
                 count++;
             }
             //Scales the scroll bar with the amount of items present in selected category
@@ -389,12 +403,11 @@ namespace Grid_based_map
         {
             int count=0;
             Point Mouse = new Point(e.X, e.Y - Item_Pnl.AutoScrollPosition.Y);
-            foreach (Tuple<Rectangle, Rectangle, string, Rectangle, int> tuple in Items)
+            foreach (Tuple<Rectangle, Rectangle, string, Rectangle, int,string> tuple in Items)
             {
                 if (tuple.Item2.Contains(Mouse))
                 {
                     Selected_Item = count;
-                    Debug.WriteLine(tuple.Item3+ " "+ count);
                     Mouse = new Point();
                     Item_Pnl.Invalidate();
                 }
