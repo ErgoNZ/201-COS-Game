@@ -12,7 +12,7 @@ namespace Grid_based_map
        //(x,0,0) is a visual indicator, (0,x,0) Repersents the player pos, (0,0,x) is the type of movemnt restriction the tile has.
        public int [,,] Tiles = new int[10, 10, 3];
        public int[,,] PlayerTiles = new int[10, 10, 2];
-       public int[,,] ViewRange = new int[5, 5, 2];
+       public int[,,] ViewRange = new int[7, 7, 2];
        public int YLimit = 0, XLimit=0;
         public void LoadMap(string ReqMap)
         {

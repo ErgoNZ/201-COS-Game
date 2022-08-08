@@ -31,70 +31,101 @@ namespace Grid_based_map
         {
             this.Map_Pnl = new System.Windows.Forms.Panel();
             this.Info_Pnl = new System.Windows.Forms.Panel();
-            this.Desc_Pnl = new System.Windows.Forms.Panel();
             this.Item_Pnl = new System.Windows.Forms.Panel();
+            this.Desc_Pnl = new System.Windows.Forms.Panel();
+            this.Drop_Btn = new System.Windows.Forms.Button();
+            this.Use_Btn = new System.Windows.Forms.Button();
             this.Gear_btn = new System.Windows.Forms.Button();
             this.Key_btn = new System.Windows.Forms.Button();
             this.Item_btn = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
+            this.Equiped_Btn = new System.Windows.Forms.Button();
             this.Info_Pnl.SuspendLayout();
+            this.Desc_Pnl.SuspendLayout();
             this.SuspendLayout();
             // 
             // Map_Pnl
             // 
+            this.Map_Pnl.BackColor = System.Drawing.SystemColors.Control;
             this.Map_Pnl.Location = new System.Drawing.Point(0, 0);
             this.Map_Pnl.Name = "Map_Pnl";
-            this.Map_Pnl.Size = new System.Drawing.Size(600, 600);
+            this.Map_Pnl.Size = new System.Drawing.Size(841, 841);
             this.Map_Pnl.TabIndex = 0;
             this.Map_Pnl.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
             // 
             // Info_Pnl
             // 
             this.Info_Pnl.BackColor = System.Drawing.Color.Transparent;
-            this.Info_Pnl.Controls.Add(this.Desc_Pnl);
             this.Info_Pnl.Controls.Add(this.Item_Pnl);
+            this.Info_Pnl.Controls.Add(this.Desc_Pnl);
             this.Info_Pnl.Controls.Add(this.Gear_btn);
             this.Info_Pnl.Controls.Add(this.Key_btn);
             this.Info_Pnl.Controls.Add(this.Item_btn);
             this.Info_Pnl.Controls.Add(this.button2);
             this.Info_Pnl.Controls.Add(this.button1);
-            this.Info_Pnl.Location = new System.Drawing.Point(600, 0);
+            this.Info_Pnl.Controls.Add(this.Equiped_Btn);
+            this.Info_Pnl.Location = new System.Drawing.Point(840, 0);
             this.Info_Pnl.Name = "Info_Pnl";
-            this.Info_Pnl.Size = new System.Drawing.Size(300, 600);
+            this.Info_Pnl.Size = new System.Drawing.Size(432, 841);
             this.Info_Pnl.TabIndex = 1;
             this.Info_Pnl.Paint += new System.Windows.Forms.PaintEventHandler(this.Info_Pnl_Paint);
-            // 
-            // Desc_Pnl
-            // 
-            this.Desc_Pnl.BackColor = System.Drawing.Color.Gray;
-            this.Desc_Pnl.Location = new System.Drawing.Point(0, 404);
-            this.Desc_Pnl.Name = "Desc_Pnl";
-            this.Desc_Pnl.Size = new System.Drawing.Size(300, 96);
-            this.Desc_Pnl.TabIndex = 2;
-            this.Desc_Pnl.Paint += new System.Windows.Forms.PaintEventHandler(this.Desc_Pnl_Paint);
             // 
             // Item_Pnl
             // 
             this.Item_Pnl.AutoScroll = true;
-            this.Item_Pnl.AutoScrollMinSize = new System.Drawing.Size(0, 300);
             this.Item_Pnl.BackColor = System.Drawing.Color.RosyBrown;
-            this.Item_Pnl.Location = new System.Drawing.Point(0, 260);
+            this.Item_Pnl.Location = new System.Drawing.Point(0, 359);
             this.Item_Pnl.Name = "Item_Pnl";
-            this.Item_Pnl.Size = new System.Drawing.Size(300, 144);
+            this.Item_Pnl.Size = new System.Drawing.Size(433, 182);
             this.Item_Pnl.TabIndex = 1;
             this.Item_Pnl.TabStop = true;
             this.Item_Pnl.Paint += new System.Windows.Forms.PaintEventHandler(this.Item_Pnl_Paint);
             this.Item_Pnl.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Item_Pnl_MouseDown);
+            // 
+            // Desc_Pnl
+            // 
+            this.Desc_Pnl.BackColor = System.Drawing.Color.Gray;
+            this.Desc_Pnl.Controls.Add(this.Drop_Btn);
+            this.Desc_Pnl.Controls.Add(this.Use_Btn);
+            this.Desc_Pnl.Location = new System.Drawing.Point(0, 541);
+            this.Desc_Pnl.Name = "Desc_Pnl";
+            this.Desc_Pnl.Size = new System.Drawing.Size(433, 195);
+            this.Desc_Pnl.TabIndex = 2;
+            this.Desc_Pnl.Paint += new System.Windows.Forms.PaintEventHandler(this.Desc_Pnl_Paint);
+            // 
+            // Drop_Btn
+            // 
+            this.Drop_Btn.BackColor = System.Drawing.Color.LightSlateGray;
+            this.Drop_Btn.FlatAppearance.BorderSize = 0;
+            this.Drop_Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Drop_Btn.Location = new System.Drawing.Point(353, 88);
+            this.Drop_Btn.Name = "Drop_Btn";
+            this.Drop_Btn.Size = new System.Drawing.Size(74, 88);
+            this.Drop_Btn.TabIndex = 0;
+            this.Drop_Btn.Text = "Discard";
+            this.Drop_Btn.UseVisualStyleBackColor = false;
+            // 
+            // Use_Btn
+            // 
+            this.Use_Btn.BackColor = System.Drawing.Color.LawnGreen;
+            this.Use_Btn.FlatAppearance.BorderSize = 0;
+            this.Use_Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Use_Btn.Location = new System.Drawing.Point(355, 0);
+            this.Use_Btn.Name = "Use_Btn";
+            this.Use_Btn.Size = new System.Drawing.Size(74, 88);
+            this.Use_Btn.TabIndex = 0;
+            this.Use_Btn.Text = "Use/Equip";
+            this.Use_Btn.UseVisualStyleBackColor = false;
             // 
             // Gear_btn
             // 
             this.Gear_btn.BackColor = System.Drawing.Color.Silver;
             this.Gear_btn.FlatAppearance.BorderSize = 0;
             this.Gear_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Gear_btn.Location = new System.Drawing.Point(227, 225);
+            this.Gear_btn.Location = new System.Drawing.Point(359, 317);
             this.Gear_btn.Name = "Gear_btn";
-            this.Gear_btn.Size = new System.Drawing.Size(73, 36);
+            this.Gear_btn.Size = new System.Drawing.Size(74, 36);
             this.Gear_btn.TabIndex = 0;
             this.Gear_btn.TabStop = false;
             this.Gear_btn.Text = "Gear";
@@ -106,9 +137,9 @@ namespace Grid_based_map
             this.Key_btn.BackColor = System.Drawing.Color.Gold;
             this.Key_btn.FlatAppearance.BorderSize = 0;
             this.Key_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Key_btn.Location = new System.Drawing.Point(0, 225);
+            this.Key_btn.Location = new System.Drawing.Point(112, 317);
             this.Key_btn.Name = "Key_btn";
-            this.Key_btn.Size = new System.Drawing.Size(73, 36);
+            this.Key_btn.Size = new System.Drawing.Size(74, 36);
             this.Key_btn.TabIndex = 0;
             this.Key_btn.TabStop = false;
             this.Key_btn.Text = "Key";
@@ -120,9 +151,9 @@ namespace Grid_based_map
             this.Item_btn.BackColor = System.Drawing.Color.Red;
             this.Item_btn.FlatAppearance.BorderSize = 0;
             this.Item_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Item_btn.Location = new System.Drawing.Point(111, 225);
+            this.Item_btn.Location = new System.Drawing.Point(242, 317);
             this.Item_btn.Name = "Item_btn";
-            this.Item_btn.Size = new System.Drawing.Size(73, 36);
+            this.Item_btn.Size = new System.Drawing.Size(74, 36);
             this.Item_btn.TabIndex = 0;
             this.Item_btn.TabStop = false;
             this.Item_btn.Text = "Item";
@@ -134,9 +165,9 @@ namespace Grid_based_map
             this.button2.BackColor = System.Drawing.Color.Wheat;
             this.button2.FlatAppearance.BorderSize = 0;
             this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button2.Location = new System.Drawing.Point(160, 510);
+            this.button2.Location = new System.Drawing.Point(227, 742);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(130, 80);
+            this.button2.Size = new System.Drawing.Size(195, 90);
             this.button2.TabIndex = 0;
             this.button2.TabStop = false;
             this.button2.Text = "button2";
@@ -148,20 +179,33 @@ namespace Grid_based_map
             this.button1.BackColor = System.Drawing.Color.Wheat;
             this.button1.FlatAppearance.BorderSize = 0;
             this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.Location = new System.Drawing.Point(10, 510);
+            this.button1.Location = new System.Drawing.Point(7, 742);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(130, 80);
+            this.button1.Size = new System.Drawing.Size(195, 90);
             this.button1.TabIndex = 0;
             this.button1.TabStop = false;
             this.button1.Text = "button1";
             this.button1.UseVisualStyleBackColor = false;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
+            // Equiped_Btn
+            // 
+            this.Equiped_Btn.BackColor = System.Drawing.Color.Olive;
+            this.Equiped_Btn.FlatAppearance.BorderSize = 0;
+            this.Equiped_Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Equiped_Btn.Location = new System.Drawing.Point(0, 317);
+            this.Equiped_Btn.Name = "Equiped_Btn";
+            this.Equiped_Btn.Size = new System.Drawing.Size(74, 36);
+            this.Equiped_Btn.TabIndex = 3;
+            this.Equiped_Btn.Text = "Equiped";
+            this.Equiped_Btn.UseVisualStyleBackColor = false;
+            this.Equiped_Btn.Click += new System.EventHandler(this.Equiped_Btn_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(900, 600);
+            this.ClientSize = new System.Drawing.Size(1274, 841);
             this.Controls.Add(this.Map_Pnl);
             this.Controls.Add(this.Info_Pnl);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
@@ -171,6 +215,7 @@ namespace Grid_based_map
             this.Text = "Form1";
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown);
             this.Info_Pnl.ResumeLayout(false);
+            this.Desc_Pnl.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -186,6 +231,9 @@ namespace Grid_based_map
         private System.Windows.Forms.Button Item_btn;
         private System.Windows.Forms.Button Key_btn;
         private System.Windows.Forms.Panel Desc_Pnl;
+        private System.Windows.Forms.Button Drop_Btn;
+        private System.Windows.Forms.Button Use_Btn;
+        private System.Windows.Forms.Button Equiped_Btn;
     }
 }
 

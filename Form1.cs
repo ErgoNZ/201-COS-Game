@@ -16,25 +16,24 @@ namespace Grid_based_map
     public partial class Form1 : Form
     { //Seting up all required variables/objects for the game to function
         Graphics g;
-        Rectangle[] Tile = new Rectangle[25];
+        Rectangle[] Tile = new Rectangle[49];
         Rectangle PlayerName = new Rectangle(25, 0, 250, 50),
                   PlayerLvl = new Rectangle(25, 40, 100, 50),
                   FilePlayTime = new Rectangle(150, 40, 150, 50),
-                  Sec1 = new Rectangle(0, 0, 300, 100),
-                  Sec2 = new Rectangle(0,100,300,125),
+                  Sec1 = new Rectangle(0, 0, 432, 100),
+                  Sec2 = new Rectangle(0,100,432,125),
                   PlayerHp = new Rectangle(25,95,250,50),
                   PlayerAtk = new Rectangle(25,125,100,50),
                   PlayerDef = new Rectangle(25, 175, 100, 50),
                   PlayerSpd = new Rectangle(175, 125, 100, 50),
                   PlayerCrit = new Rectangle(175, 175, 100, 50),
-                  Sec3 = new Rectangle(0,225,300,275),
-
                   Sec4 = new Rectangle(0,500,300,100),
-                  ItemImage = new Rectangle(0,500,100,100)
+                  ItemImage = new Rectangle(0,0,100,126),
+                  ItemDesc = new Rectangle(100,0,123,126)
 
                                                                ;
         int TileID = 0, Selected_Item = -1;
-        public int tileX = 2, tileY = 2;
+        public int tileX = 3, tileY = 3;
         bool CharOnScrn, cameraControl,InMenu;
         string SelectedCat, OldCat;
         Image Error_Image = Image.FromFile("../../../Items/Images/Error.png");
@@ -46,7 +45,14 @@ namespace Grid_based_map
         Inventory Inv = new Inventory();
         Brush Grass = Brushes.Green;
         Brush Water = Brushes.Blue;
+
+        private void Equiped_Btn_Click(object sender, EventArgs e)
+        {
+
+        }
+
         Font General = new Font(FontFamily.GenericMonospace,16 ,FontStyle.Regular);
+        Font Item = new Font(FontFamily.GenericMonospace, 8, FontStyle.Regular);
         StringFormat Center = new StringFormat();
         public Form1()
         {
@@ -82,7 +88,7 @@ namespace Grid_based_map
                 //Movement of the camera
                 if (e.KeyData == Keys.Left)
                 {
-                    if (tileX > 2)
+                    if (tileX > 3)
                     {
                         tileX--;
                     }
@@ -90,15 +96,16 @@ namespace Grid_based_map
                 }
                 if (e.KeyData == Keys.Right)
                 {
-                    if (tileX < Map.XLimit - 3)
+                    if (tileX < Map.XLimit - 4)
                     {
                         tileX++;
+                        Debug.WriteLine(tileX);
                     }
                     cameraControl = true;
                 }
                 if (e.KeyData == Keys.Up)
                 {
-                    if (tileY > 2)
+                    if (tileY > 3)
                     {
                         tileY--;
                     }
@@ -106,9 +113,10 @@ namespace Grid_based_map
                 }
                 if (e.KeyData == Keys.Down)
                 {
-                    if (tileY < Map.YLimit - 3)
+                    if (tileY < Map.YLimit - 4)
                     {
                         tileY++;
+                        Debug.WriteLine(tileY);
                     }
                     cameraControl = true;
                 }
@@ -121,37 +129,39 @@ namespace Grid_based_map
                     {
                         Character.PlayerXPos--;
                         cameraControl = false;
-                        if (tileX > 2)
+                        if (tileX > 3)
                         {
                             tileX--;
                         }
                     }
                     if (e.KeyData == Keys.D && Character.PlayerXPos < Map.XLimit - 1 && Map.Tiles[Character.PlayerYPos, Character.PlayerXPos + 1, 2] != 1 && Map.Tiles[Character.PlayerYPos, Character.PlayerXPos + 1, 2] != 3)
                     {
-                        Character.PlayerXPos++;
-                        cameraControl = false;
-                        if (tileX < Map.XLimit - 3)
-                        {
+                        if (tileX < Map.XLimit - 4)
+                        {                           
                             tileX++;
+                            Debug.WriteLine(tileX);
                         }
+                        Character.PlayerXPos++;
+                        cameraControl = false;                       
                     }
                     if (e.KeyData == Keys.W && Character.PlayerYPos > 0 && Map.Tiles[Character.PlayerYPos - 1, Character.PlayerXPos, 2] != 1 && Map.Tiles[Character.PlayerYPos - 1, Character.PlayerXPos, 2] != 4)
                     {
                         Character.PlayerYPos--;
                         cameraControl = false;
-                        if (tileY > 2)
+                        if (tileY > 3)
                         {
                             tileY--;
                         }
                     }
                     if (e.KeyData == Keys.S && Character.PlayerYPos < Map.YLimit - 1 && Map.Tiles[Character.PlayerYPos + 1, Character.PlayerXPos, 2] != 1 && Map.Tiles[Character.PlayerYPos + 1, Character.PlayerXPos, 2] != 5)
                     {
-                        Character.PlayerYPos++;
-                        cameraControl = false;
                         if (tileY < Map.YLimit - 3)
                         {
                             tileY++;
+                            Debug.WriteLine(tileY);                           
                         }
+                        Character.PlayerYPos++;
+                        cameraControl = false;                       
                     }
                 }
                 if (cameraControl == false)
@@ -179,27 +189,27 @@ namespace Grid_based_map
             //Updating current player position
             Map.Tiles[Character.PlayerYPos, Character.PlayerXPos, 1] = 1;
             //Removing all tiles currently on screen
-            for (int i = 0; i < 25; i++)
+            for (int i = 0; i < 49; i++)
             {
                 Tile[i] = Rectangle.Empty;
             }
             TileID = 0;
             //setting up rectangles for grid
-            for (int h = 0; h < 5; h++)
+            for (int h = 0; h < 7; h++)
             {
-                for (int w = 0; w < 5; w++)
+                for (int w = 0; w < 7; w++)
                 {
                     Tile[TileID] = new Rectangle(0 + (120 * w), 0 + (120 * h), 120, 120);
                     TileID++;
                 }
             }
             //Storing all tile information that is in the cameras view range which is pulled from the Tiles array (The map info in other words)
-            for (int Y = -2; Y < 3; Y++)
+            for (int Y = -3; Y < 4; Y++)
             {
-                for (int X = -2; X < 3; X++)
+                for (int X = -3; X < 4; X++)
                 {
-                    Map.ViewRange[X + 2, Y + 2, 0] = Map.Tiles[tileY + X, tileX + Y, 0];
-                    Map.ViewRange[X + 2, Y + 2, 1] = Map.Tiles[tileY + X, tileX + Y, 1];
+                    Map.ViewRange[X + 3, Y + 3, 0] = Map.Tiles[tileY + X, tileX + Y, 0];
+                    Map.ViewRange[X + 3, Y + 3, 1] = Map.Tiles[tileY + X, tileX + Y, 1];
                 }
             }
             //Refresh the panel to show changes
@@ -210,21 +220,21 @@ namespace Grid_based_map
         {
             tileX = Character.PlayerXPos;
             tileY = Character.PlayerYPos;
-            if (tileX > Map.XLimit-3)
+            if (tileX > Map.XLimit-4)
             {
-                tileX = Map.XLimit-3;
+                tileX = Map.XLimit-4;
             }
-            if (tileX < 2)
+            if (tileX < 3)
             {
-                tileX = 2;
+                tileX = 3;
             }
-            if (tileY > Map.YLimit - 3)
+            if (tileY > Map.YLimit - 4)
             {
-                tileY = Map.YLimit - 3;
+                tileY = Map.YLimit - 4;
             }
-            if (tileY < 2)
+            if (tileY < 3)
             {
-                tileY = 2;
+                tileY = 3;
             }
         }
         private void panel1_Paint(object sender, PaintEventArgs e)
@@ -235,9 +245,9 @@ namespace Grid_based_map
             g = e.Graphics;
             TileID = 0;
             //Colouring tiles based off their visual indicator
-           for (int h = 0; h < 5; h++)
+           for (int h = 0; h < 7; h++)
            {
-               for (int w = 0; w < 5; w++)
+               for (int w = 0; w < 7; w++)
                {
                    if (Map.ViewRange[h,w,0]==1)
                    {
@@ -271,7 +281,6 @@ namespace Grid_based_map
             g = e.Graphics;
             g.FillRectangle(Brushes.SaddleBrown, Sec1);
             g.FillRectangle(Brushes.Brown, Sec2);
-            g.FillRectangle(Brushes.RosyBrown, Sec3);
             g.FillRectangle(Brushes.SaddleBrown, Sec4);
             g.DrawString(Character.Name, General, Brushes.Black,PlayerName,Center);
             g.DrawString("LVL:" + Character.Lvl, General, Brushes.Black, PlayerLvl, Center);
@@ -346,15 +355,28 @@ namespace Grid_based_map
         private void Desc_Pnl_Paint(object sender, PaintEventArgs e)
         {
             g = e.Graphics;
-            int count = 0;
-            foreach(Tuple<Rectangle, Rectangle, string, Rectangle, int, string> tuple in Items)
+            if (SelectedCat != OldCat)
             {
-                if (count == Selected_Item && ItemImage !=null)
-                {
-                    g.DrawImage(Item_Image, ItemImage);
-                }
-                count++;
+                g.Clear(Color.Gray);
             }
+            else
+            {
+                int count = 0;
+                foreach (Tuple<Rectangle, Rectangle, string, Rectangle, int, string> tuple in Items)
+                {
+                    if (count == Selected_Item && Item_Image != null)
+                    {
+                        g.DrawImage(Item_Image, ItemImage);
+                        g.DrawString(tuple.Item3, Item, Brushes.Black, ItemDesc, Center);
+                    }
+                    else if (count == Selected_Item)
+                    {
+                        g.DrawImage(Error_Image, ItemImage);
+                        g.DrawString(tuple.Item3, Item, Brushes.Black, ItemDesc, Center);
+                    }
+                    count++;
+                }
+            }           
         }
         private void InventoryUISetUp()
         {
@@ -365,6 +387,7 @@ namespace Grid_based_map
             if (SelectedCat != OldCat)
             {
                 Items.Clear();
+                Desc_Pnl.Invalidate();
             }
             foreach (Tuple<string, int, string, bool,string> tuple in Inv.CategoryData)
             {
@@ -410,6 +433,7 @@ namespace Grid_based_map
                     Selected_Item = count;
                     Mouse = new Point();
                     Item_Pnl.Invalidate();
+                    Desc_Pnl.Invalidate();
                 }
                 count++;
             }
