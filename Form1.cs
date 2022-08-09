@@ -17,19 +17,20 @@ namespace Grid_based_map
     { //Seting up all required variables/objects for the game to function
         Graphics g;
         Rectangle[] Tile = new Rectangle[49];
-        Rectangle PlayerName = new Rectangle(25, 0, 250, 50),
-                  PlayerLvl = new Rectangle(25, 40, 100, 50),
-                  FilePlayTime = new Rectangle(150, 40, 150, 50),
+        Rectangle PlayerName = new Rectangle(88, 0, 250, 50),
+                  PlayerLvl = new Rectangle(52, 40, 100, 50),
+                  FilePlayTime = new Rectangle(255, 40, 150, 50),
                   Sec1 = new Rectangle(0, 0, 432, 100),
                   Sec2 = new Rectangle(0,100,432,125),
-                  PlayerHp = new Rectangle(25,95,250,50),
-                  PlayerAtk = new Rectangle(25,125,100,50),
-                  PlayerDef = new Rectangle(25, 175, 100, 50),
-                  PlayerSpd = new Rectangle(175, 125, 100, 50),
-                  PlayerCrit = new Rectangle(175, 175, 100, 50),
+                  PlayerHp = new Rectangle(88,95,250,50),
+                  PlayerAtk = new Rectangle(52,125,100,50),
+                  PlayerDef = new Rectangle(52, 175, 100, 50),
+                  PlayerSpd = new Rectangle(280, 125, 100, 50),
+                  PlayerCrit = new Rectangle(280, 175, 100, 50),
                   Sec4 = new Rectangle(0,500,300,100),
-                  ItemImage = new Rectangle(0,0,100,126),
-                  ItemDesc = new Rectangle(100,0,123,126)
+                  ItemImage = new Rectangle(0,0,100,100),
+                  ItemDesc = new Rectangle(100,0,196,100),
+                  Centering = new Rectangle(213,0,1,841)
 
                                                                ;
         int TileID = 0, Selected_Item = -1;
@@ -291,7 +292,7 @@ namespace Grid_based_map
             g.DrawString("Def:" + Character.Def, General, Brushes.Black, PlayerDef, Center);
             g.DrawString("Spd:" + Character.Spd, General, Brushes.Black, PlayerSpd, Center);
             g.DrawString("Crit:" + Character.Crit + "%", General, Brushes.Black, PlayerCrit, Center);
-
+            g.FillRectangle(Grass, Centering);
         }
 
         //Save and Quit buttons (Not functional yet)
@@ -340,7 +341,7 @@ namespace Grid_based_map
                 {
                     //Draws image as intended with no errors
                     Item_Image = Image.FromFile("../../../Items/Images/" + tuple.Item3 + ".png");
-                    g.DrawImage(Item_Image, tuple.Item1.X + 1, tuple.Item1.Y + 1);
+                    g.DrawImage(Item_Image, tuple.Item1.X+1,tuple.Item1.Y+1);
                 }
                 else
                 {
@@ -392,13 +393,13 @@ namespace Grid_based_map
             foreach (Tuple<string, int, string, bool,string> tuple in Inv.CategoryData)
             {
                 //Sets up every rectangle and attaches a name for the item id in the list being drawn
-                Items.Add(new Tuple<Rectangle, Rectangle, string,Rectangle,int,string>(new Rectangle(0, 30 * count, 31, 31), new Rectangle(60, 30 * count, 239, 31), tuple.Item1, new Rectangle(29,30*count,31,31), tuple.Item2,tuple.Item5));
+                Items.Add(new Tuple<Rectangle, Rectangle, string,Rectangle,int,string>(new Rectangle(0, 51 * count, 51, 51), new Rectangle(102, 51 * count, 329, 51), tuple.Item1, new Rectangle(51,51*count,51,51), tuple.Item2,tuple.Item5));
                 count++;
             }
             //Scales the scroll bar with the amount of items present in selected category
-            Item_Pnl.AutoScrollMinSize = new Size(0, 30 * count);
+            Item_Pnl.AutoScrollMinSize = new Size(0, (int)Math.Round(51.1 * count));
             //if the item count doesn't make the list go past 120px then the bar is hidden
-            if(30*count <= 120)
+            if(51.1*count <= 400)
             {
                 Item_Pnl.VerticalScroll.Visible= false;
             }

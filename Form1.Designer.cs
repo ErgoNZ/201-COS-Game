@@ -67,7 +67,7 @@ namespace Grid_based_map
             this.Info_Pnl.Controls.Add(this.Equiped_Btn);
             this.Info_Pnl.Location = new System.Drawing.Point(840, 0);
             this.Info_Pnl.Name = "Info_Pnl";
-            this.Info_Pnl.Size = new System.Drawing.Size(432, 841);
+            this.Info_Pnl.Size = new System.Drawing.Size(433, 841);
             this.Info_Pnl.TabIndex = 1;
             this.Info_Pnl.Paint += new System.Windows.Forms.PaintEventHandler(this.Info_Pnl_Paint);
             // 
@@ -75,9 +75,9 @@ namespace Grid_based_map
             // 
             this.Item_Pnl.AutoScroll = true;
             this.Item_Pnl.BackColor = System.Drawing.Color.RosyBrown;
-            this.Item_Pnl.Location = new System.Drawing.Point(0, 359);
+            this.Item_Pnl.Location = new System.Drawing.Point(0, 267);
             this.Item_Pnl.Name = "Item_Pnl";
-            this.Item_Pnl.Size = new System.Drawing.Size(433, 182);
+            this.Item_Pnl.Size = new System.Drawing.Size(433, 274);
             this.Item_Pnl.TabIndex = 1;
             this.Item_Pnl.TabStop = true;
             this.Item_Pnl.Paint += new System.Windows.Forms.PaintEventHandler(this.Item_Pnl_Paint);
@@ -99,7 +99,7 @@ namespace Grid_based_map
             this.Drop_Btn.BackColor = System.Drawing.Color.LightSlateGray;
             this.Drop_Btn.FlatAppearance.BorderSize = 0;
             this.Drop_Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Drop_Btn.Location = new System.Drawing.Point(353, 88);
+            this.Drop_Btn.Location = new System.Drawing.Point(359, 107);
             this.Drop_Btn.Name = "Drop_Btn";
             this.Drop_Btn.Size = new System.Drawing.Size(74, 88);
             this.Drop_Btn.TabIndex = 0;
@@ -111,7 +111,7 @@ namespace Grid_based_map
             this.Use_Btn.BackColor = System.Drawing.Color.LawnGreen;
             this.Use_Btn.FlatAppearance.BorderSize = 0;
             this.Use_Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Use_Btn.Location = new System.Drawing.Point(355, 0);
+            this.Use_Btn.Location = new System.Drawing.Point(359, 0);
             this.Use_Btn.Name = "Use_Btn";
             this.Use_Btn.Size = new System.Drawing.Size(74, 88);
             this.Use_Btn.TabIndex = 0;
@@ -123,7 +123,7 @@ namespace Grid_based_map
             this.Gear_btn.BackColor = System.Drawing.Color.Silver;
             this.Gear_btn.FlatAppearance.BorderSize = 0;
             this.Gear_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Gear_btn.Location = new System.Drawing.Point(359, 317);
+            this.Gear_btn.Location = new System.Drawing.Point(358, 225);
             this.Gear_btn.Name = "Gear_btn";
             this.Gear_btn.Size = new System.Drawing.Size(74, 36);
             this.Gear_btn.TabIndex = 0;
@@ -137,7 +137,7 @@ namespace Grid_based_map
             this.Key_btn.BackColor = System.Drawing.Color.Gold;
             this.Key_btn.FlatAppearance.BorderSize = 0;
             this.Key_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Key_btn.Location = new System.Drawing.Point(112, 317);
+            this.Key_btn.Location = new System.Drawing.Point(111, 225);
             this.Key_btn.Name = "Key_btn";
             this.Key_btn.Size = new System.Drawing.Size(74, 36);
             this.Key_btn.TabIndex = 0;
@@ -151,7 +151,7 @@ namespace Grid_based_map
             this.Item_btn.BackColor = System.Drawing.Color.Red;
             this.Item_btn.FlatAppearance.BorderSize = 0;
             this.Item_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Item_btn.Location = new System.Drawing.Point(242, 317);
+            this.Item_btn.Location = new System.Drawing.Point(227, 225);
             this.Item_btn.Name = "Item_btn";
             this.Item_btn.Size = new System.Drawing.Size(74, 36);
             this.Item_btn.TabIndex = 0;
@@ -193,7 +193,7 @@ namespace Grid_based_map
             this.Equiped_Btn.BackColor = System.Drawing.Color.Olive;
             this.Equiped_Btn.FlatAppearance.BorderSize = 0;
             this.Equiped_Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Equiped_Btn.Location = new System.Drawing.Point(0, 317);
+            this.Equiped_Btn.Location = new System.Drawing.Point(0, 225);
             this.Equiped_Btn.Name = "Equiped_Btn";
             this.Equiped_Btn.Size = new System.Drawing.Size(74, 36);
             this.Equiped_Btn.TabIndex = 3;
@@ -205,7 +205,7 @@ namespace Grid_based_map
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1274, 841);
+            this.ClientSize = new System.Drawing.Size(1272, 841);
             this.Controls.Add(this.Map_Pnl);
             this.Controls.Add(this.Info_Pnl);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
