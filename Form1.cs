@@ -393,7 +393,7 @@ namespace Grid_based_map
             foreach (Tuple<string, int, string, bool,string> tuple in Inv.CategoryData)
             {
                 //Sets up every rectangle and attaches a name for the item id in the list being drawn
-                Items.Add(new Tuple<Rectangle, Rectangle, string,Rectangle,int,string>(new Rectangle(0, 51 * count, 51, 51), new Rectangle(102, 51 * count, 329, 51), tuple.Item1, new Rectangle(51,51*count,51,51), tuple.Item2,tuple.Item5));
+                Items.Add(new Tuple<Rectangle, Rectangle, string,Rectangle,int,string>(new Rectangle(0, 52 * count, 51, 51), new Rectangle(102, 52 * count, 329, 51), tuple.Item1, new Rectangle(51,52*count,51,51), tuple.Item2,tuple.Item5));
                 count++;
             }
             //Scales the scroll bar with the amount of items present in selected category
