@@ -39,7 +39,7 @@ namespace Grid_based_map
         string SelectedCat, OldCat;
         Image Error_Image = Image.FromFile("../../../Items/Images/Error.png");
         Image Item_Image;
-        List<Tuple<Rectangle,Rectangle,string,Rectangle,int,string, Tuple<int, int, int, int, int, string>>> Items = new List<Tuple<Rectangle,Rectangle,string,Rectangle,int,string, Tuple<int, int, int, int, int, string>>>();
+        List<Tuple<Rectangle,Rectangle,string,Rectangle,int,string, Tuple<int, int, int, int, int, string>,Tuple<bool,bool>>> Items = new List<Tuple<Rectangle,Rectangle,string,Rectangle,int,string, Tuple<int, int, int, int, int, string>,Tuple<bool,bool>>>();
 
         Player Character = new Player();
         MapData Map = new MapData();
@@ -55,7 +55,7 @@ namespace Grid_based_map
         private void Quit_Btn_Click(object sender, EventArgs e)
         {
 
-        }
+        }      
 
         private void Equiped_Btn_Click(object sender, EventArgs e)
         {
@@ -70,17 +70,9 @@ namespace Grid_based_map
             InitializeComponent();
             typeof(Panel).InvokeMember("DoubleBuffered", BindingFlags.SetProperty | BindingFlags.Instance | BindingFlags.NonPublic, null, Map_Pnl, new object[] { true });
             Map.LoadMap("TestMap");
-            Inv.AddItem("apple", 6, "Item", false, "Apple");
-            Inv.AddItem("appleX", 3, "Item", false, "Apple");
-            Inv.AddItem("appleY", 3, "Item", false, "Apple");
-            Inv.AddItem("appleZ", 3, "Item", false, "Apple");
-            Inv.AddItem("appleA", 3, "Item", false, "Apple");
-            Inv.AddItem("appleB", 3, "Item", false, "Apple");
-            Inv.AddItem("appleC", 3, "Item", false, "Apple");
-            Inv.AddItem("appleD", 3, "Item", false, "Apple");
-            Inv.AddItem("appleE", 3, "Item", false, "Apple");
-            Inv.AddItem("appleF", 3, "Item", false, "Apple");
-            Inv.AddItem("appleZXY", 3, "Helmet", false, "Apple");
+            Inv.AddItem(4, "Wallnut");
+            Inv.AddItem(4, "Apple");
+            Inv.PrintInv();
             DrawGrid();
             foreach (Control ctrl in Item_Pnl.Controls)
             {
@@ -92,7 +84,7 @@ namespace Grid_based_map
         }
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
-                cameraControl = false;
+            cameraControl = false;
                 //Movement of the camera
                 if (e.KeyData == Keys.Left)
                 {
@@ -107,7 +99,6 @@ namespace Grid_based_map
                     if (tileX < Map.XLimit - 4)
                     {
                         tileX++;
-                        Debug.WriteLine(tileX);
                     }
                     cameraControl = true;
                 }
@@ -124,7 +115,6 @@ namespace Grid_based_map
                     if (tileY < Map.YLimit - 4)
                     {
                         tileY++;
-                        Debug.WriteLine(tileY);
                     }
                     cameraControl = true;
                 }
@@ -147,7 +137,6 @@ namespace Grid_based_map
                         if (tileX < Map.XLimit - 4)
                         {                           
                             tileX++;
-                            Debug.WriteLine(tileX);
                         }
                         Character.PlayerXPos++;
                         cameraControl = false;                       
@@ -165,8 +154,7 @@ namespace Grid_based_map
                     {
                         if (tileY < Map.YLimit - 3)
                         {
-                            tileY++;
-                            Debug.WriteLine(tileY);                           
+                            tileY++;                       
                         }
                         Character.PlayerYPos++;
                         cameraControl = false;                       
@@ -309,7 +297,7 @@ namespace Grid_based_map
             g.TranslateTransform(Item_Pnl.AutoScrollPosition.X, Item_Pnl.AutoScrollPosition.Y);
             //Check every tuple in the Items list
             int count = 0;
-            foreach (Tuple<Rectangle, Rectangle, string,Rectangle,int,string, Tuple<int, int, int, int, int, string>> tuple in Items)
+            foreach (Tuple<Rectangle, Rectangle, string,Rectangle,int,string, Tuple<int, int, int, int, int, string>,Tuple<bool,bool>> tuple in Items)
             {
 
                 //Draws the UI for each item
@@ -355,7 +343,7 @@ namespace Grid_based_map
             else
             {
                 int count = 0;
-                foreach (Tuple<Rectangle, Rectangle, string, Rectangle, int, string, Tuple<int, int, int, int, int, string>> tuple in Items)
+                foreach (Tuple<Rectangle, Rectangle, string, Rectangle, int, string, Tuple<int, int, int, int, int, string>, Tuple<bool, bool>> tuple in Items)
                 {
                     if (count == Selected_Item && Item_Image != null)
                     {
@@ -375,7 +363,7 @@ namespace Grid_based_map
         {
             if (SelectedCat == "Equipped")
             {
-
+                
             }
             int count = 0;
             Selected_Item = -1;
@@ -386,10 +374,11 @@ namespace Grid_based_map
                 Items.Clear();
                 Desc_Pnl.Invalidate();
             }
-            foreach (Tuple<string, int, string, bool,string, Tuple<int, int, int, int, int, string>> tuple in Inv.CategoryData)
+            foreach (Tuple<string, int, string, bool,string, Tuple<int, int, int, int, int, string>,bool> tuple in Inv.CategoryData)
             {
                 //Sets up every rectangle and attaches a name for the item id in the list being drawn
-                Items.Add(new Tuple<Rectangle, Rectangle, string,Rectangle,int,string, Tuple<int, int, int, int, int, string>>(new Rectangle(0, 52 * count, 51, 51), new Rectangle(102, 52 * count, 329, 51), tuple.Item1, new Rectangle(51,52*count,51,51), tuple.Item2,tuple.Item5,tuple.Item6));
+                bool Equipabble=tuple.Item4, Equipped=tuple.Item7;
+                Items.Add(new Tuple<Rectangle, Rectangle, string,Rectangle,int,string, Tuple<int, int, int, int, int, string>,Tuple<bool,bool>>(new Rectangle(0, 52 * count, 51, 51), new Rectangle(102, 52 * count, 329, 51), tuple.Item1, new Rectangle(51,52*count,51,51), tuple.Item2,tuple.Item5,tuple.Item6,new Tuple<bool,bool>(Equipped,Equipabble)));
                 count++;
             }
             //Scales the scroll bar with the amount of items present in selected category
@@ -423,7 +412,7 @@ namespace Grid_based_map
         {
             int count=0;
             Point Mouse = new Point(e.X, e.Y - Item_Pnl.AutoScrollPosition.Y);
-            foreach (Tuple<Rectangle, Rectangle, string, Rectangle, int,string, Tuple<int, int, int, int, int, string>> tuple in Items)
+            foreach (Tuple<Rectangle, Rectangle, string, Rectangle, int,string, Tuple<int, int, int, int, int, string>, Tuple<bool, bool>> tuple in Items)
             {
                 if (tuple.Item2.Contains(Mouse))
                 {
@@ -431,6 +420,35 @@ namespace Grid_based_map
                     Mouse = new Point();
                     Item_Pnl.Invalidate();
                     Desc_Pnl.Invalidate();
+                }
+                count++;
+            }
+        }
+        private void Use_Btn_Click(object sender, EventArgs e)
+        {
+            int count = 0;
+            foreach (Tuple<Rectangle, Rectangle, string, Rectangle, int, string, Tuple<int, int, int, int, int, string>, Tuple<bool, bool>> tuple in Items)
+            {
+                if (tuple.Rest.Item1 == true && count == Selected_Item)
+                {
+                    Items.Insert(count, new Tuple<Rectangle, Rectangle, string, Rectangle, int, string, Tuple<int, int, int, int, int, string>, Tuple<bool, bool>>
+                    (tuple.Item1, tuple.Item2, tuple.Item3, tuple.Item4, tuple.Item5, tuple.Item6, tuple.Item7, new Tuple<bool, bool>(tuple.Rest.Item1, true)));
+                    break;
+                }
+                else if (count == Selected_Item)
+                {
+                    Character.Hp = Character.Hp + tuple.Item7.Item1;
+                    if (Character.Hp >= Character.MaxHp)
+                    {
+                        Character.Hp = Character.MaxHp;
+                    }
+                    Inv.DelItem(1, tuple.Item6, tuple.Rest.Item2);
+                    Inv.PrintInv();
+                    Items.Clear();
+                    Info_Pnl.Invalidate();
+                    Desc_Pnl.Invalidate();
+                    InventoryUISetUp();
+                    break;
                 }
                 count++;
             }

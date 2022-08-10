@@ -103,6 +103,7 @@ namespace Grid_based_map
             this.Drop_Btn.Name = "Drop_Btn";
             this.Drop_Btn.Size = new System.Drawing.Size(74, 88);
             this.Drop_Btn.TabIndex = 0;
+            this.Drop_Btn.TabStop = false;
             this.Drop_Btn.Text = "Discard";
             this.Drop_Btn.UseVisualStyleBackColor = false;
             // 
@@ -115,8 +116,10 @@ namespace Grid_based_map
             this.Use_Btn.Name = "Use_Btn";
             this.Use_Btn.Size = new System.Drawing.Size(74, 88);
             this.Use_Btn.TabIndex = 0;
+            this.Use_Btn.TabStop = false;
             this.Use_Btn.Text = "Use/Equip";
             this.Use_Btn.UseVisualStyleBackColor = false;
+            this.Use_Btn.Click += new System.EventHandler(this.Use_Btn_Click);
             // 
             // Gear_btn
             // 
@@ -196,7 +199,8 @@ namespace Grid_based_map
             this.Equiped_Btn.Location = new System.Drawing.Point(0, 225);
             this.Equiped_Btn.Name = "Equiped_Btn";
             this.Equiped_Btn.Size = new System.Drawing.Size(110, 42);
-            this.Equiped_Btn.TabIndex = 3;
+            this.Equiped_Btn.TabIndex = 0;
+            this.Equiped_Btn.TabStop = false;
             this.Equiped_Btn.Text = "Equiped";
             this.Equiped_Btn.UseVisualStyleBackColor = false;
             this.Equiped_Btn.Click += new System.EventHandler(this.Equiped_Btn_Click);

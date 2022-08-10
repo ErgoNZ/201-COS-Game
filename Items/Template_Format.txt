@@ -1,0 +1,9 @@
+Name
+Item Type
+Equipabble?
+Hp
+Atk
+Def
+Spd
+Crit
+Element
