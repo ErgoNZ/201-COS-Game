@@ -38,8 +38,8 @@ namespace Grid_based_map
             this.Gear_btn = new System.Windows.Forms.Button();
             this.Key_btn = new System.Windows.Forms.Button();
             this.Item_btn = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
+            this.Quit_Btn = new System.Windows.Forms.Button();
+            this.Save_Btn = new System.Windows.Forms.Button();
             this.Equiped_Btn = new System.Windows.Forms.Button();
             this.Info_Pnl.SuspendLayout();
             this.Desc_Pnl.SuspendLayout();
@@ -52,7 +52,7 @@ namespace Grid_based_map
             this.Map_Pnl.Name = "Map_Pnl";
             this.Map_Pnl.Size = new System.Drawing.Size(841, 841);
             this.Map_Pnl.TabIndex = 0;
-            this.Map_Pnl.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
+            this.Map_Pnl.Paint += new System.Windows.Forms.PaintEventHandler(this.Map_Pnl_Paint);
             // 
             // Info_Pnl
             // 
@@ -62,8 +62,8 @@ namespace Grid_based_map
             this.Info_Pnl.Controls.Add(this.Gear_btn);
             this.Info_Pnl.Controls.Add(this.Key_btn);
             this.Info_Pnl.Controls.Add(this.Item_btn);
-            this.Info_Pnl.Controls.Add(this.button2);
-            this.Info_Pnl.Controls.Add(this.button1);
+            this.Info_Pnl.Controls.Add(this.Quit_Btn);
+            this.Info_Pnl.Controls.Add(this.Save_Btn);
             this.Info_Pnl.Controls.Add(this.Equiped_Btn);
             this.Info_Pnl.Location = new System.Drawing.Point(840, 0);
             this.Info_Pnl.Name = "Info_Pnl";
@@ -123,9 +123,9 @@ namespace Grid_based_map
             this.Gear_btn.BackColor = System.Drawing.Color.Silver;
             this.Gear_btn.FlatAppearance.BorderSize = 0;
             this.Gear_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Gear_btn.Location = new System.Drawing.Point(358, 225);
+            this.Gear_btn.Location = new System.Drawing.Point(330, 225);
             this.Gear_btn.Name = "Gear_btn";
-            this.Gear_btn.Size = new System.Drawing.Size(74, 36);
+            this.Gear_btn.Size = new System.Drawing.Size(103, 42);
             this.Gear_btn.TabIndex = 0;
             this.Gear_btn.TabStop = false;
             this.Gear_btn.Text = "Gear";
@@ -137,9 +137,9 @@ namespace Grid_based_map
             this.Key_btn.BackColor = System.Drawing.Color.Gold;
             this.Key_btn.FlatAppearance.BorderSize = 0;
             this.Key_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Key_btn.Location = new System.Drawing.Point(111, 225);
+            this.Key_btn.Location = new System.Drawing.Point(110, 225);
             this.Key_btn.Name = "Key_btn";
-            this.Key_btn.Size = new System.Drawing.Size(74, 36);
+            this.Key_btn.Size = new System.Drawing.Size(110, 42);
             this.Key_btn.TabIndex = 0;
             this.Key_btn.TabStop = false;
             this.Key_btn.Text = "Key";
@@ -151,42 +151,42 @@ namespace Grid_based_map
             this.Item_btn.BackColor = System.Drawing.Color.Red;
             this.Item_btn.FlatAppearance.BorderSize = 0;
             this.Item_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Item_btn.Location = new System.Drawing.Point(227, 225);
+            this.Item_btn.Location = new System.Drawing.Point(220, 225);
             this.Item_btn.Name = "Item_btn";
-            this.Item_btn.Size = new System.Drawing.Size(74, 36);
+            this.Item_btn.Size = new System.Drawing.Size(110, 42);
             this.Item_btn.TabIndex = 0;
             this.Item_btn.TabStop = false;
             this.Item_btn.Text = "Item";
             this.Item_btn.UseVisualStyleBackColor = false;
             this.Item_btn.Click += new System.EventHandler(this.Item_btn_Click);
             // 
-            // button2
+            // Quit_Btn
             // 
-            this.button2.BackColor = System.Drawing.Color.Wheat;
-            this.button2.FlatAppearance.BorderSize = 0;
-            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button2.Location = new System.Drawing.Point(227, 742);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(195, 90);
-            this.button2.TabIndex = 0;
-            this.button2.TabStop = false;
-            this.button2.Text = "button2";
-            this.button2.UseVisualStyleBackColor = false;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.Quit_Btn.BackColor = System.Drawing.Color.Wheat;
+            this.Quit_Btn.FlatAppearance.BorderSize = 0;
+            this.Quit_Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Quit_Btn.Location = new System.Drawing.Point(227, 742);
+            this.Quit_Btn.Name = "Quit_Btn";
+            this.Quit_Btn.Size = new System.Drawing.Size(195, 90);
+            this.Quit_Btn.TabIndex = 0;
+            this.Quit_Btn.TabStop = false;
+            this.Quit_Btn.Text = "button2";
+            this.Quit_Btn.UseVisualStyleBackColor = false;
+            this.Quit_Btn.Click += new System.EventHandler(this.Quit_Btn_Click);
             // 
-            // button1
+            // Save_Btn
             // 
-            this.button1.BackColor = System.Drawing.Color.Wheat;
-            this.button1.FlatAppearance.BorderSize = 0;
-            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.Location = new System.Drawing.Point(7, 742);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(195, 90);
-            this.button1.TabIndex = 0;
-            this.button1.TabStop = false;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = false;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.Save_Btn.BackColor = System.Drawing.Color.Wheat;
+            this.Save_Btn.FlatAppearance.BorderSize = 0;
+            this.Save_Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Save_Btn.Location = new System.Drawing.Point(7, 742);
+            this.Save_Btn.Name = "Save_Btn";
+            this.Save_Btn.Size = new System.Drawing.Size(195, 90);
+            this.Save_Btn.TabIndex = 0;
+            this.Save_Btn.TabStop = false;
+            this.Save_Btn.Text = "button1";
+            this.Save_Btn.UseVisualStyleBackColor = false;
+            this.Save_Btn.Click += new System.EventHandler(this.Save_Btn_Click);
             // 
             // Equiped_Btn
             // 
@@ -195,7 +195,7 @@ namespace Grid_based_map
             this.Equiped_Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.Equiped_Btn.Location = new System.Drawing.Point(0, 225);
             this.Equiped_Btn.Name = "Equiped_Btn";
-            this.Equiped_Btn.Size = new System.Drawing.Size(74, 36);
+            this.Equiped_Btn.Size = new System.Drawing.Size(110, 42);
             this.Equiped_Btn.TabIndex = 3;
             this.Equiped_Btn.Text = "Equiped";
             this.Equiped_Btn.UseVisualStyleBackColor = false;
@@ -224,8 +224,8 @@ namespace Grid_based_map
 
         private System.Windows.Forms.Panel Map_Pnl;
         private System.Windows.Forms.Panel Info_Pnl;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button Save_Btn;
+        private System.Windows.Forms.Button Quit_Btn;
         private System.Windows.Forms.Panel Item_Pnl;
         private System.Windows.Forms.Button Gear_btn;
         private System.Windows.Forms.Button Item_btn;

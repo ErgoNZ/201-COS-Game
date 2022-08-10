@@ -29,23 +29,33 @@ namespace Grid_based_map
                   PlayerCrit = new Rectangle(280, 175, 100, 50),
                   Sec4 = new Rectangle(0,500,300,100),
                   ItemImage = new Rectangle(0,0,100,100),
-                  ItemDesc = new Rectangle(100,0,196,100),
+                  ItemDesc = new Rectangle(100,0,196,195),
                   Centering = new Rectangle(213,0,1,841)
 
                                                                ;
         int TileID = 0, Selected_Item = -1;
         public int tileX = 3, tileY = 3;
-        bool CharOnScrn, cameraControl,InMenu;
+        bool CharOnScrn, cameraControl;
         string SelectedCat, OldCat;
         Image Error_Image = Image.FromFile("../../../Items/Images/Error.png");
         Image Item_Image;
-        List<Tuple<Rectangle,Rectangle,string,Rectangle,int,string>> Items = new List<Tuple<Rectangle,Rectangle,string,Rectangle,int,string>>();
+        List<Tuple<Rectangle,Rectangle,string,Rectangle,int,string, Tuple<int, int, int, int, int, string>>> Items = new List<Tuple<Rectangle,Rectangle,string,Rectangle,int,string, Tuple<int, int, int, int, int, string>>>();
 
         Player Character = new Player();
         MapData Map = new MapData();
         Inventory Inv = new Inventory();
         Brush Grass = Brushes.Green;
         Brush Water = Brushes.Blue;
+
+        private void Save_Btn_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Quit_Btn_Click(object sender, EventArgs e)
+        {
+
+        }
 
         private void Equiped_Btn_Click(object sender, EventArgs e)
         {
@@ -71,7 +81,6 @@ namespace Grid_based_map
             Inv.AddItem("appleE", 3, "Item", false, "Apple");
             Inv.AddItem("appleF", 3, "Item", false, "Apple");
             Inv.AddItem("appleZXY", 3, "Helmet", false, "Apple");
-            Inv.PrintInv();
             DrawGrid();
             foreach (Control ctrl in Item_Pnl.Controls)
             {
@@ -83,8 +92,6 @@ namespace Grid_based_map
         }
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
-            if (!InMenu)
-            {
                 cameraControl = false;
                 //Movement of the camera
                 if (e.KeyData == Keys.Left)
@@ -177,11 +184,6 @@ namespace Grid_based_map
                 //Call the DrawGrid method to refresh the players current view and update any tiles as needed
                 Info_Pnl.Invalidate();
                 DrawGrid();
-            }
-            else
-            {
-
-            }
         }
         public void DrawGrid()
         {
@@ -238,7 +240,8 @@ namespace Grid_based_map
                 tileY = 3;
             }
         }
-        private void panel1_Paint(object sender, PaintEventArgs e)
+        
+        private void Map_Pnl_Paint(object sender, PaintEventArgs e)
         { //removing the player from the screen so the position can be correctly updated
             Character.PlayerX = -1;
             Character.PlayerY = -1;
@@ -295,17 +298,6 @@ namespace Grid_based_map
             g.FillRectangle(Grass, Centering);
         }
 
-        //Save and Quit buttons (Not functional yet)
-        private void button2_Click(object sender, EventArgs e)
-        {
-            Map_Pnl.Focus();
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            Map_Pnl.Focus();
-        }
-
         //
         // Inventory UI Begins Here!
         //
@@ -317,7 +309,7 @@ namespace Grid_based_map
             g.TranslateTransform(Item_Pnl.AutoScrollPosition.X, Item_Pnl.AutoScrollPosition.Y);
             //Check every tuple in the Items list
             int count = 0;
-            foreach (Tuple<Rectangle, Rectangle, string,Rectangle,int,string> tuple in Items)
+            foreach (Tuple<Rectangle, Rectangle, string,Rectangle,int,string, Tuple<int, int, int, int, int, string>> tuple in Items)
             {
 
                 //Draws the UI for each item
@@ -363,7 +355,7 @@ namespace Grid_based_map
             else
             {
                 int count = 0;
-                foreach (Tuple<Rectangle, Rectangle, string, Rectangle, int, string> tuple in Items)
+                foreach (Tuple<Rectangle, Rectangle, string, Rectangle, int, string, Tuple<int, int, int, int, int, string>> tuple in Items)
                 {
                     if (count == Selected_Item && Item_Image != null)
                     {
@@ -381,6 +373,10 @@ namespace Grid_based_map
         }
         private void InventoryUISetUp()
         {
+            if (SelectedCat == "Equipped")
+            {
+
+            }
             int count = 0;
             Selected_Item = -1;
             Inv.Categorise(SelectedCat);
@@ -390,14 +386,14 @@ namespace Grid_based_map
                 Items.Clear();
                 Desc_Pnl.Invalidate();
             }
-            foreach (Tuple<string, int, string, bool,string> tuple in Inv.CategoryData)
+            foreach (Tuple<string, int, string, bool,string, Tuple<int, int, int, int, int, string>> tuple in Inv.CategoryData)
             {
                 //Sets up every rectangle and attaches a name for the item id in the list being drawn
-                Items.Add(new Tuple<Rectangle, Rectangle, string,Rectangle,int,string>(new Rectangle(0, 52 * count, 51, 51), new Rectangle(102, 52 * count, 329, 51), tuple.Item1, new Rectangle(51,52*count,51,51), tuple.Item2,tuple.Item5));
+                Items.Add(new Tuple<Rectangle, Rectangle, string,Rectangle,int,string, Tuple<int, int, int, int, int, string>>(new Rectangle(0, 52 * count, 51, 51), new Rectangle(102, 52 * count, 329, 51), tuple.Item1, new Rectangle(51,52*count,51,51), tuple.Item2,tuple.Item5,tuple.Item6));
                 count++;
             }
             //Scales the scroll bar with the amount of items present in selected category
-            Item_Pnl.AutoScrollMinSize = new Size(0, (int)Math.Round(51.1 * count));
+            Item_Pnl.AutoScrollMinSize = new Size(0, 52 * count);
             //if the item count doesn't make the list go past 120px then the bar is hidden
             if(51.1*count <= 400)
             {
@@ -427,7 +423,7 @@ namespace Grid_based_map
         {
             int count=0;
             Point Mouse = new Point(e.X, e.Y - Item_Pnl.AutoScrollPosition.Y);
-            foreach (Tuple<Rectangle, Rectangle, string, Rectangle, int,string> tuple in Items)
+            foreach (Tuple<Rectangle, Rectangle, string, Rectangle, int,string, Tuple<int, int, int, int, int, string>> tuple in Items)
             {
                 if (tuple.Item2.Contains(Mouse))
                 {
