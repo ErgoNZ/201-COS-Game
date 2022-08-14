@@ -57,11 +57,6 @@ namespace Grid_based_map
 
         }      
 
-        private void Equiped_Btn_Click(object sender, EventArgs e)
-        {
-
-        }
-
         Font General = new Font(FontFamily.GenericMonospace,16 ,FontStyle.Regular);
         Font Item = new Font(FontFamily.GenericMonospace, 8, FontStyle.Regular);
         StringFormat Center = new StringFormat();
@@ -70,8 +65,11 @@ namespace Grid_based_map
             InitializeComponent();
             typeof(Panel).InvokeMember("DoubleBuffered", BindingFlags.SetProperty | BindingFlags.Instance | BindingFlags.NonPublic, null, Map_Pnl, new object[] { true });
             Map.LoadMap("TestMap");
-            Inv.AddItem(4, "Wallnut");
-            Inv.AddItem(4, "Apple");
+            Inv.AddItem(4, "Wallnut",false);
+            Inv.AddItem(4, "Apple",false);
+            Inv.AddItem(1, "Key",false);
+            Inv.AddItem(1, "Chestplate",false);
+            Inv.AddItem(1, "Helmet",false);
             Inv.PrintInv();
             DrawGrid();
             foreach (Control ctrl in Item_Pnl.Controls)
@@ -361,34 +359,44 @@ namespace Grid_based_map
         }
         private void InventoryUISetUp()
         {
-            if (SelectedCat == "Equipped")
+            if (SelectedCat != "Equipped")
             {
-                
+                int count = 0;
+                Selected_Item = -1;
+                if (SelectedCat != OldCat)
+                {
+                    Items.Clear();
+                    Item_Pnl.Invalidate();
+                    Desc_Pnl.Invalidate();
+                }
+                Inv.Categorise(SelectedCat);
+                Map_Pnl.Focus();
+                foreach (Tuple<string, int, string, bool, string, Tuple<int, int, int, int, int, string>, bool> tuple in Inv.CategoryData)
+                {
+                    //Sets up every rectangle and attaches a name for the item id in the list being drawn
+                    bool Equipabble = tuple.Item4, Equipped = tuple.Item7;
+                    Items.Add(new Tuple<Rectangle, Rectangle, string, Rectangle, int, string, Tuple<int, int, int, int, int, string>, Tuple<bool, bool>>(new Rectangle(0, 52 * count, 51, 51), new Rectangle(102, 52 * count, 329, 51), tuple.Item1, new Rectangle(51, 52 * count, 51, 51), tuple.Item2, tuple.Item5, tuple.Item6, new Tuple<bool, bool>(Equipped, Equipabble)));
+                    count++;
+                }
+                //Scales the scroll bar with the amount of items present in selected category
+                Item_Pnl.AutoScrollMinSize = new Size(0, 52 * count);
+                //if the item count doesn't make the list go past 120px then the bar is hidden
+                if (51.1 * count <= 400)
+                {
+                    Item_Pnl.VerticalScroll.Visible = false;
+                }
+                Item_Pnl.Invalidate();
             }
-            int count = 0;
-            Selected_Item = -1;
-            Inv.Categorise(SelectedCat);
-            Map_Pnl.Focus();
-            if (SelectedCat != OldCat)
+            else
             {
-                Items.Clear();
-                Desc_Pnl.Invalidate();
+                if (SelectedCat != OldCat)
+                {
+                    Items.Clear();
+                    Item_Pnl.Invalidate();
+                    Desc_Pnl.Invalidate();
+                }
+                Inv.Categorise(SelectedCat);
             }
-            foreach (Tuple<string, int, string, bool,string, Tuple<int, int, int, int, int, string>,bool> tuple in Inv.CategoryData)
-            {
-                //Sets up every rectangle and attaches a name for the item id in the list being drawn
-                bool Equipabble=tuple.Item4, Equipped=tuple.Item7;
-                Items.Add(new Tuple<Rectangle, Rectangle, string,Rectangle,int,string, Tuple<int, int, int, int, int, string>,Tuple<bool,bool>>(new Rectangle(0, 52 * count, 51, 51), new Rectangle(102, 52 * count, 329, 51), tuple.Item1, new Rectangle(51,52*count,51,51), tuple.Item2,tuple.Item5,tuple.Item6,new Tuple<bool,bool>(Equipped,Equipabble)));
-                count++;
-            }
-            //Scales the scroll bar with the amount of items present in selected category
-            Item_Pnl.AutoScrollMinSize = new Size(0, 52 * count);
-            //if the item count doesn't make the list go past 120px then the bar is hidden
-            if(51.1*count <= 400)
-            {
-                Item_Pnl.VerticalScroll.Visible= false;
-            }
-            Item_Pnl.Invalidate();
         }
 
         private void Key_btn_Click(object sender, EventArgs e)
@@ -407,6 +415,11 @@ namespace Grid_based_map
         {
             SelectedCat = "Gear";
             InventoryUISetUp();       
+        }
+        private void Equiped_Btn_Click(object sender, EventArgs e)
+        {
+            SelectedCat = "Equipped";
+            InventoryUISetUp();
         }
         private void Item_Pnl_MouseDown(object sender, MouseEventArgs e)
         {
@@ -429,13 +442,14 @@ namespace Grid_based_map
             int count = 0;
             foreach (Tuple<Rectangle, Rectangle, string, Rectangle, int, string, Tuple<int, int, int, int, int, string>, Tuple<bool, bool>> tuple in Items)
             {
-                if (tuple.Rest.Item1 == true && count == Selected_Item)
+                if (tuple.Rest.Item2 == true && count == Selected_Item)
                 {
-                    Items.Insert(count, new Tuple<Rectangle, Rectangle, string, Rectangle, int, string, Tuple<int, int, int, int, int, string>, Tuple<bool, bool>>
-                    (tuple.Item1, tuple.Item2, tuple.Item3, tuple.Item4, tuple.Item5, tuple.Item6, tuple.Item7, new Tuple<bool, bool>(tuple.Rest.Item1, true)));
+                    Inv.AddItem(1, tuple.Item6, true);
+                    Inv.DelItem(1, tuple.Item6, true);
+                    Inv.PrintInv();
                     break;
                 }
-                else if (count == Selected_Item)
+                else if (count == Selected_Item && SelectedCat != "Key")
                 {
                     Character.Hp = Character.Hp + tuple.Item7.Item1;
                     if (Character.Hp >= Character.MaxHp)

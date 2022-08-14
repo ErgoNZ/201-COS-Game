@@ -14,7 +14,7 @@ namespace Grid_based_map
         public List<Tuple<string, int, string, bool,string, Tuple<int, int, int, int, int, string>,bool>> CategoryData = new List<Tuple<string, int, string, bool,string, Tuple<int, int, int, int, int, string>,bool>>();
         public int CatergisedAmount;
 
-        public void AddItem(int ItemAmount, string FileName)
+        public void AddItem(int ItemAmount, string FileName, bool Equipped)
         {
            string ItemName="",ItemType="",Element="";
            bool Equipabble=false;
@@ -78,7 +78,7 @@ namespace Grid_based_map
             {
                 if (ItemAmount > 0)
                 {
-                    InvData.Add(new Tuple<string, int,string,bool,string, Tuple<int, int, int, int, int, string>,bool> (ItemName, ItemAmount,ItemType,Equipabble,FileName,Tuple.Create(Hp,Atk,Def,Spd,Crit,Element),false));
+                    InvData.Add(new Tuple<string, int,string,bool,string, Tuple<int, int, int, int, int, string>,bool> (ItemName, ItemAmount,ItemType,Equipabble,FileName,Tuple.Create(Hp,Atk,Def,Spd,Crit,Element),Equipped));
                 }
             }
             else
@@ -91,7 +91,7 @@ namespace Grid_based_map
                     {
                         if (ItemAmount > 0)
                         {
-                            InvData.Insert(Index, new Tuple<string, int,string,bool,string, Tuple<int, int, int, int, int, string>,bool>(ItemName, ItemAmount + tuple.Item2,ItemType,Equipabble,FileName, Tuple.Create(Hp, Atk, Def, Spd, Crit, Element),true));
+                            InvData.Insert(Index, new Tuple<string, int,string,bool,string, Tuple<int, int, int, int, int, string>,bool>(ItemName, ItemAmount + tuple.Item2,ItemType,Equipabble,FileName, Tuple.Create(Hp, Atk, Def, Spd, Crit, Element),Equipped));
                             //This just removes the leftover starting item entry from the inventory so only the new value shows.
                             InvData.RemoveAt(Index + 1);
                             break;
@@ -102,7 +102,7 @@ namespace Grid_based_map
                     {
                         if (ItemAmount > 0)
                         {
-                            InvData.Add(new Tuple<string, int,string,bool,string, Tuple<int, int, int, int, int, string>,bool>(ItemName, ItemAmount,ItemType,Equipabble,FileName, Tuple.Create(Hp,Atk,Def,Spd,Crit,Element),false));
+                            InvData.Add(new Tuple<string, int,string,bool,string, Tuple<int, int, int, int, int, string>,bool>(ItemName, ItemAmount,ItemType,Equipabble,FileName, Tuple.Create(Hp,Atk,Def,Spd,Crit,Element),Equipped));
                         }
                         break;
                     }
@@ -268,5 +268,6 @@ namespace Grid_based_map
                 Debug.WriteLine("Equipped:" + tuple.Item7);
             }
         }
+
     }
 }
