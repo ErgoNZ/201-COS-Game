@@ -8,7 +8,7 @@ namespace Grid_based_map
 {
     class Inventory
     {   // The tuple is set up like this Name, Amount of item, Item type, Equipabble?, ItemFile, Tuple(Hp,Atk,Def,Spd,Crit,Element?)Note:Nested tuple!,Equipped?
-        //                               string,  int,          string,    Bool,        string          Multiple ints,      String
+        //                               string,  int,          string,    Bool,        string          Multiple ints,      String                      bool
         //^^^ this is planned result once everything is up and running
         public List<Tuple<string, int,string,bool,string, Tuple<int, int, int, int, int, string>,bool>> InvData = new List<Tuple<string, int,string,bool,string,Tuple<int,int,int,int,int,string>,bool>>();
         public List<Tuple<string, int, string, bool,string, Tuple<int, int, int, int, int, string>,bool>> CategoryData = new List<Tuple<string, int, string, bool,string, Tuple<int, int, int, int, int, string>,bool>>();
@@ -204,7 +204,7 @@ namespace Grid_based_map
             {
                 foreach (Tuple<string, int, string, bool,string, Tuple<int, int, int, int, int, string>,bool> tuple in InvData)
                 {
-                    if(tuple.Item3 == "Weapon" || tuple.Item3 == "Helmet" || tuple.Item3 == "Chestplate" || tuple.Item3 == "leggings"|| tuple.Item3 == "Boots" && tuple.Item7 == false)
+                    if(tuple.Item3 == "Weapon" && tuple.Item7 == false || tuple.Item3 == "Helmet" && tuple.Item7 == false || tuple.Item3 == "Chestplate" && tuple.Item7 == false || tuple.Item3 == "leggings" && tuple.Item7 == false || tuple.Item3 == "Boots" && tuple.Item7 == false)
                     {
                         CategoryData.Add(new Tuple<string, int, string, bool,string, Tuple<int, int, int, int, int, string>,bool>(tuple.Item1,tuple.Item2,tuple.Item3,tuple.Item4,tuple.Item5,tuple.Item6,tuple.Item7));
                     }

@@ -29,8 +29,7 @@ namespace Grid_based_map
                   PlayerCrit = new Rectangle(280, 175, 100, 50),
                   Sec4 = new Rectangle(0,500,300,100),
                   ItemImage = new Rectangle(0,0,100,100),
-                  ItemDesc = new Rectangle(100,0,196,195),
-                  Centering = new Rectangle(213,0,1,841)
+                  ItemDesc = new Rectangle(100,0,196,195)
 
                                                                ;
         int TileID = 0, Selected_Item = -1;
@@ -65,9 +64,6 @@ namespace Grid_based_map
             InitializeComponent();
             typeof(Panel).InvokeMember("DoubleBuffered", BindingFlags.SetProperty | BindingFlags.Instance | BindingFlags.NonPublic, null, Map_Pnl, new object[] { true });
             Map.LoadMap("TestMap");
-            Inv.AddItem(4, "Wallnut",false);
-            Inv.AddItem(4, "Apple",false);
-            Inv.AddItem(1, "Key",false);
             Inv.AddItem(1, "Chestplate",false);
             Inv.AddItem(1, "Helmet",false);
             Inv.PrintInv();
@@ -281,7 +277,6 @@ namespace Grid_based_map
             g.DrawString("Def:" + Character.Def, General, Brushes.Black, PlayerDef, Center);
             g.DrawString("Spd:" + Character.Spd, General, Brushes.Black, PlayerSpd, Center);
             g.DrawString("Crit:" + Character.Crit + "%", General, Brushes.Black, PlayerCrit, Center);
-            g.FillRectangle(Grass, Centering);
         }
 
         //
@@ -359,8 +354,6 @@ namespace Grid_based_map
         }
         private void InventoryUISetUp()
         {
-            if (SelectedCat != "Equipped")
-            {
                 int count = 0;
                 Selected_Item = -1;
                 if (SelectedCat != OldCat)
@@ -385,40 +378,33 @@ namespace Grid_based_map
                 {
                     Item_Pnl.VerticalScroll.Visible = false;
                 }
-                Item_Pnl.Invalidate();
-            }
-            else
-            {
-                if (SelectedCat != OldCat)
-                {
-                    Items.Clear();
-                    Item_Pnl.Invalidate();
-                    Desc_Pnl.Invalidate();
-                }
-                Inv.Categorise(SelectedCat);
-            }
+                Item_Pnl.Invalidate();                     
         }
 
         private void Key_btn_Click(object sender, EventArgs e)
         {
             SelectedCat = "Key";
+            Use_Btn.Text = "Use/Equip";
             InventoryUISetUp();
         }
 
         private void Item_btn_Click(object sender, EventArgs e)
         {
             SelectedCat = "Item";
+            Use_Btn.Text = "Use/Equip";
             InventoryUISetUp();          
         }
 
         private void Gear_btn_Click(object sender, EventArgs e)
         {
             SelectedCat = "Gear";
+            Use_Btn.Text = "Use/Equip";
             InventoryUISetUp();       
         }
         private void Equiped_Btn_Click(object sender, EventArgs e)
         {
             SelectedCat = "Equipped";
+            Use_Btn.Text = "Unequip";
             InventoryUISetUp();
         }
         private void Item_Pnl_MouseDown(object sender, MouseEventArgs e)
@@ -442,11 +428,26 @@ namespace Grid_based_map
             int count = 0;
             foreach (Tuple<Rectangle, Rectangle, string, Rectangle, int, string, Tuple<int, int, int, int, int, string>, Tuple<bool, bool>> tuple in Items)
             {
-                if (tuple.Rest.Item2 == true && count == Selected_Item)
+                if (tuple.Rest.Item1 == true)
+                {
+                    Inv.AddItem(1, tuple.Item6, false);
+                    Inv.DelItem(1, tuple.Item6, false);
+                    Inv.PrintInv();
+                    Items.Clear();
+                    Info_Pnl.Invalidate();
+                    Desc_Pnl.Invalidate();
+                    InventoryUISetUp();
+                    break;
+                }
+                else if (tuple.Rest.Item1 == false && count == Selected_Item)
                 {
                     Inv.AddItem(1, tuple.Item6, true);
                     Inv.DelItem(1, tuple.Item6, true);
                     Inv.PrintInv();
+                    Items.Clear();
+                    Info_Pnl.Invalidate();
+                    Desc_Pnl.Invalidate();
+                    InventoryUISetUp();
                     break;
                 }
                 else if (count == Selected_Item && SelectedCat != "Key")
