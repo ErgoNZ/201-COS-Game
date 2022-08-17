@@ -66,6 +66,7 @@ namespace Grid_based_map
             Map.LoadMap("TestMap");
             Inv.AddItem(1, "Chestplate",false);
             Inv.AddItem(1, "Helmet",false);
+            Inv.AddItem(1, "SwordBasic", false);
             Inv.PrintInv();
             DrawGrid();
             foreach (Control ctrl in Item_Pnl.Controls)
@@ -163,6 +164,10 @@ namespace Grid_based_map
                     CameraSnap();
                 }
 
+            if (e.KeyData == Keys.E)
+            {
+                Character.StatPrint();
+            }
                 //Call the DrawGrid method to refresh the players current view and update any tiles as needed
                 Info_Pnl.Invalidate();
                 DrawGrid();
@@ -428,8 +433,21 @@ namespace Grid_based_map
             int count = 0;
             foreach (Tuple<Rectangle, Rectangle, string, Rectangle, int, string, Tuple<int, int, int, int, int, string>, Tuple<bool, bool>> tuple in Items)
             {
-                if (tuple.Rest.Item1 == true)
+                if (tuple.Rest.Item1 == true && Selected_Item ==count)
                 {
+                    Character.MaxHp -= tuple.Item7.Item1;
+                    Character.Atk -= tuple.Item7.Item2;
+                    Character.Def -= tuple.Item7.Item3;
+                    Character.Spd -= tuple.Item7.Item4;
+                    Character.Crit -= tuple.Item7.Item5;
+                    if (tuple.Item3 == "Weapon")
+                    {
+                        Character.AtkElement = "None";
+                    }
+                    else
+                    {
+                        Character.DefElement.Remove(tuple.Item7.Item6);
+                    }
                     Inv.AddItem(1, tuple.Item6, false);
                     Inv.DelItem(1, tuple.Item6, false);
                     Inv.PrintInv();
@@ -443,6 +461,19 @@ namespace Grid_based_map
                 {
                     Inv.AddItem(1, tuple.Item6, true);
                     Inv.DelItem(1, tuple.Item6, true);
+                    Character.MaxHp += tuple.Item7.Item1;
+                    Character.Atk += tuple.Item7.Item2;
+                    Character.Def += tuple.Item7.Item3;
+                    Character.Spd += tuple.Item7.Item4;
+                    Character.Crit += tuple.Item7.Item5;
+                    if (tuple.Item3 == "Weapon")
+                    {
+                        Character.AtkElement = tuple.Item7.Item6;
+                    }
+                    else
+                    {
+                        Character.DefElement.Add(tuple.Item7.Item6);
+                    }
                     Inv.PrintInv();
                     Items.Clear();
                     Info_Pnl.Invalidate();
