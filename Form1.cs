@@ -38,6 +38,7 @@ namespace Grid_based_map
         string SelectedCat, OldCat;
         Image Error_Image = Image.FromFile("../../../Items/Images/Error.png");
         Image Item_Image;
+        //         Rec amount Rec Name  Name   Image   amount File    Stats                                     Equipped/Equippable
         List<Tuple<Rectangle,Rectangle,string,Rectangle,int,string, Tuple<int, int, int, int, int, string>,Tuple<bool,bool>>> Items = new List<Tuple<Rectangle,Rectangle,string,Rectangle,int,string, Tuple<int, int, int, int, int, string>,Tuple<bool,bool>>>();
 
         Player Character = new Player();
@@ -67,6 +68,9 @@ namespace Grid_based_map
             Inv.AddItem(1, "Chestplate",false);
             Inv.AddItem(1, "Helmet",false);
             Inv.AddItem(1, "SwordBasic", false);
+            Inv.AddItem(5, "Apple", false);
+            Inv.AddItem(5, "Wallnut", false);
+            Inv.AddItem(5, "Wallnut", false);
             Inv.PrintInv();
             DrawGrid();
             foreach (Control ctrl in Item_Pnl.Controls)
@@ -360,7 +364,6 @@ namespace Grid_based_map
         private void InventoryUISetUp()
         {
                 int count = 0;
-                Selected_Item = -1;
                 if (SelectedCat != OldCat)
                 {
                     Items.Clear();
@@ -390,6 +393,7 @@ namespace Grid_based_map
         {
             SelectedCat = "Key";
             Use_Btn.Text = "Use/Equip";
+            Selected_Item = -1;
             InventoryUISetUp();
         }
 
@@ -397,6 +401,7 @@ namespace Grid_based_map
         {
             SelectedCat = "Item";
             Use_Btn.Text = "Use/Equip";
+            Selected_Item = -1;
             InventoryUISetUp();          
         }
 
@@ -404,12 +409,14 @@ namespace Grid_based_map
         {
             SelectedCat = "Gear";
             Use_Btn.Text = "Use/Equip";
+            Selected_Item = -1;
             InventoryUISetUp();       
         }
         private void Equiped_Btn_Click(object sender, EventArgs e)
         {
             SelectedCat = "Equipped";
             Use_Btn.Text = "Unequip";
+            Selected_Item = -1;
             InventoryUISetUp();
         }
         private void Item_Pnl_MouseDown(object sender, MouseEventArgs e)
@@ -457,7 +464,7 @@ namespace Grid_based_map
                     InventoryUISetUp();
                     break;
                 }
-                else if (tuple.Rest.Item1 == false && count == Selected_Item)
+                else if (tuple.Rest.Item1 == false && count == Selected_Item && tuple.Rest.Item2 == true)
                 {
                     Inv.AddItem(1, tuple.Item6, true);
                     Inv.DelItem(1, tuple.Item6, true);
