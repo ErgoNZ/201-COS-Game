@@ -7,3 +7,4 @@ True
 0
 0
 None
+A basic chestplate used in war.

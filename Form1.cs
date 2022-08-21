@@ -29,7 +29,7 @@ namespace Grid_based_map
                   PlayerCrit = new Rectangle(280, 175, 100, 50),
                   Sec4 = new Rectangle(0,500,300,100),
                   ItemImage = new Rectangle(0,0,100,100),
-                  ItemDesc = new Rectangle(100,0,196,195)
+                  ItemDesc = new Rectangle(100,0,258,195)
 
                                                                ;
         int TileID = 0, Selected_Item = -1;
@@ -38,9 +38,9 @@ namespace Grid_based_map
         string SelectedCat, OldCat;
         Image Error_Image = Image.FromFile("../../../Items/Images/Error.png");
         Image Item_Image;
-        //         Rec amount Rec Name  Name   Image   amount File    Stats                                     Equipped/Equippable
-        List<Tuple<Rectangle,Rectangle,string,Rectangle,int,string, Tuple<int, int, int, int, int, string>,Tuple<bool,bool>>> Items = new List<Tuple<Rectangle,Rectangle,string,Rectangle,int,string, Tuple<int, int, int, int, int, string>,Tuple<bool,bool>>>();
-
+        //         Rec amount Rec Name  Name   Image   amount File    Stats                                   Equipped/Equippable
+        List<Tuple<Rectangle,Rectangle,string,Rectangle,int,string, Tuple<int, int, int, int, int, string>,Tuple<bool,bool,string,string>>> Items = new List<Tuple<Rectangle,Rectangle,string,Rectangle,int,string, Tuple<int, int, int, int, int, string>,Tuple<bool,bool,string,string>>>();
+        
         Player Character = new Player();
         MapData Map = new MapData();
         Inventory Inv = new Inventory();
@@ -58,8 +58,9 @@ namespace Grid_based_map
         }      
 
         Font General = new Font(FontFamily.GenericMonospace,16 ,FontStyle.Regular);
-        Font Item = new Font(FontFamily.GenericMonospace, 8, FontStyle.Regular);
+        Font Item = new Font(FontFamily.GenericMonospace, 12, FontStyle.Regular);
         StringFormat Center = new StringFormat();
+        StringFormat CenterTop = new StringFormat();
         public Form1()
         {
             InitializeComponent();
@@ -69,17 +70,12 @@ namespace Grid_based_map
             Inv.AddItem(1, "Helmet",false);
             Inv.AddItem(1, "SwordBasic", false);
             Inv.AddItem(5, "Apple", false);
-            Inv.AddItem(5, "Wallnut", false);
-            Inv.AddItem(5, "Wallnut", false);
+            Inv.AddItem(10, "Wallnut", false);
             Inv.PrintInv();
             DrawGrid();
-            foreach (Control ctrl in Item_Pnl.Controls)
-            {
-                if (ctrl.GetType() == typeof(VScrollBar))
-                {
-                    ctrl.Width = 1;
-                }
-            }
+            Center.Alignment = StringAlignment.Center;
+            Center.LineAlignment = StringAlignment.Center;
+            CenterTop.Alignment = StringAlignment.Center;
         }
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
@@ -271,8 +267,6 @@ namespace Grid_based_map
         //
         private void Info_Pnl_Paint(object sender, PaintEventArgs e)
         {
-            Center.Alignment = StringAlignment.Center;
-            Center.LineAlignment= StringAlignment.Center;
             g = e.Graphics;
             g.FillRectangle(Brushes.SaddleBrown, Sec1);
             g.FillRectangle(Brushes.Brown, Sec2);
@@ -299,7 +293,7 @@ namespace Grid_based_map
             g.TranslateTransform(Item_Pnl.AutoScrollPosition.X, Item_Pnl.AutoScrollPosition.Y);
             //Check every tuple in the Items list
             int count = 0;
-            foreach (Tuple<Rectangle, Rectangle, string,Rectangle,int,string, Tuple<int, int, int, int, int, string>,Tuple<bool,bool>> tuple in Items)
+            foreach (Tuple<Rectangle, Rectangle, string,Rectangle,int,string, Tuple<int, int, int, int, int, string>,Tuple<bool,bool,string,string>> tuple in Items)
             {
 
                 //Draws the UI for each item
@@ -345,17 +339,17 @@ namespace Grid_based_map
             else
             {
                 int count = 0;
-                foreach (Tuple<Rectangle, Rectangle, string, Rectangle, int, string, Tuple<int, int, int, int, int, string>, Tuple<bool, bool>> tuple in Items)
+                foreach (Tuple<Rectangle, Rectangle, string, Rectangle, int, string, Tuple<int, int, int, int, int, string>, Tuple<bool, bool,string,string>> tuple in Items)
                 {
                     if (count == Selected_Item && Item_Image != null)
                     {
                         g.DrawImage(Item_Image, ItemImage);
-                        g.DrawString(tuple.Item3, Item, Brushes.Black, ItemDesc, Center);
+                        g.DrawString(tuple.Rest.Item4, Item, Brushes.Black, ItemDesc, CenterTop);
                     }
                     else if (count == Selected_Item)
                     {
                         g.DrawImage(Error_Image, ItemImage);
-                        g.DrawString(tuple.Item3, Item, Brushes.Black, ItemDesc, Center);
+                        g.DrawString(tuple.Rest.Item4, Item, Brushes.Black, ItemDesc, CenterTop);
                     }
                     count++;
                 }
@@ -372,11 +366,11 @@ namespace Grid_based_map
                 }
                 Inv.Categorise(SelectedCat);
                 Map_Pnl.Focus();
-                foreach (Tuple<string, int, string, bool, string, Tuple<int, int, int, int, int, string>, bool> tuple in Inv.CategoryData)
+                foreach (Tuple<Tuple<string, string>, int, string, bool, string, Tuple<int, int, int, int, int, string>, bool> tuple in Inv.CategoryData)
                 {
                     //Sets up every rectangle and attaches a name for the item id in the list being drawn
                     bool Equipabble = tuple.Item4, Equipped = tuple.Item7;
-                    Items.Add(new Tuple<Rectangle, Rectangle, string, Rectangle, int, string, Tuple<int, int, int, int, int, string>, Tuple<bool, bool>>(new Rectangle(0, 52 * count, 51, 51), new Rectangle(102, 52 * count, 329, 51), tuple.Item1, new Rectangle(51, 52 * count, 51, 51), tuple.Item2, tuple.Item5, tuple.Item6, new Tuple<bool, bool>(Equipped, Equipabble)));
+                    Items.Add(new Tuple<Rectangle, Rectangle, string, Rectangle, int, string, Tuple<int, int, int, int, int, string>, Tuple<bool,bool,string,string>>(new Rectangle(0, 52 * count, 51, 51), new Rectangle(102, 52 * count, 329, 51), tuple.Item1.Item1, new Rectangle(51, 52 * count, 51, 51), tuple.Item2, tuple.Item5, tuple.Item6, new Tuple<bool, bool,string,string>(Equipped, Equipabble,tuple.Item3,tuple.Item1.Item2)));
                     count++;
                 }
                 //Scales the scroll bar with the amount of items present in selected category
@@ -423,7 +417,7 @@ namespace Grid_based_map
         {
             int count=0;
             Point Mouse = new Point(e.X, e.Y - Item_Pnl.AutoScrollPosition.Y);
-            foreach (Tuple<Rectangle, Rectangle, string, Rectangle, int,string, Tuple<int, int, int, int, int, string>, Tuple<bool, bool>> tuple in Items)
+            foreach (Tuple<Rectangle, Rectangle, string, Rectangle, int,string, Tuple<int, int, int, int, int, string>, Tuple<bool,bool,string,string>> tuple in Items)
             {
                 if (tuple.Item2.Contains(Mouse))
                 {
@@ -438,7 +432,7 @@ namespace Grid_based_map
         private void Use_Btn_Click(object sender, EventArgs e)
         {
             int count = 0;
-            foreach (Tuple<Rectangle, Rectangle, string, Rectangle, int, string, Tuple<int, int, int, int, int, string>, Tuple<bool, bool>> tuple in Items)
+            foreach (Tuple<Rectangle, Rectangle, string, Rectangle, int, string, Tuple<int, int, int, int, int, string>, Tuple<bool,bool,string,string>> tuple in Items)
             {
                 if (tuple.Rest.Item1 == true && Selected_Item ==count)
                 {

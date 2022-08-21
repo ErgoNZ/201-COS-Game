@@ -7,3 +7,4 @@ Def
 Spd
 Crit
 Element
+Description Text
