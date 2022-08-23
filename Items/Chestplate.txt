@@ -6,5 +6,5 @@ True
 5
 0
 0
-None
+Slash
 A basic chestplate used in war.

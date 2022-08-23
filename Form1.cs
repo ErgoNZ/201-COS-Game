@@ -29,7 +29,8 @@ namespace Grid_based_map
                   PlayerCrit = new Rectangle(280, 175, 100, 50),
                   Sec4 = new Rectangle(0,500,300,100),
                   ItemImage = new Rectangle(0,0,100,100),
-                  ItemDesc = new Rectangle(100,0,258,195)
+                  ItemDesc = new Rectangle(100,0,258,195),
+                  ItemStats = new Rectangle(0,101,100,100)
 
                                                                ;
         int TileID = 0, Selected_Item = -1;
@@ -38,7 +39,7 @@ namespace Grid_based_map
         string SelectedCat, OldCat;
         Image Error_Image = Image.FromFile("../../../Items/Images/Error.png");
         Image Item_Image;
-        //         Rec amount Rec Name  Name   Image   amount File    Stats                                   Equipped/Equippable
+        //         Rec amount Rec Name  Name   Image   amount File    Stats                                 Equipped/Equippable/item type/Description
         List<Tuple<Rectangle,Rectangle,string,Rectangle,int,string, Tuple<int, int, int, int, int, string>,Tuple<bool,bool,string,string>>> Items = new List<Tuple<Rectangle,Rectangle,string,Rectangle,int,string, Tuple<int, int, int, int, int, string>,Tuple<bool,bool,string,string>>>();
         
         Player Character = new Player();
@@ -312,11 +313,11 @@ namespace Grid_based_map
                 g.DrawString(tuple.Item3, General, Brushes.Black, tuple.Item2, Center);
                 g.DrawString(tuple.Item5+"", General, Brushes.Black, tuple.Item4, Center);
                 //Does this file path exist?
-                bool FileExists = File.Exists("../../../Items/Images/" + tuple.Item3 + ".png");
+                bool FileExists = File.Exists("../../../Items/Images/" + tuple.Item6 + ".png");
                 if(FileExists == true)
                 {
                     //Draws image as intended with no errors
-                    Item_Image = Image.FromFile("../../../Items/Images/" + tuple.Item3 + ".png");
+                    Item_Image = Image.FromFile("../../../Items/Images/" + tuple.Item6 + ".png");
                     g.DrawImage(Item_Image, tuple.Item1.X+1,tuple.Item1.Y+1);
                 }
                 else
@@ -331,6 +332,7 @@ namespace Grid_based_map
         }
         private void Desc_Pnl_Paint(object sender, PaintEventArgs e)
         {
+            Item_Image = null;
             g = e.Graphics;
             if (SelectedCat != OldCat)
             {
@@ -341,15 +343,54 @@ namespace Grid_based_map
                 int count = 0;
                 foreach (Tuple<Rectangle, Rectangle, string, Rectangle, int, string, Tuple<int, int, int, int, int, string>, Tuple<bool, bool,string,string>> tuple in Items)
                 {
-                    if (count == Selected_Item && Item_Image != null)
+                    if (count == Selected_Item)
                     {
-                        g.DrawImage(Item_Image, ItemImage);
+                        bool FileExists = File.Exists("../../../Items/Images/" + tuple.Item6 + ".png");
+                        if (FileExists == true)
+                        {
+                            Item_Image = Image.FromFile("../../../Items/Images/" + tuple.Item6 + ".png");
+                            g.DrawImage(Item_Image, ItemImage);
+                        }
+                        else
+                        {
+                            g.DrawImage(Error_Image, ItemImage);
+                        }
                         g.DrawString(tuple.Rest.Item4, Item, Brushes.Black, ItemDesc, CenterTop);
-                    }
-                    else if (count == Selected_Item)
-                    {
-                        g.DrawImage(Error_Image, ItemImage);
-                        g.DrawString(tuple.Rest.Item4, Item, Brushes.Black, ItemDesc, CenterTop);
+                        string ItemStat="",stat="";
+                        for (int i = 0; i < 6; i++)
+                        {
+                            if(i == 0)
+                            {
+                                stat = "Hp";
+                                ItemStat = stat + ":" + tuple.Item7.Item1 + Environment.NewLine;
+                            }
+                            if (i == 1)
+                            {
+                                stat = "Def";
+                                ItemStat = stat + ":" + tuple.Item7.Item2 + Environment.NewLine;
+                            }
+                            if (i == 2)
+                            {
+                                stat = "Spd";
+                                ItemStat = stat + ":" + tuple.Item7.Item3 + Environment.NewLine;
+                            }
+                            if (i == 3)
+                            {
+                                stat = "Atk";
+                                ItemStat = stat + ":" + tuple.Item7.Item4 + Environment.NewLine;
+                            }
+                            if (i == 4)
+                            {
+                                stat = "Crit";
+                                ItemStat = stat + ":" + tuple.Item7.Item5 + Environment.NewLine;
+                            }
+                            if (i == 5)
+                            {
+                                stat = "Atk Type";
+                                ItemStat = stat + ":" + tuple.Item7.Item6 + Environment.NewLine;
+                            }
+                        }
+                        g.DrawString(ItemStat, Item, Brushes.Black, ItemStats, CenterTop);
                     }
                     count++;
                 }
@@ -441,17 +482,13 @@ namespace Grid_based_map
                     Character.Def -= tuple.Item7.Item3;
                     Character.Spd -= tuple.Item7.Item4;
                     Character.Crit -= tuple.Item7.Item5;
-                    if (tuple.Item3 == "Weapon")
+                    if (tuple.Rest.Item3 == "Weapon")
                     {
                         Character.AtkElement = "None";
-                    }
-                    else
-                    {
-                        Character.DefElement.Remove(tuple.Item7.Item6);
+                        Character.WeaponEquipped = false;
                     }
                     Inv.AddItem(1, tuple.Item6, false);
                     Inv.DelItem(1, tuple.Item6, false);
-                    Inv.PrintInv();
                     Items.Clear();
                     Info_Pnl.Invalidate();
                     Desc_Pnl.Invalidate();
@@ -467,15 +504,27 @@ namespace Grid_based_map
                     Character.Def += tuple.Item7.Item3;
                     Character.Spd += tuple.Item7.Item4;
                     Character.Crit += tuple.Item7.Item5;
-                    if (tuple.Item3 == "Weapon")
+                    if (tuple.Rest.Item3 == "Weapon" && Character.WeaponEquipped==false)
                     {
                         Character.AtkElement = tuple.Item7.Item6;
+                        Character.WeaponEquipped = true;
                     }
-                    else
+                    if(tuple.Rest.Item3 == "Helmet" && Character.HelmetEquipped == false)
                     {
-                        Character.DefElement.Add(tuple.Item7.Item6);
+                        Character.HelmetEquipped = true;
                     }
-                    Inv.PrintInv();
+                    if (tuple.Rest.Item3 == "Chestplate" && Character.ChestplateEquipped == false)
+                    {
+                        Character.ChestplateEquipped = true;
+                    }
+                    if (tuple.Rest.Item3 == "Leggings" && Character.LeggingsEquipped == false)
+                    {
+                        Character.LeggingsEquipped = true;
+                    }
+                    if (tuple.Rest.Item3 == "Boots" && Character.BootsEquipped == false)
+                    {
+                        Character.BootsEquipped = true;
+                    }
                     Items.Clear();
                     Info_Pnl.Invalidate();
                     Desc_Pnl.Invalidate();
@@ -490,7 +539,6 @@ namespace Grid_based_map
                         Character.Hp = Character.MaxHp;
                     }
                     Inv.DelItem(1, tuple.Item6, tuple.Rest.Item2);
-                    Inv.PrintInv();
                     Items.Clear();
                     Info_Pnl.Invalidate();
                     Desc_Pnl.Invalidate();
