@@ -59,7 +59,7 @@ namespace Grid_based_map
         }      
 
         Font General = new Font(FontFamily.GenericMonospace,16 ,FontStyle.Regular);
-        Font Item = new Font(FontFamily.GenericMonospace, 12, FontStyle.Regular);
+        Font Item = new Font(FontFamily.GenericMonospace, 10, FontStyle.Regular);
         StringFormat Center = new StringFormat();
         StringFormat CenterTop = new StringFormat();
         public Form1()
@@ -362,35 +362,35 @@ namespace Grid_based_map
                             if(i == 0)
                             {
                                 stat = "Hp";
-                                ItemStat = stat + ":" + tuple.Item7.Item1 + Environment.NewLine;
+                                ItemStat += stat + ":" + tuple.Item7.Item1 + Environment.NewLine;
                             }
                             if (i == 1)
                             {
                                 stat = "Def";
-                                ItemStat = stat + ":" + tuple.Item7.Item2 + Environment.NewLine;
+                                ItemStat += stat + ":" + tuple.Item7.Item2 + Environment.NewLine;
                             }
                             if (i == 2)
                             {
                                 stat = "Spd";
-                                ItemStat = stat + ":" + tuple.Item7.Item3 + Environment.NewLine;
+                                ItemStat += stat + ":" + tuple.Item7.Item3 + Environment.NewLine;
                             }
                             if (i == 3)
                             {
                                 stat = "Atk";
-                                ItemStat = stat + ":" + tuple.Item7.Item4 + Environment.NewLine;
+                                ItemStat += stat + ":" + tuple.Item7.Item4 + Environment.NewLine;
                             }
                             if (i == 4)
                             {
                                 stat = "Crit";
-                                ItemStat = stat + ":" + tuple.Item7.Item5 + Environment.NewLine;
+                                ItemStat += stat + ":" + tuple.Item7.Item5 + Environment.NewLine;
                             }
                             if (i == 5)
                             {
-                                stat = "Atk Type";
-                                ItemStat = stat + ":" + tuple.Item7.Item6 + Environment.NewLine;
+                                stat = "Type";
+                                ItemStat += stat + ":" + tuple.Item7.Item6 + Environment.NewLine;
                             }
                         }
-                        g.DrawString(ItemStat, Item, Brushes.Black, ItemStats, CenterTop);
+                        g.DrawString(ItemStat, Item, Brushes.Black, ItemStats);
                     }
                     count++;
                 }
