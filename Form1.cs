@@ -68,6 +68,7 @@ namespace Grid_based_map
             typeof(Panel).InvokeMember("DoubleBuffered", BindingFlags.SetProperty | BindingFlags.Instance | BindingFlags.NonPublic, null, Map_Pnl, new object[] { true });
             Map.LoadMap("TestMap");
             Inv.AddItem(1, "Chestplate",false);
+            Inv.AddItem(1, "Chestplate1", false);
             Inv.AddItem(1, "Helmet",false);
             Inv.AddItem(1, "SwordBasic", false);
             Inv.AddItem(5, "Apple", false);
@@ -366,17 +367,17 @@ namespace Grid_based_map
                             }
                             if (i == 1)
                             {
-                                stat = "Def";
+                                stat = "Atk";
                                 ItemStat += stat + ":" + tuple.Item7.Item2 + Environment.NewLine;
                             }
                             if (i == 2)
                             {
-                                stat = "Spd";
+                                stat = "Def";
                                 ItemStat += stat + ":" + tuple.Item7.Item3 + Environment.NewLine;
                             }
                             if (i == 3)
                             {
-                                stat = "Atk";
+                                stat = "Spd";
                                 ItemStat += stat + ":" + tuple.Item7.Item4 + Environment.NewLine;
                             }
                             if (i == 4)
@@ -487,6 +488,22 @@ namespace Grid_based_map
                         Character.AtkElement = "None";
                         Character.WeaponEquipped = false;
                     }
+                    if (tuple.Rest.Item3 == "Helmet")
+                    {
+                        Character.HelmetEquipped = false;
+                    }
+                    if (tuple.Rest.Item3 == "Chestplate")
+                    {
+                        Character.ChestplateEquipped = false;
+                    }
+                    if (tuple.Rest.Item3 == "Leggings")
+                    {
+                        Character.LeggingsEquipped = false;
+                    }
+                    if (tuple.Rest.Item3 == "Boots")
+                    {
+                        Character.BootsEquipped = false;
+                    }
                     Inv.AddItem(1, tuple.Item6, false);
                     Inv.DelItem(1, tuple.Item6, false);
                     Items.Clear();
@@ -497,33 +514,61 @@ namespace Grid_based_map
                 }
                 else if (tuple.Rest.Item1 == false && count == Selected_Item && tuple.Rest.Item2 == true)
                 {
-                    Inv.AddItem(1, tuple.Item6, true);
-                    Inv.DelItem(1, tuple.Item6, true);
-                    Character.MaxHp += tuple.Item7.Item1;
-                    Character.Atk += tuple.Item7.Item2;
-                    Character.Def += tuple.Item7.Item3;
-                    Character.Spd += tuple.Item7.Item4;
-                    Character.Crit += tuple.Item7.Item5;
                     if (tuple.Rest.Item3 == "Weapon" && Character.WeaponEquipped==false)
                     {
                         Character.AtkElement = tuple.Item7.Item6;
                         Character.WeaponEquipped = true;
+                        Inv.AddItem(1, tuple.Item6, true);
+                        Inv.DelItem(1, tuple.Item6, true);
+                        Character.MaxHp += tuple.Item7.Item1;
+                        Character.Atk += tuple.Item7.Item2;
+                        Character.Def += tuple.Item7.Item3;
+                        Character.Spd += tuple.Item7.Item4;
+                        Character.Crit += tuple.Item7.Item5;
                     }
                     if(tuple.Rest.Item3 == "Helmet" && Character.HelmetEquipped == false)
                     {
                         Character.HelmetEquipped = true;
+                        Inv.AddItem(1, tuple.Item6, true);
+                        Inv.DelItem(1, tuple.Item6, true);
+                        Character.MaxHp += tuple.Item7.Item1;
+                        Character.Atk += tuple.Item7.Item2;
+                        Character.Def += tuple.Item7.Item3;
+                        Character.Spd += tuple.Item7.Item4;
+                        Character.Crit += tuple.Item7.Item5;
                     }
                     if (tuple.Rest.Item3 == "Chestplate" && Character.ChestplateEquipped == false)
                     {
                         Character.ChestplateEquipped = true;
+                        Inv.AddItem(1, tuple.Item6, true);
+                        Inv.DelItem(1, tuple.Item6, true);
+                        Character.MaxHp += tuple.Item7.Item1;
+                        Character.Atk += tuple.Item7.Item2;
+                        Character.Def += tuple.Item7.Item3;
+                        Character.Spd += tuple.Item7.Item4;
+                        Character.Crit += tuple.Item7.Item5;
                     }
                     if (tuple.Rest.Item3 == "Leggings" && Character.LeggingsEquipped == false)
                     {
                         Character.LeggingsEquipped = true;
+                        Inv.AddItem(1, tuple.Item6, true);
+                        Inv.DelItem(1, tuple.Item6, true);
+                        Character.MaxHp += tuple.Item7.Item1;
+                        Character.Atk += tuple.Item7.Item2;
+                        Character.Def += tuple.Item7.Item3;
+                        Character.Spd += tuple.Item7.Item4;
+                        Character.Crit += tuple.Item7.Item5;
                     }
                     if (tuple.Rest.Item3 == "Boots" && Character.BootsEquipped == false)
                     {
                         Character.BootsEquipped = true;
+                        Inv.AddItem(1, tuple.Item6, true);
+                        Inv.DelItem(1, tuple.Item6, true);
+                        Character.MaxHp += tuple.Item7.Item1;
+                        Character.Atk += tuple.Item7.Item2;
+                        Character.Def += tuple.Item7.Item3;
+                        Character.Spd += tuple.Item7.Item4;
+                        Character.Crit += tuple.Item7.Item5;
                     }
                     Items.Clear();
                     Info_Pnl.Invalidate();

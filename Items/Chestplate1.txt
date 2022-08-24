@@ -1,0 +1,10 @@
+Chestplate1
+Chestplate
+True
+0
+0
+5
+0
+0
+Slash
+A basic chestplate used in war.
