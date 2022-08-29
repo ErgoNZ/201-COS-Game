@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31205.134
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Grid based map", "Grid based map.csproj", "{BD7E6152-D829-4CD6-B024-405BC90A1C34}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Grid based map", "Grid based map.csproj", "{BD7E6152-D829-4CD6-B024-405BC90A1C34}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

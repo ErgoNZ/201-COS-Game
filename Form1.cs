@@ -38,15 +38,14 @@ namespace Grid_based_map
         bool CharOnScrn, cameraControl;
         string SelectedCat, OldCat;
         Image Error_Image = Image.FromFile("../../../Items/Images/Error.png");
-        Image Item_Image;
+        Image Item_Image,TileImg;
         //         Rec amount Rec Name  Name   Image   amount File    Stats                                 Equipped/Equippable/item type/Description
         List<Tuple<Rectangle,Rectangle,string,Rectangle,int,string, Tuple<int, int, int, int, int, string>,Tuple<bool,bool,string,string>>> Items = new List<Tuple<Rectangle,Rectangle,string,Rectangle,int,string, Tuple<int, int, int, int, int, string>,Tuple<bool,bool,string,string>>>();
         
         Player Character = new Player();
         MapData Map = new MapData();
         Inventory Inv = new Inventory();
-        Brush Grass = Brushes.Green;
-        Brush Water = Brushes.Blue;
+        LootHandler Loot = new LootHandler();
 
         private void Save_Btn_Click(object sender, EventArgs e)
         {
@@ -66,14 +65,14 @@ namespace Grid_based_map
         {
             InitializeComponent();
             typeof(Panel).InvokeMember("DoubleBuffered", BindingFlags.SetProperty | BindingFlags.Instance | BindingFlags.NonPublic, null, Map_Pnl, new object[] { true });
-            Map.LoadMap("TestMap");
+            Map.LoadMap("1_1");
             Inv.AddItem(1, "Chestplate",false);
             Inv.AddItem(1, "Chestplate1", false);
             Inv.AddItem(1, "Helmet",false);
             Inv.AddItem(1, "SwordBasic", false);
             Inv.AddItem(5, "Apple", false);
             Inv.AddItem(10, "Wallnut", false);
-            Inv.PrintInv();
+            Loot.GetLootTable("TestLootTable");
             DrawGrid();
             Center.Alignment = StringAlignment.Center;
             Center.LineAlignment = StringAlignment.Center;
@@ -161,17 +160,35 @@ namespace Grid_based_map
                 {
                     CameraSnap();
                 }
-                else if (e.KeyData == Keys.C)
+                if (e.KeyData == Keys.C)
                 {
                     CameraSnap();
                 }
 
             if (e.KeyData == Keys.E)
             {
-                Character.StatPrint();
+               // Character.StatPrint();
+               // Loot.PrintLootTable();
+                Loot.RollTable();
+                if(Loot.Item != "")
+                {
+                    Inv.AddItem(Loot.AmountGained, Loot.Item, false);
+                    Items.Clear();
+                    Info_Pnl.Invalidate();
+                    Desc_Pnl.Invalidate();
+                    InventoryUISetUp();
+                }
             }
-                //Call the DrawGrid method to refresh the players current view and update any tiles as needed
-                Info_Pnl.Invalidate();
+            if (e.KeyData == Keys.D1)
+            {
+                Map.LoadMap("1_1");
+            }
+            if (e.KeyData == Keys.D2)
+            {
+                Map.LoadMap("2_1");
+            }
+            //Call the DrawGrid method to refresh the players current view and update any tiles as needed
+            Info_Pnl.Invalidate();
                 DrawGrid();
         }
         public void DrawGrid()
@@ -236,20 +253,21 @@ namespace Grid_based_map
             Character.PlayerY = -1;
             CharOnScrn = false;
             g = e.Graphics;
+            g.Clear(Color.White);
             TileID = 0;
             //Colouring tiles based off their visual indicator
            for (int h = 0; h < 7; h++)
            {
                for (int w = 0; w < 7; w++)
                {
-                   if (Map.ViewRange[h,w,0]==1)
+                   if (Map.ViewRange[h,w,0]== Map.LevelIndicator + .1)
                    {
-                       g.FillRectangle(Grass, Tile[TileID]);
-                   }
-                   else if (Map.ViewRange[h, w, 0] == 2)
-                    {
-                       g.FillRectangle(Water, Tile[TileID]);
-                   }
+                        g.DrawImage(Map.TileSprites.ElementAt(0), Tile[TileID]);
+                    }
+                   else if (Map.ViewRange[h, w, 0] == Map.LevelIndicator + .2)
+                   {
+                        g.DrawImage(Map.TileSprites.ElementAt(1), Tile[TileID]);
+                    }
                    //finding players position in relation to the cameras position
                    if(Map.ViewRange[h,w,1]==1)
                     {

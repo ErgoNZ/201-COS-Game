@@ -1,10 +1,11 @@
 10
 10
-This line sperates the size of the map from mapdata.
+2
+2
 1
-1
-1
-1
+2
+2
+2
 1
 1
 2

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO;
 using System.Diagnostics;
+using System.Drawing;
 
 namespace Grid_based_map
 {
@@ -10,12 +11,14 @@ namespace Grid_based_map
     {
        //0= free movement 1= no movement 2= Cannot move left 3= Cannot move right 4= up 5= down
        //(x,0,0) is a visual indicator, (0,x,0) Repersents the player pos, (0,0,x) is the type of movemnt restriction the tile has.
-       public int [,,] Tiles = new int[10, 10, 3];
+       public double [,,] Tiles = new double[10, 10, 3];
        public int[,,] PlayerTiles = new int[10, 10, 2];
-       public int[,,] ViewRange = new int[7, 7, 2];
-       public int YLimit = 0, XLimit=0;
+       public double[,,] ViewRange = new double[7, 7, 2];
+       public int YLimit = 0, XLimit=0, LevelIndicator = 0;
+       public List<Image> TileSprites = new List<Image>();
         public void LoadMap(string ReqMap)
         {
+            TileSprites.Clear();
             try
             {
                 int h = 0, w = 0;
@@ -39,20 +42,31 @@ namespace Grid_based_map
                             h = 0;
                             w++;
                         }
-                        if (LineNum >= 3)
+                        if (LineNum == 2)
+                        {
+                            LevelIndicator = int.Parse(line);
+                        }
+                        if (LineNum == 3)
+                        {
+                            for (int i = 1; i <= int.Parse(line); i++)
+                            {
+                                TileSprites.Add(Image.FromFile("../../../Maps/TileSprites/" + LevelIndicator + "_" +i+ ".png"));
+                            }
+                        }
+                        if (LineNum >= 4)
                         {
                             if (line == "1")
                             {
-                                Tiles[h, w, 0] = 1;
+                                Tiles[h, w, 0] = LevelIndicator + .1;
                                 Tiles[h, w, 2] = 0;
                             }
                             if (line == "2")
                             {
-                                Tiles[h, w, 0] = 2;
+                                Tiles[h, w, 0] = LevelIndicator + .2;
                                 Tiles[h, w, 2] = 1;
                             }
                         }
-                        if(LineNum>2)
+                        if(LineNum>=4)
                         {
                             h++;
                         }
@@ -62,6 +76,7 @@ namespace Grid_based_map
                         }
                     }
                 }
+
             }
             catch (Exception Ex)
             {
