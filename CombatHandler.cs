@@ -28,15 +28,15 @@ namespace Grid_based_map
          {
                 using (StreamReader FileReader = new StreamReader("../../../CombatData/EncounterTables/" + FightData + ".txt"))
             {
-                string line, Foe1, Foe2, Foe3;
-                double Tile;
+                string line, Foe1="", Foe2="", Foe3="";
+                double Tile=0;
                 int count = 0;
 
                 while ((line = FileReader.ReadLine()) != null)
                 {
                     if (count == 4)
                     {
-                        EncounterData.Add(Tuple<double,string,string,string>(Tile,Foe1,Foe2,Foe3));
+                        EncounterData.Add(new Tuple<double,string,string,string>(Tile,Foe1,Foe2,Foe3));
                     }
                     if (count == 0)
                     {
@@ -72,7 +72,7 @@ namespace Grid_based_map
                     }
                 }
                 Roll.Next(0,SelEncounters.Count+1);
-                for(int i; i<3;i++;)
+                for (int i = 0; i < 3; i++)
                 {
                   //Enemy data is read here from their files
                 }
