@@ -20,9 +20,9 @@ namespace Grid_based_map
             int count = 0,ChanceMin=0,ChanceMax=0,AmountMin=0,AmountMax=0;
             string line,Filename="";
             
-            using (StreamReader MapReader = new StreamReader("../../../LootTables/" + LootTable + ".txt"))
+            using (StreamReader LootReader = new StreamReader("../../../LootTables/" + LootTable + ".txt"))
             {
-                while ((line = MapReader.ReadLine()) != null)
+                while ((line = LootReader.ReadLine()) != null)
                 {
                     if (count == 5)
                     {

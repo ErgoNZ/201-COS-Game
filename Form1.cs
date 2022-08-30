@@ -38,7 +38,7 @@ namespace Grid_based_map
         bool CharOnScrn, cameraControl;
         string SelectedCat, OldCat;
         Image Error_Image = Image.FromFile("../../../Items/Images/Error.png");
-        Image Item_Image,TileImg;
+        Image Item_Image;
         //         Rec amount Rec Name  Name   Image   amount File    Stats                                 Equipped/Equippable/item type/Description
         List<Tuple<Rectangle,Rectangle,string,Rectangle,int,string, Tuple<int, int, int, int, int, string>,Tuple<bool,bool,string,string>>> Items = new List<Tuple<Rectangle,Rectangle,string,Rectangle,int,string, Tuple<int, int, int, int, int, string>,Tuple<bool,bool,string,string>>>();
         
@@ -263,6 +263,7 @@ namespace Grid_based_map
                    if (Map.ViewRange[h,w,0]== Map.LevelIndicator + .1)
                    {
                         g.DrawImage(Map.TileSprites.ElementAt(0), Tile[TileID]);
+
                     }
                    else if (Map.ViewRange[h, w, 0] == Map.LevelIndicator + .2)
                    {
