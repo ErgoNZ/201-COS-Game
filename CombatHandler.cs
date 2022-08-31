@@ -71,11 +71,66 @@ namespace Grid_based_map
                         SelEncounters.Add(new Tuple<double, string, string, string>(tuple.Item1, tuple.Item2, tuple.Item3, tuple.Item4));
                     }
                 }
-                Roll.Next(0,SelEncounters.Count+1);
-                for (int i = 0; i < 3; i++)
-                {
-                  //Enemy data is read here from their files
-                }
+                    //Enemy data is read here from their files
+                    int Index = Roll.Next(0,SelEncounters.Count+1);
+                    //Tuple(Hp,Atk,Def,Spd,Crit,Element,Position)
+                    using (StreamReader FileReader = new StreamReader("../../../CombatData/EnemyData/" + SelEncounters[Index].Item2 + ".txt"))
+                    {
+                        string line="",Element="";
+                        int count=0, Hp,Atk,Def,Spd,Crit;
+                        while ((line = FileReader.ReadLine()) != null)
+                        {
+                           if(count==0)
+                           {
+                            Hp = int.Parse(line);
+                           }
+                           if(count==1)
+                           {
+                            Atk = int.Parse(line);
+                           }
+                           if(count==2)
+                           {
+                            Def = int.Parse(line);
+                           }
+                           if(count==3)
+                           {
+                            Spd = int.Parse(line);
+                           }
+                           if(count==4)
+                           {
+                            Crit = int.Parse(line);
+                           }
+                           if(count==5)
+                           {
+                            Element = line;
+                           }
+                           if(count==6)
+                           {
+                            
+                           }
+                           if(count==7)
+                           {
+                            
+                           }
+                           count++;
+                        }
+                    }
+                    using (StreamReader FileReader = new StreamReader("../../../CombatData/EnemyData/" + SelEncounters[Index].Item3 + ".txt"))
+                    {
+                        string line;
+                        while ((line = FileReader.ReadLine()) != null)
+                        {
+
+                        }
+                    }
+                    using (StreamReader FileReader = new StreamReader("../../../CombatData/EnemyData/" + SelEncounters[Indexx].Item4 + ".txt"))
+                    {
+                        string line;
+                        while ((line = FileReader.ReadLine()) != null)
+                        {
+
+                        }
+                    }
             }
         }
     }
