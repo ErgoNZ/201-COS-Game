@@ -46,7 +46,7 @@ namespace Grid_based_map
         MapData Map = new MapData();
         Inventory Inv = new Inventory();
         LootHandler Loot = new LootHandler();
-        CombatHandler Fight = new CombatHandler();
+        EncounterHandler Encounter = new EncounterHandler();
 
         private void Save_Btn_Click(object sender, EventArgs e)
         {
@@ -60,6 +60,7 @@ namespace Grid_based_map
 
         Font General = new Font(FontFamily.GenericMonospace,16 ,FontStyle.Regular);
         Font Item = new Font(FontFamily.GenericMonospace, 10, FontStyle.Regular);
+
         StringFormat Center = new StringFormat();
         StringFormat CenterTop = new StringFormat();
         public Form1()
@@ -74,7 +75,7 @@ namespace Grid_based_map
             Inv.AddItem(5, "Apple", false);
             Inv.AddItem(10, "Wallnut", false);
             Loot.GetLootTable("TestLootTable");
-            Fight.EncounterListSetup(1);
+            Encounter.EncounterListSetup(1);
             DrawGrid();
             Center.Alignment = StringAlignment.Center;
             Center.LineAlignment = StringAlignment.Center;
@@ -125,7 +126,7 @@ namespace Grid_based_map
                     {
                         Character.PlayerXPos--;
                         cameraControl = false;
-                        Fight.EncounterRoll(Map.Tiles[Character.PlayerYPos, Character.PlayerXPos, 0]);
+                        EncounterTick();
                         if (tileX > 3)
                         {
                             tileX--;
@@ -139,13 +140,13 @@ namespace Grid_based_map
                         }
                         Character.PlayerXPos++;
                         cameraControl = false;
-                        Fight.EncounterRoll(Map.Tiles[Character.PlayerYPos, Character.PlayerXPos, 0]);
-                    }
+                        EncounterTick();
+                }
                     if (e.KeyData == Keys.W && Character.PlayerYPos > 0 && Map.Tiles[Character.PlayerYPos - 1, Character.PlayerXPos, 2] != 1 && Map.Tiles[Character.PlayerYPos - 1, Character.PlayerXPos, 2] != 4)
                     {
                         Character.PlayerYPos--;
                         cameraControl = false;
-                        Fight.EncounterRoll(Map.Tiles[Character.PlayerYPos, Character.PlayerXPos, 0]);
+                        EncounterTick();
                         if (tileY > 3)
                         {
                             tileY--;
@@ -159,7 +160,7 @@ namespace Grid_based_map
                         }
                         Character.PlayerYPos++;
                         cameraControl = false;
-                        Fight.EncounterRoll(Map.Tiles[Character.PlayerYPos, Character.PlayerXPos, 0]);
+                        EncounterTick();
                     }
                 }
                 if (cameraControl == false)
@@ -616,6 +617,16 @@ namespace Grid_based_map
                     break;
                 }
                 count++;
+            }
+        }
+        private void EncounterTick()
+        {
+            Encounter.EncounterRoll(Map.Tiles[Character.PlayerYPos, Character.PlayerXPos, 0]);
+            if (Encounter.Infight==true)
+            {
+                Encounter.Infight = false;
+                Map_Pnl.Hide();
+                Info_Pnl.Hide();
             }
         }
     }

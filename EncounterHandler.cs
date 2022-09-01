@@ -5,7 +5,7 @@ using System.Diagnostics;
 
 namespace Grid_based_map
 {
-    class CombatHandler
+    class EncounterHandler
     {
         List<string> EncounterTable = new List<string>();
         List<Tuple<double,string, string, string>> EncounterData = new List<Tuple<double,string, string, string>>();
@@ -13,6 +13,7 @@ namespace Grid_based_map
         //Tuple(Hp,Atk,Def,Spd,Crit,Element,Position)
         List<Tuple<string,int,int,int,int,int,string,Tuple<int>>> CurrentEncounter = new List<Tuple<string,int,int,int,int,int,string,Tuple<int>>>();
         Random Roll = new Random();
+        public bool Infight;
         public void EncounterListSetup(int LevelData)
         {
             EncounterTable.Clear();
@@ -23,6 +24,7 @@ namespace Grid_based_map
                while ((line = FileReader.ReadLine()) != null)
                {
                  EncounterTable.Add(line);
+                    Debug.WriteLine(line);
                }
             }
          foreach(string FightData in EncounterTable)
@@ -60,7 +62,7 @@ namespace Grid_based_map
         public void EncounterRoll(double TileData)
         {          
             SelEncounters.Clear();
-            if (Roll.Next(0, 101) >= 90)
+            if (Roll.Next(0, 101) >= 95)
             {
                 foreach(Tuple<double,string,string,string> tuple in EncounterData)
                 {
@@ -68,17 +70,11 @@ namespace Grid_based_map
                     {
                         SelEncounters.Add(new Tuple<double, string, string, string>(tuple.Item1, tuple.Item2, tuple.Item3, tuple.Item4));
                     }
-                    Debug.WriteLine(SelEncounters.Count);
-                    Debug.WriteLine(SelEncounters[0].Item1);
-                    Debug.WriteLine(SelEncounters[0].Item2);
-                    Debug.WriteLine(SelEncounters[0].Item3);
-                    Debug.WriteLine(SelEncounters[0].Item4);
-                    break;
                 }
                     //Enemy data is read here from their files
                     int Index = Roll.Next(0,SelEncounters.Count);
                     //Tuple(Hp,Atk,Def,Spd,Crit,Element,Position)
-                    if(SelEncounters[Index].Item2 != null)
+                    if(SelEncounters[Index].Item2 != null || SelEncounters[Index].Item2 != "None")
                 {
                     using (StreamReader FileReader = new StreamReader("../../../CombatData/EnemyData/" + SelEncounters[Index].Item2 + ".txt"))
                     {
@@ -120,7 +116,7 @@ namespace Grid_based_map
                         }
                     }
                 }                   
-                    if(SelEncounters[Index].Item3 != null)
+                    if(SelEncounters[Index].Item3 != "None")
                 {
                     using (StreamReader FileReader = new StreamReader("../../../CombatData/EnemyData/" + SelEncounters[Index].Item3 + ".txt"))
                     {
@@ -162,7 +158,7 @@ namespace Grid_based_map
                         }
                     }
                 }
-                if (SelEncounters[Index].Item4 != null)
+                if (SelEncounters[Index].Item4 != null || SelEncounters[Index].Item4 !="None")
                 {
                     using (StreamReader FileReader = new StreamReader("../../../CombatData/EnemyData/" + SelEncounters[Index].Item4 + ".txt"))
                     {
@@ -216,6 +212,7 @@ namespace Grid_based_map
                         Debug.WriteLine("Pos:"+tuple.Rest);
                     }
                 }
+                Infight = true;
             }
         }
     }
