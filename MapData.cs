@@ -75,8 +75,7 @@ namespace Grid_based_map
                             LineNum++;
                         }
                     }
-                }
-
+                }                
             }
             catch (Exception Ex)
             {

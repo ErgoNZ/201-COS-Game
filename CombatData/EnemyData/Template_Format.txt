@@ -1,0 +1,7 @@
+Name
+Hp
+Atk
+Def
+Spd
+Crit
+Element
