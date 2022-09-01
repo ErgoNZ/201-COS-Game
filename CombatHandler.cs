@@ -10,7 +10,7 @@ namespace Grid_based_map
         List<Tuple<double,string, string, string>> EncounterData = new List<Tuple<double,string, string, string>>();
         List<Tuple<double, string, string, string>> SelEncounters = new List<Tuple<double, string, string, string>>();
         //Tuple(Hp,Atk,Def,Spd,Crit,Element,Position)
-        List<Tuple<int,int,int,int,int,string,int>> CurrentEncounter = new List<Tuple<int,int,int,int,int,string,int>>();
+        List<Tuple<int,int,int,int,int,string,int,List<String>>> CurrentEncounter = new List<Tuple<int,int,int,int,int,string,int,List<String>>();
         Random Roll = new Random();
         public void EncounterListSetup(int LevelData)
         {
