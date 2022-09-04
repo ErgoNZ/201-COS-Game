@@ -8,73 +8,74 @@ namespace Grid_based_map
     class EncounterHandler
     {
         List<string> EncounterTable = new List<string>();
-        List<Tuple<double,string, string, string>> EncounterData = new List<Tuple<double,string, string, string>>();
+        List<Tuple<double, string, string, string>> EncounterData = new List<Tuple<double, string, string, string>>();
         List<Tuple<double, string, string, string>> SelEncounters = new List<Tuple<double, string, string, string>>();
-        //Tuple(Hp,Atk,Def,Spd,Crit,Element,Position)
-        List<Tuple<string,int,int,int,int,int,string,Tuple<int>>> CurrentEncounter = new List<Tuple<string,int,int,int,int,int,string,Tuple<int>>>();
+        //Tuple(Name,Hp,Atk,Def,Spd,Crit,Element,Position)
+        List<Tuple<string, int, int, int, int, int, string, Tuple<int>>> CurrentEncounter = new List<Tuple<string, int, int, int, int, int, string, Tuple<int>>>();
         Random Roll = new Random();
         public bool Infight;
+        public int PlayerSpeed;
         public void EncounterListSetup(int LevelData)
         {
             EncounterTable.Clear();
             EncounterData.Clear();
             using (StreamReader FileReader = new StreamReader("../../../CombatData/EncounterTables/" + LevelData + ".txt"))
             {
-               string line;
-               while ((line = FileReader.ReadLine()) != null)
-               {
-                 EncounterTable.Add(line);
-                    Debug.WriteLine(line);
-               }
-            }
-         foreach(string FightData in EncounterTable)
-         {
-                using (StreamReader FileReader = new StreamReader("../../../CombatData/Encounters/" + FightData + ".txt"))
-            {
-                string line, Foe1="", Foe2="", Foe3="";
-                double Tile=0;
-                int count = 0;
-
+                string line;
                 while ((line = FileReader.ReadLine()) != null)
                 {
-                    if (count == 0)
-                    {
-                        Tile = double.Parse(line);
-                    }
-                    if (count == 1)
-                    {
-                        Foe1 = line;
-                    }
-                    if (count == 2)
-                    {
-                        Foe2 = line;
-                    }
-                    if (count == 3)
-                    {
-                        Foe3 = line;
-                        EncounterData.Add(new Tuple<double, string, string, string>(Tile, Foe1, Foe2, Foe3));
-                    }
-                    count++;
+                    EncounterTable.Add(line);
+                    Debug.WriteLine(line);
                 }
             }
-         }
+            foreach (string FightData in EncounterTable)
+            {
+                using (StreamReader FileReader = new StreamReader("../../../CombatData/Encounters/" + FightData + ".txt"))
+                {
+                    string line, Foe1 = "", Foe2 = "", Foe3 = "";
+                    double Tile = 0;
+                    int count = 0;
+
+                    while ((line = FileReader.ReadLine()) != null)
+                    {
+                        if (count == 0)
+                        {
+                            Tile = double.Parse(line);
+                        }
+                        if (count == 1)
+                        {
+                            Foe1 = line;
+                        }
+                        if (count == 2)
+                        {
+                            Foe2 = line;
+                        }
+                        if (count == 3)
+                        {
+                            Foe3 = line;
+                            EncounterData.Add(new Tuple<double, string, string, string>(Tile, Foe1, Foe2, Foe3));
+                        }
+                        count++;
+                    }
+                }
+            }
         }
         public void EncounterRoll(double TileData)
-        {          
+        {
             SelEncounters.Clear();
             if (Roll.Next(0, 101) >= 95)
             {
-                foreach(Tuple<double,string,string,string> tuple in EncounterData)
+                foreach (Tuple<double, string, string, string> tuple in EncounterData)
                 {
-                    if(TileData == tuple.Item1)
+                    if (TileData == tuple.Item1)
                     {
                         SelEncounters.Add(new Tuple<double, string, string, string>(tuple.Item1, tuple.Item2, tuple.Item3, tuple.Item4));
                     }
                 }
-                    //Enemy data is read here from their files
-                    int Index = Roll.Next(0,SelEncounters.Count);
-                    //Tuple(Hp,Atk,Def,Spd,Crit,Element,Position)
-                    if(SelEncounters[Index].Item2 != null || SelEncounters[Index].Item2 != "None")
+                //Enemy data is read here from their files
+                int Index = Roll.Next(0, SelEncounters.Count);
+                //Tuple(Hp,Atk,Def,Spd,Crit,Element,Position)
+                if (SelEncounters[Index].Item2 != null || SelEncounters[Index].Item2 != "None")
                 {
                     using (StreamReader FileReader = new StreamReader("../../../CombatData/EnemyData/" + SelEncounters[Index].Item2 + ".txt"))
                     {
@@ -115,8 +116,8 @@ namespace Grid_based_map
                             count++;
                         }
                     }
-                }                   
-                    if(SelEncounters[Index].Item3 != "None")
+                }
+                if (SelEncounters[Index].Item3 != "None")
                 {
                     using (StreamReader FileReader = new StreamReader("../../../CombatData/EnemyData/" + SelEncounters[Index].Item3 + ".txt"))
                     {
@@ -158,7 +159,7 @@ namespace Grid_based_map
                         }
                     }
                 }
-                if (SelEncounters[Index].Item4 != null || SelEncounters[Index].Item4 !="None")
+                if (SelEncounters[Index].Item4 != null || SelEncounters[Index].Item4 != "None")
                 {
                     using (StreamReader FileReader = new StreamReader("../../../CombatData/EnemyData/" + SelEncounters[Index].Item4 + ".txt"))
                     {
@@ -199,21 +200,32 @@ namespace Grid_based_map
                             count++;
                         }
                     }
-                    
-                    foreach (Tuple<string,int, int, int, int, int, string, Tuple<int>> tuple in CurrentEncounter)
+
+                    foreach (Tuple<string, int, int, int, int, int, string, Tuple<int>> tuple in CurrentEncounter)
                     {
                         Debug.WriteLine("Name:" + tuple.Item1);
-                        Debug.WriteLine("Hp:"+tuple.Item2);
-                        Debug.WriteLine("Atk:"+tuple.Item3);
-                        Debug.WriteLine("Def:"+tuple.Item4);
-                        Debug.WriteLine("Spd:"+tuple.Item5);
-                        Debug.WriteLine("Crit:"+tuple.Item6);
-                        Debug.WriteLine("ElementAtk:"+tuple.Item7);
-                        Debug.WriteLine("Pos:"+tuple.Rest);
+                        Debug.WriteLine("Hp:" + tuple.Item2);
+                        Debug.WriteLine("Atk:" + tuple.Item3);
+                        Debug.WriteLine("Def:" + tuple.Item4);
+                        Debug.WriteLine("Spd:" + tuple.Item5);
+                        Debug.WriteLine("Crit:" + tuple.Item6);
+                        Debug.WriteLine("ElementAtk:" + tuple.Item7);
+                        Debug.WriteLine("Pos:" + tuple.Rest);
                     }
                 }
                 Infight = true;
+                Fight();
             }
+        }
+        public void Fight()
+        {
+            List <Tuple<string, int,int>> TurnOrder = new List<Tuple<string, int,int>>();
+            for (int i = 0; i < CurrentEncounter.Count; i++)
+            {
+                TurnOrder.Add(new Tuple<string, int, int>(CurrentEncounter[i].Item1, CurrentEncounter[i].Item5, i+1));
+            }
+            TurnOrder.Add(new Tuple<string, int, int>("Player", PlayerSpeed, 0));
+            TurnOrder.Sort();            
         }
     }
 }

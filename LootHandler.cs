@@ -10,16 +10,16 @@ namespace Grid_based_map
     {
         //   ItemFile Lowest value/Highest value  Lowest amount/Highest amount
         //           When rolling for item chance/When rolling for how many of that item
-        List<Tuple<string, int, int, int,int>> LootTableData = new List<Tuple<string, int, int,int,int>>();
+        List<Tuple<string, int, int, int, int>> LootTableData = new List<Tuple<string, int, int, int, int>>();
         Random Roll = new Random();
         public int AmountGained;
         public string Item;
         //Sorts all of the data from a txt file into a list that can be used as a proper LootTable
         public void GetLootTable(string LootTable)
         {
-            int count = 0,ChanceMin=0,ChanceMax=0,AmountMin=0,AmountMax=0;
-            string line,Filename="";
-            
+            int count = 0, ChanceMin = 0, ChanceMax = 0, AmountMin = 0, AmountMax = 0;
+            string line, Filename = "";
+
             using (StreamReader LootReader = new StreamReader("../../../LootTables/" + LootTable + ".txt"))
             {
                 while ((line = LootReader.ReadLine()) != null)
@@ -50,28 +50,28 @@ namespace Grid_based_map
                         LootTableData.Add(new Tuple<string, int, int, int, int>(Filename, ChanceMin, ChanceMax, AmountMin, AmountMax));
                     }
                     count++;
-                }               
+                }
             }
         }
         //This rolls the table to see what item and how much the player will get of that item
         public void RollTable()
         {
-            int Rolled = Roll.Next(0,101);
+            int Rolled = Roll.Next(0, 101);
             AmountGained = 0;
             Item = "";
-            foreach(Tuple<string, int, int, int, int> tuple in LootTableData)
+            foreach (Tuple<string, int, int, int, int> tuple in LootTableData)
             {
-                if(tuple.Item2 <= Rolled && tuple.Item3 >= Rolled)
+                if (tuple.Item2 <= Rolled && tuple.Item3 >= Rolled)
                 {
                     Random Amount = new Random();
                     Item = tuple.Item1;
-                    AmountGained = Amount.Next(tuple.Item4,tuple.Item5+1);                    
+                    AmountGained = Amount.Next(tuple.Item4, tuple.Item5 + 1);
                 }
             }
         }
         public void PrintLootTable()
         {
-            foreach(Tuple<string,int,int,int,int> tuple in LootTableData)
+            foreach (Tuple<string, int, int, int, int> tuple in LootTableData)
             {
                 Debug.WriteLine("FileName:" + tuple.Item1);
                 Debug.WriteLine("MinChance:" + tuple.Item2);

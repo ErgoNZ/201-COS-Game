@@ -21,16 +21,16 @@ namespace Grid_based_map
                   PlayerLvl = new Rectangle(52, 40, 100, 50),
                   FilePlayTime = new Rectangle(255, 40, 150, 50),
                   Sec1 = new Rectangle(0, 0, 432, 100),
-                  Sec2 = new Rectangle(0,100,432,125),
-                  PlayerHp = new Rectangle(88,95,250,50),
-                  PlayerAtk = new Rectangle(52,125,100,50),
+                  Sec2 = new Rectangle(0, 100, 432, 125),
+                  PlayerHp = new Rectangle(88, 95, 250, 50),
+                  PlayerAtk = new Rectangle(52, 125, 100, 50),
                   PlayerDef = new Rectangle(52, 175, 100, 50),
                   PlayerSpd = new Rectangle(280, 125, 100, 50),
                   PlayerCrit = new Rectangle(280, 175, 100, 50),
-                  Sec4 = new Rectangle(0,500,300,100),
-                  ItemImage = new Rectangle(0,0,100,100),
-                  ItemDesc = new Rectangle(100,0,258,195),
-                  ItemStats = new Rectangle(0,101,100,100)
+                  Sec4 = new Rectangle(0, 500, 300, 100),
+                  ItemImage = new Rectangle(0, 0, 100, 100),
+                  ItemDesc = new Rectangle(100, 0, 258, 195),
+                  ItemStats = new Rectangle(0, 101, 100, 100)
 
                                                                ;
         int TileID = 0, Selected_Item = -1;
@@ -40,8 +40,8 @@ namespace Grid_based_map
         Image Error_Image = Image.FromFile("../../../Items/Images/Error.png");
         Image Item_Image;
         //         Rec amount Rec Name  Name   Image   amount File    Stats                                 Equipped/Equippable/item type/Description
-        List<Tuple<Rectangle,Rectangle,string,Rectangle,int,string, Tuple<int, int, int, int, int, string>,Tuple<bool,bool,string,string>>> Items = new List<Tuple<Rectangle,Rectangle,string,Rectangle,int,string, Tuple<int, int, int, int, int, string>,Tuple<bool,bool,string,string>>>();
-        
+        List<Tuple<Rectangle, Rectangle, string, Rectangle, int, string, Tuple<int, int, int, int, int, string>, Tuple<bool, bool, string, string>>> Items = new List<Tuple<Rectangle, Rectangle, string, Rectangle, int, string, Tuple<int, int, int, int, int, string>, Tuple<bool, bool, string, string>>>();
+
         Player Character = new Player();
         MapData Map = new MapData();
         Inventory Inv = new Inventory();
@@ -56,9 +56,9 @@ namespace Grid_based_map
         private void Quit_Btn_Click(object sender, EventArgs e)
         {
 
-        }      
+        }
 
-        Font General = new Font(FontFamily.GenericMonospace,16 ,FontStyle.Regular);
+        Font General = new Font(FontFamily.GenericMonospace, 16, FontStyle.Regular);
         Font Item = new Font(FontFamily.GenericMonospace, 10, FontStyle.Regular);
 
         StringFormat Center = new StringFormat();
@@ -68,9 +68,9 @@ namespace Grid_based_map
             InitializeComponent();
             typeof(Panel).InvokeMember("DoubleBuffered", BindingFlags.SetProperty | BindingFlags.Instance | BindingFlags.NonPublic, null, Map_Pnl, new object[] { true });
             Map.LoadMap("1_1");
-            Inv.AddItem(1, "Chestplate",false);
+            Inv.AddItem(1, "Chestplate", false);
             Inv.AddItem(1, "Chestplate1", false);
-            Inv.AddItem(1, "Helmet",false);
+            Inv.AddItem(1, "Helmet", false);
             Inv.AddItem(1, "SwordBasic", false);
             Inv.AddItem(5, "Apple", false);
             Inv.AddItem(10, "Wallnut", false);
@@ -84,6 +84,8 @@ namespace Grid_based_map
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
             cameraControl = false;
+            if (Encounter.Infight != true)
+            {
                 //Movement of the camera
                 if (e.KeyData == Keys.Left)
                 {
@@ -135,13 +137,13 @@ namespace Grid_based_map
                     if (e.KeyData == Keys.D && Character.PlayerXPos < Map.XLimit - 1 && Map.Tiles[Character.PlayerYPos, Character.PlayerXPos + 1, 2] != 1 && Map.Tiles[Character.PlayerYPos, Character.PlayerXPos + 1, 2] != 3)
                     {
                         if (tileX < Map.XLimit - 4)
-                        {                           
+                        {
                             tileX++;
                         }
                         Character.PlayerXPos++;
                         cameraControl = false;
                         EncounterTick();
-                }
+                    }
                     if (e.KeyData == Keys.W && Character.PlayerYPos > 0 && Map.Tiles[Character.PlayerYPos - 1, Character.PlayerXPos, 2] != 1 && Map.Tiles[Character.PlayerYPos - 1, Character.PlayerXPos, 2] != 4)
                     {
                         Character.PlayerYPos--;
@@ -156,7 +158,7 @@ namespace Grid_based_map
                     {
                         if (tileY < Map.YLimit - 3)
                         {
-                            tileY++;                       
+                            tileY++;
                         }
                         Character.PlayerYPos++;
                         cameraControl = false;
@@ -171,13 +173,13 @@ namespace Grid_based_map
                 {
                     CameraSnap();
                 }
+            }
+
 
             if (e.KeyData == Keys.E)
             {
-               // Character.StatPrint();
-               // Loot.PrintLootTable();
                 Loot.RollTable();
-                if(Loot.Item != "")
+                if (Loot.Item != "")
                 {
                     Inv.AddItem(Loot.AmountGained, Loot.Item, false);
                     Items.Clear();
@@ -186,17 +188,9 @@ namespace Grid_based_map
                     InventoryUISetUp();
                 }
             }
-            if (e.KeyData == Keys.D1)
-            {
-                Map.LoadMap("1_1");
-            }
-            if (e.KeyData == Keys.D2)
-            {
-                Map.LoadMap("2_1");
-            }
             //Call the DrawGrid method to refresh the players current view and update any tiles as needed
             Info_Pnl.Invalidate();
-                DrawGrid();
+            DrawGrid();
         }
         public void DrawGrid()
         {
@@ -236,9 +230,9 @@ namespace Grid_based_map
         {
             tileX = Character.PlayerXPos;
             tileY = Character.PlayerYPos;
-            if (tileX > Map.XLimit-4)
+            if (tileX > Map.XLimit - 4)
             {
-                tileX = Map.XLimit-4;
+                tileX = Map.XLimit - 4;
             }
             if (tileX < 3)
             {
@@ -253,7 +247,7 @@ namespace Grid_based_map
                 tileY = 3;
             }
         }
-        
+
         private void Map_Pnl_Paint(object sender, PaintEventArgs e)
         { //removing the player from the screen so the position can be correctly updated
             Character.PlayerX = -1;
@@ -263,21 +257,21 @@ namespace Grid_based_map
             g.Clear(Color.White);
             TileID = 0;
             //Colouring tiles based off their visual indicator
-           for (int h = 0; h < 7; h++)
-           {
-               for (int w = 0; w < 7; w++)
-               {
-                   if (Map.ViewRange[h,w,0]== Map.LevelIndicator + .1)
-                   {
+            for (int h = 0; h < 7; h++)
+            {
+                for (int w = 0; w < 7; w++)
+                {
+                    if (Map.ViewRange[h, w, 0] == Map.LevelIndicator + .1)
+                    {
                         g.DrawImage(Map.TileSprites.ElementAt(0), Tile[TileID]);
 
                     }
-                   else if (Map.ViewRange[h, w, 0] == Map.LevelIndicator + .2)
-                   {
+                    else if (Map.ViewRange[h, w, 0] == Map.LevelIndicator + .2)
+                    {
                         g.DrawImage(Map.TileSprites.ElementAt(1), Tile[TileID]);
                     }
-                   //finding players position in relation to the cameras position
-                   if(Map.ViewRange[h,w,1]==1)
+                    //finding players position in relation to the cameras position
+                    if (Map.ViewRange[h, w, 1] == 1)
                     {
                         Character.PlayerX = w;
                         Character.PlayerY = h;
@@ -285,10 +279,10 @@ namespace Grid_based_map
                         g.FillRectangle(Brushes.Red, Character.Char);
                         CharOnScrn = true;
                     }
-                   g.DrawRectangle(Pens.Black, Tile[TileID]);
-                   TileID++;
-               }
-           }
+                    g.DrawRectangle(Pens.Black, Tile[TileID]);
+                    TileID++;
+                }
+            }
         }
         //
         //Info pannel(s) UI begins here!
@@ -299,11 +293,11 @@ namespace Grid_based_map
             g.FillRectangle(Brushes.SaddleBrown, Sec1);
             g.FillRectangle(Brushes.Brown, Sec2);
             g.FillRectangle(Brushes.SaddleBrown, Sec4);
-            g.DrawString(Character.Name, General, Brushes.Black,PlayerName,Center);
+            g.DrawString(Character.Name, General, Brushes.Black, PlayerName, Center);
             g.DrawString("LVL:" + Character.Lvl, General, Brushes.Black, PlayerLvl, Center);
             //Placeholder playtime display
-            g.DrawString("PlayTime: 1:30:27" , General, Brushes.Black, FilePlayTime, Center);
-            g.DrawString("Hp:"+Character.Hp+"/"+Character.MaxHp, General, Brushes.Black, PlayerHp, Center);
+            g.DrawString("PlayTime: 1:30:27", General, Brushes.Black, FilePlayTime, Center);
+            g.DrawString("Hp:" + Character.Hp + "/" + Character.MaxHp, General, Brushes.Black, PlayerHp, Center);
             g.DrawString("Atk:" + Character.Atk, General, Brushes.Black, PlayerAtk, Center);
             g.DrawString("Def:" + Character.Def, General, Brushes.Black, PlayerDef, Center);
             g.DrawString("Spd:" + Character.Spd, General, Brushes.Black, PlayerSpd, Center);
@@ -321,7 +315,7 @@ namespace Grid_based_map
             g.TranslateTransform(Item_Pnl.AutoScrollPosition.X, Item_Pnl.AutoScrollPosition.Y);
             //Check every tuple in the Items list
             int count = 0;
-            foreach (Tuple<Rectangle, Rectangle, string,Rectangle,int,string, Tuple<int, int, int, int, int, string>,Tuple<bool,bool,string,string>> tuple in Items)
+            foreach (Tuple<Rectangle, Rectangle, string, Rectangle, int, string, Tuple<int, int, int, int, int, string>, Tuple<bool, bool, string, string>> tuple in Items)
             {
 
                 //Draws the UI for each item
@@ -338,14 +332,14 @@ namespace Grid_based_map
                     g.DrawRectangle(Pens.Black, tuple.Item4);
                 }
                 g.DrawString(tuple.Item3, General, Brushes.Black, tuple.Item2, Center);
-                g.DrawString(tuple.Item5+"", General, Brushes.Black, tuple.Item4, Center);
+                g.DrawString(tuple.Item5 + "", General, Brushes.Black, tuple.Item4, Center);
                 //Does this file path exist?
                 bool FileExists = File.Exists("../../../Items/Images/" + tuple.Item6 + ".png");
-                if(FileExists == true)
+                if (FileExists == true)
                 {
                     //Draws image as intended with no errors
                     Item_Image = Image.FromFile("../../../Items/Images/" + tuple.Item6 + ".png");
-                    g.DrawImage(Item_Image, tuple.Item1.X+1,tuple.Item1.Y+1);
+                    g.DrawImage(Item_Image, tuple.Item1.X + 1, tuple.Item1.Y + 1);
                 }
                 else
                 {
@@ -368,7 +362,7 @@ namespace Grid_based_map
             else
             {
                 int count = 0;
-                foreach (Tuple<Rectangle, Rectangle, string, Rectangle, int, string, Tuple<int, int, int, int, int, string>, Tuple<bool, bool,string,string>> tuple in Items)
+                foreach (Tuple<Rectangle, Rectangle, string, Rectangle, int, string, Tuple<int, int, int, int, int, string>, Tuple<bool, bool, string, string>> tuple in Items)
                 {
                     if (count == Selected_Item)
                     {
@@ -383,10 +377,10 @@ namespace Grid_based_map
                             g.DrawImage(Error_Image, ItemImage);
                         }
                         g.DrawString(tuple.Rest.Item4, Item, Brushes.Black, ItemDesc, CenterTop);
-                        string ItemStat="",stat="";
+                        string ItemStat = "", stat = "";
                         for (int i = 0; i < 6; i++)
                         {
-                            if(i == 0)
+                            if (i == 0)
                             {
                                 stat = "Hp";
                                 ItemStat += stat + ":" + tuple.Item7.Item1 + Environment.NewLine;
@@ -421,34 +415,34 @@ namespace Grid_based_map
                     }
                     count++;
                 }
-            }           
+            }
         }
         private void InventoryUISetUp()
         {
-                int count = 0;
-                if (SelectedCat != OldCat)
-                {
-                    Items.Clear();
-                    Item_Pnl.Invalidate();
-                    Desc_Pnl.Invalidate();
-                }
-                Inv.Categorise(SelectedCat);
-                Map_Pnl.Focus();
-                foreach (Tuple<Tuple<string, string>, int, string, bool, string, Tuple<int, int, int, int, int, string>, bool> tuple in Inv.CategoryData)
-                {
-                    //Sets up every rectangle and attaches a name for the item id in the list being drawn
-                    bool Equipabble = tuple.Item4, Equipped = tuple.Item7;
-                    Items.Add(new Tuple<Rectangle, Rectangle, string, Rectangle, int, string, Tuple<int, int, int, int, int, string>, Tuple<bool,bool,string,string>>(new Rectangle(0, 52 * count, 51, 51), new Rectangle(102, 52 * count, 329, 51), tuple.Item1.Item1, new Rectangle(51, 52 * count, 51, 51), tuple.Item2, tuple.Item5, tuple.Item6, new Tuple<bool, bool,string,string>(Equipped, Equipabble,tuple.Item3,tuple.Item1.Item2)));
-                    count++;
-                }
-                //Scales the scroll bar with the amount of items present in selected category
-                Item_Pnl.AutoScrollMinSize = new Size(0, 52 * count);
-                //if the item count doesn't make the list go past 120px then the bar is hidden
-                if (51.1 * count <= 400)
-                {
-                    Item_Pnl.VerticalScroll.Visible = false;
-                }
-                Item_Pnl.Invalidate();                     
+            int count = 0;
+            if (SelectedCat != OldCat)
+            {
+                Items.Clear();
+                Item_Pnl.Invalidate();
+                Desc_Pnl.Invalidate();
+            }
+            Inv.Categorise(SelectedCat);
+            Map_Pnl.Focus();
+            foreach (Tuple<Tuple<string, string>, int, string, bool, string, Tuple<int, int, int, int, int, string>, bool> tuple in Inv.CategoryData)
+            {
+                //Sets up every rectangle and attaches a name for the item id in the list being drawn
+                bool Equipabble = tuple.Item4, Equipped = tuple.Item7;
+                Items.Add(new Tuple<Rectangle, Rectangle, string, Rectangle, int, string, Tuple<int, int, int, int, int, string>, Tuple<bool, bool, string, string>>(new Rectangle(0, 52 * count, 51, 51), new Rectangle(102, 52 * count, 329, 51), tuple.Item1.Item1, new Rectangle(51, 52 * count, 51, 51), tuple.Item2, tuple.Item5, tuple.Item6, new Tuple<bool, bool, string, string>(Equipped, Equipabble, tuple.Item3, tuple.Item1.Item2)));
+                count++;
+            }
+            //Scales the scroll bar with the amount of items present in selected category
+            Item_Pnl.AutoScrollMinSize = new Size(0, 52 * count);
+            //if the item count doesn't make the list go past 120px then the bar is hidden
+            if (51.1 * count <= 400)
+            {
+                Item_Pnl.VerticalScroll.Visible = false;
+            }
+            Item_Pnl.Invalidate();
         }
 
         private void Key_btn_Click(object sender, EventArgs e)
@@ -464,7 +458,7 @@ namespace Grid_based_map
             SelectedCat = "Item";
             Use_Btn.Text = "Use/Equip";
             Selected_Item = -1;
-            InventoryUISetUp();          
+            InventoryUISetUp();
         }
 
         private void Gear_btn_Click(object sender, EventArgs e)
@@ -472,7 +466,7 @@ namespace Grid_based_map
             SelectedCat = "Gear";
             Use_Btn.Text = "Use/Equip";
             Selected_Item = -1;
-            InventoryUISetUp();       
+            InventoryUISetUp();
         }
         private void Equiped_Btn_Click(object sender, EventArgs e)
         {
@@ -483,9 +477,9 @@ namespace Grid_based_map
         }
         private void Item_Pnl_MouseDown(object sender, MouseEventArgs e)
         {
-            int count=0;
+            int count = 0;
             Point Mouse = new Point(e.X, e.Y - Item_Pnl.AutoScrollPosition.Y);
-            foreach (Tuple<Rectangle, Rectangle, string, Rectangle, int,string, Tuple<int, int, int, int, int, string>, Tuple<bool,bool,string,string>> tuple in Items)
+            foreach (Tuple<Rectangle, Rectangle, string, Rectangle, int, string, Tuple<int, int, int, int, int, string>, Tuple<bool, bool, string, string>> tuple in Items)
             {
                 if (tuple.Item2.Contains(Mouse))
                 {
@@ -500,9 +494,9 @@ namespace Grid_based_map
         private void Use_Btn_Click(object sender, EventArgs e)
         {
             int count = 0;
-            foreach (Tuple<Rectangle, Rectangle, string, Rectangle, int, string, Tuple<int, int, int, int, int, string>, Tuple<bool,bool,string,string>> tuple in Items)
+            foreach (Tuple<Rectangle, Rectangle, string, Rectangle, int, string, Tuple<int, int, int, int, int, string>, Tuple<bool, bool, string, string>> tuple in Items)
             {
-                if (tuple.Rest.Item1 == true && Selected_Item ==count)
+                if (tuple.Rest.Item1 == true && Selected_Item == count)
                 {
                     Character.MaxHp -= tuple.Item7.Item1;
                     Character.Atk -= tuple.Item7.Item2;
@@ -540,7 +534,7 @@ namespace Grid_based_map
                 }
                 else if (tuple.Rest.Item1 == false && count == Selected_Item && tuple.Rest.Item2 == true)
                 {
-                    if (tuple.Rest.Item3 == "Weapon" && Character.WeaponEquipped==false)
+                    if (tuple.Rest.Item3 == "Weapon" && Character.WeaponEquipped == false)
                     {
                         Character.AtkElement = tuple.Item7.Item6;
                         Character.WeaponEquipped = true;
@@ -552,7 +546,7 @@ namespace Grid_based_map
                         Character.Spd += tuple.Item7.Item4;
                         Character.Crit += tuple.Item7.Item5;
                     }
-                    if(tuple.Rest.Item3 == "Helmet" && Character.HelmetEquipped == false)
+                    if (tuple.Rest.Item3 == "Helmet" && Character.HelmetEquipped == false)
                     {
                         Character.HelmetEquipped = true;
                         Inv.AddItem(1, tuple.Item6, true);
@@ -622,12 +616,16 @@ namespace Grid_based_map
         private void EncounterTick()
         {
             Encounter.EncounterRoll(Map.Tiles[Character.PlayerYPos, Character.PlayerXPos, 0]);
-            if (Encounter.Infight==true)
+            if (Encounter.Infight == true)
             {
-                Encounter.Infight = false;
                 Map_Pnl.Hide();
                 Info_Pnl.Hide();
+                DamageExchange();
             }
+        }
+        private void DamageExchange()
+        {
+            
         }
     }
 
