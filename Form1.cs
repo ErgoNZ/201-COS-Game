@@ -1,12 +1,8 @@
 ﻿using System;
 using System.IO;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Diagnostics;
 using System.Reflection;
@@ -47,6 +43,7 @@ namespace Grid_based_map
         Inventory Inv = new Inventory();
         LootHandler Loot = new LootHandler();
         EncounterHandler Encounter = new EncounterHandler();
+        Enemy[] Enemies = new Enemy[3];
 
         private void Save_Btn_Click(object sender, EventArgs e)
         {
@@ -620,12 +617,38 @@ namespace Grid_based_map
             {
                 Map_Pnl.Hide();
                 Info_Pnl.Hide();
-                DamageExchange();
+                EnemySetup();
             }
         }
-        private void DamageExchange()
+        private void EnemySetup()
+        {
+            string Element="", Name="";
+            int Hp=0, Atk=0, Def=0, Spd=0, Crit=0, Pos=0;
+            for (int i = 0; i < Encounter.CurrentEncounter.Count; i++)
+            {
+                //Tuple(Name,Hp,Atk,Def,Spd,Crit,Element,Position)
+                Name = Encounter.CurrentEncounter[i].Item1;
+                Hp = Encounter.CurrentEncounter[i].Item2;
+                Atk = Encounter.CurrentEncounter[i].Item3;
+                Def = Encounter.CurrentEncounter[i].Item4;
+                Spd = Encounter.CurrentEncounter[i].Item5;
+                Crit = Encounter.CurrentEncounter[i].Item6;
+                Element = Encounter.CurrentEncounter[i].Item7;
+                Pos = Encounter.CurrentEncounter[i].Rest.Item1;
+                Enemies[i] = new Enemy(Name,Hp,Atk,Def,Spd,Crit,Element,Pos);
+            }
+        }
+        private void Damage(int damage, int target)
         {
             
+        }
+        private void Defend()
+        {
+
+        }
+        private void Flee(int Target)
+        {
+
         }
     }
 

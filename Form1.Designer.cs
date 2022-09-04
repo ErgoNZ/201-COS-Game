@@ -29,7 +29,6 @@ namespace Grid_based_map
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             this.Map_Pnl = new System.Windows.Forms.Panel();
             this.Info_Pnl = new System.Windows.Forms.Panel();
             this.Item_Pnl = new System.Windows.Forms.Panel();
@@ -42,7 +41,6 @@ namespace Grid_based_map
             this.Quit_Btn = new System.Windows.Forms.Button();
             this.Save_Btn = new System.Windows.Forms.Button();
             this.Equiped_Btn = new System.Windows.Forms.Button();
-            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.Info_Pnl.SuspendLayout();
             this.Desc_Pnl.SuspendLayout();
             this.SuspendLayout();
@@ -240,7 +238,6 @@ namespace Grid_based_map
         private System.Windows.Forms.Button Drop_Btn;
         private System.Windows.Forms.Button Use_Btn;
         private System.Windows.Forms.Button Equiped_Btn;
-        private System.Windows.Forms.Timer timer1;
     }
 }
 

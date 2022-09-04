@@ -11,10 +11,10 @@ namespace Grid_based_map
         List<Tuple<double, string, string, string>> EncounterData = new List<Tuple<double, string, string, string>>();
         List<Tuple<double, string, string, string>> SelEncounters = new List<Tuple<double, string, string, string>>();
         //Tuple(Name,Hp,Atk,Def,Spd,Crit,Element,Position)
-        List<Tuple<string, int, int, int, int, int, string, Tuple<int>>> CurrentEncounter = new List<Tuple<string, int, int, int, int, int, string, Tuple<int>>>();
+        public List<Tuple<string, int, int, int, int, int, string, Tuple<int>>> CurrentEncounter = new List<Tuple<string, int, int, int, int, int, string, Tuple<int>>>();
+        List<Tuple<string, int, int>> TurnOrder = new List<Tuple<string, int, int>>();
         Random Roll = new Random();
         public bool Infight;
-        public int PlayerSpeed;
         public void EncounterListSetup(int LevelData)
         {
             EncounterTable.Clear();
@@ -214,18 +214,7 @@ namespace Grid_based_map
                     }
                 }
                 Infight = true;
-                Fight();
             }
-        }
-        public void Fight()
-        {
-            List <Tuple<string, int,int>> TurnOrder = new List<Tuple<string, int,int>>();
-            for (int i = 0; i < CurrentEncounter.Count; i++)
-            {
-                TurnOrder.Add(new Tuple<string, int, int>(CurrentEncounter[i].Item1, CurrentEncounter[i].Item5, i+1));
-            }
-            TurnOrder.Add(new Tuple<string, int, int>("Player", PlayerSpeed, 0));
-            TurnOrder.Sort();            
-        }
+        }       
     }
 }
