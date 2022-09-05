@@ -616,7 +616,7 @@ namespace Grid_based_map
             if (Encounter.Infight == true)
             {
                 Map_Pnl.Hide();
-                Info_Pnl.Hide();
+                //Info_Pnl.Hide();
                 EnemySetup();
             }
         }
@@ -637,16 +637,53 @@ namespace Grid_based_map
                 Pos = Encounter.CurrentEncounter[i].Rest.Item1;
                 Enemies[i] = new Enemy(Name,Hp,Atk,Def,Spd,Crit,Element,Pos);
             }
+            EnemyTurn();
         }
-        private void Damage(int damage, int target)
+        private void EnemyTurn()
         {
-            
+            for (int i = 0; i < Encounter.CurrentEncounter.Count; i++)
+            { 
+                if(Enemies[i].Fled == false)
+                {
+                    if (Enemies[i].Defending == true)
+                    {
+                        Enemies[i].Def = Enemies[i].TrueDef;
+                        Enemies[i].Defending = false;
+                    }
+                    int Ec, Dmg;
+                    Random CritRoll = new Random();
+                    Random DmgMulti = new Random();
+                    Ec = Enemies[i].EnemyDecision();
+                    if (Ec >= 0 && Ec <= 80)
+                    {
+                        Dmg = (int)Math.Round((Enemies[i].Atk * (double)(DmgMulti.Next(0, 2) / 10 + 1)) -Character.Def/2);
+                        foreach (string Def in Character.DefElement)
+                        {
+                            if(Enemies[i].Element == Def)
+                            {
+                                Dmg = Dmg / 2;
+                            }
+                        }
+                        if (CritRoll.Next(0, 101) <= Enemies[i].Crit)
+                        {
+                            Dmg = Dmg * 2;
+                        }
+                        Character.Hp -= Dmg;
+                    }
+                    if (Ec >= 81 && Ec <= 99)
+                    {
+                        Enemies[i].Def = (int)Math.Round(Enemies[i].Def * 1.2);
+                        Enemies[i].Defending = true;
+                    }
+                    if (Ec >= 100)
+                    {
+                        Enemies[i] = null;
+                    }
+                }
+               
+            }
         }
-        private void Defend()
-        {
-
-        }
-        private void Flee(int Target)
+        private void PlayerTurn(string Action)
         {
 
         }
