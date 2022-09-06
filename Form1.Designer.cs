@@ -41,6 +41,7 @@ namespace Grid_based_map
             this.Quit_Btn = new System.Windows.Forms.Button();
             this.Save_Btn = new System.Windows.Forms.Button();
             this.Equiped_Btn = new System.Windows.Forms.Button();
+            this.Combat_Pnl = new System.Windows.Forms.Panel();
             this.Info_Pnl.SuspendLayout();
             this.Desc_Pnl.SuspendLayout();
             this.SuspendLayout();
@@ -205,13 +206,22 @@ namespace Grid_based_map
             this.Equiped_Btn.UseVisualStyleBackColor = false;
             this.Equiped_Btn.Click += new System.EventHandler(this.Equiped_Btn_Click);
             // 
+            // Combat_Pnl
+            // 
+            this.Combat_Pnl.Location = new System.Drawing.Point(0, 0);
+            this.Combat_Pnl.Name = "Combat_Pnl";
+            this.Combat_Pnl.Size = new System.Drawing.Size(1273, 841);
+            this.Combat_Pnl.TabIndex = 2;
+            this.Combat_Pnl.Paint += new System.Windows.Forms.PaintEventHandler(this.Combat_Pnl_Paint);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1272, 841);
-            this.Controls.Add(this.Map_Pnl);
+            this.Controls.Add(this.Combat_Pnl);
             this.Controls.Add(this.Info_Pnl);
+            this.Controls.Add(this.Map_Pnl);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.KeyPreview = true;
             this.Name = "Form1";
@@ -238,6 +248,7 @@ namespace Grid_based_map
         private System.Windows.Forms.Button Drop_Btn;
         private System.Windows.Forms.Button Use_Btn;
         private System.Windows.Forms.Button Equiped_Btn;
+        private System.Windows.Forms.Panel Combat_Pnl;
     }
 }
 

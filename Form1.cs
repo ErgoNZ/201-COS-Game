@@ -26,9 +26,11 @@ namespace Grid_based_map
                   Sec4 = new Rectangle(0, 500, 300, 100),
                   ItemImage = new Rectangle(0, 0, 100, 100),
                   ItemDesc = new Rectangle(100, 0, 258, 195),
-                  ItemStats = new Rectangle(0, 101, 100, 100)
+                  ItemStats = new Rectangle(0, 101, 100, 100),
+                  CombatStats = new Rectangle(900,541,372,300)
 
                                                                ;
+        Rectangle[] CombatMenu = new Rectangle[4];
         int TileID = 0, Selected_Item = -1;
         public int tileX = 3, tileY = 3;
         bool CharOnScrn, cameraControl;
@@ -44,6 +46,27 @@ namespace Grid_based_map
         LootHandler Loot = new LootHandler();
         EncounterHandler Encounter = new EncounterHandler();
         Enemy[] Enemies = new Enemy[3];
+        private void CombatUISetup()
+        {
+            int RectCount=0;
+            for (int w = 0; w < 2; w++)
+            {
+                for (int h = 0; h < 2; h++)
+                {
+                    CombatMenu[RectCount]= new Rectangle(0+(450*w),541+(150 * h), 450,150);
+                    RectCount++;
+                }
+            }
+        }
+        private void Combat_Pnl_Paint(object sender, PaintEventArgs e)
+        {
+            g = e.Graphics;
+            g.FillRectangle(Brushes.Blue, CombatMenu[0]);
+            g.FillRectangle(Brushes.Red, CombatMenu[1]);
+            g.FillRectangle(Brushes.Yellow, CombatMenu[2]);
+            g.FillRectangle(Brushes.Black, CombatMenu[3]);
+            g.FillRectangle(Brushes.Pink, CombatStats);
+        }
 
         private void Save_Btn_Click(object sender, EventArgs e)
         {
@@ -74,6 +97,8 @@ namespace Grid_based_map
             Loot.GetLootTable("TestLootTable");
             Encounter.EncounterListSetup(1);
             DrawGrid();
+            CombatUISetup();
+            Combat_Pnl.Invalidate();
             Center.Alignment = StringAlignment.Center;
             Center.LineAlignment = StringAlignment.Center;
             CenterTop.Alignment = StringAlignment.Center;
@@ -189,6 +214,7 @@ namespace Grid_based_map
             Info_Pnl.Invalidate();
             DrawGrid();
         }
+
         public void DrawGrid()
         {
             //Remove the info for the player as it may not be needed
@@ -616,7 +642,8 @@ namespace Grid_based_map
             if (Encounter.Infight == true)
             {
                 Map_Pnl.Hide();
-                //Info_Pnl.Hide();
+                Info_Pnl.Hide();
+                Combat_Pnl.Invalidate();
                 EnemySetup();
             }
         }
@@ -637,6 +664,7 @@ namespace Grid_based_map
                 Pos = Encounter.CurrentEncounter[i].Rest.Item1;
                 Enemies[i] = new Enemy(Name,Hp,Atk,Def,Spd,Crit,Element,Pos);
             }
+
             EnemyTurn();
         }
         private void EnemyTurn()
