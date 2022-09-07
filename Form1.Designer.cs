@@ -213,6 +213,7 @@ namespace Grid_based_map
             this.Combat_Pnl.Size = new System.Drawing.Size(1273, 841);
             this.Combat_Pnl.TabIndex = 2;
             this.Combat_Pnl.Paint += new System.Windows.Forms.PaintEventHandler(this.Combat_Pnl_Paint);
+            this.Combat_Pnl.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Combat_Pnl_MouseDown);
             // 
             // Form1
             // 

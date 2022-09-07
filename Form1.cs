@@ -27,11 +27,12 @@ namespace Grid_based_map
                   ItemImage = new Rectangle(0, 0, 100, 100),
                   ItemDesc = new Rectangle(100, 0, 258, 195),
                   ItemStats = new Rectangle(0, 101, 100, 100),
-                  CombatStats = new Rectangle(900,541,372,300)
+                  CombatStats = new Rectangle(900,541,372,300),
+                  CombatBox = new Rectangle(0,542,898,297)
 
                                                                ;
         Rectangle[] CombatMenu = new Rectangle[4];
-        int TileID = 0, Selected_Item = -1;
+        int TileID = 0, Selected_Item = -1, Selected_Action= -1;
         public int tileX = 3, tileY = 3;
         bool CharOnScrn, cameraControl;
         string SelectedCat, OldCat;
@@ -46,6 +47,7 @@ namespace Grid_based_map
         LootHandler Loot = new LootHandler();
         EncounterHandler Encounter = new EncounterHandler();
         Enemy[] Enemies = new Enemy[3];
+        Pen Black = new Pen(Color.Black, 3);
         private void CombatUISetup()
         {
             int RectCount=0;
@@ -53,7 +55,7 @@ namespace Grid_based_map
             {
                 for (int h = 0; h < 2; h++)
                 {
-                    CombatMenu[RectCount]= new Rectangle(0+(450*w),541+(150 * h), 450,150);
+                    CombatMenu[RectCount]= new Rectangle(2+(448*w),543+(148 * h), 448,148);
                     RectCount++;
                 }
             }
@@ -64,8 +66,9 @@ namespace Grid_based_map
             g.FillRectangle(Brushes.Blue, CombatMenu[0]);
             g.FillRectangle(Brushes.Red, CombatMenu[1]);
             g.FillRectangle(Brushes.Yellow, CombatMenu[2]);
-            g.FillRectangle(Brushes.Black, CombatMenu[3]);
+            g.FillRectangle(Brushes.Orange, CombatMenu[3]);
             g.FillRectangle(Brushes.Pink, CombatStats);
+            g.DrawRectangle(Black, CombatBox);
         }
 
         private void Save_Btn_Click(object sender, EventArgs e)
@@ -95,7 +98,7 @@ namespace Grid_based_map
             Inv.AddItem(5, "Apple", false);
             Inv.AddItem(10, "Wallnut", false);
             Loot.GetLootTable("TestLootTable");
-            Encounter.EncounterListSetup(1);
+            Encounter.EncounterListSetup(Map.LevelIndicator);
             DrawGrid();
             CombatUISetup();
             Combat_Pnl.Invalidate();
@@ -103,6 +106,21 @@ namespace Grid_based_map
             Center.LineAlignment = StringAlignment.Center;
             CenterTop.Alignment = StringAlignment.Center;
         }
+
+        private void Combat_Pnl_MouseDown(object sender, MouseEventArgs e)
+        {
+            Selected_Action = -1;
+            Point Mouse = new Point(e.X, e.Y);
+            foreach (Rectangle Rec in CombatMenu)
+            {
+                if (Rec.Contains(Mouse))
+                {
+                    Mouse = new Point();
+                }
+            }
+            Selected_Action++;
+        }
+
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
             cameraControl = false;
@@ -684,7 +702,7 @@ namespace Grid_based_map
                     Ec = Enemies[i].EnemyDecision();
                     if (Ec >= 0 && Ec <= 80)
                     {
-                        Dmg = (int)Math.Round((Enemies[i].Atk * (double)(DmgMulti.Next(0, 2) / 10 + 1)) -Character.Def/2);
+                        Dmg = (int)Math.Round((Enemies[i].Atk * (double)(DmgMulti.Next(0, 2) / 10 + 1)) - Character.Def/2);
                         foreach (string Def in Character.DefElement)
                         {
                             if(Enemies[i].Element == Def)
