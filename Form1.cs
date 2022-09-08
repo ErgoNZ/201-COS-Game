@@ -64,7 +64,7 @@ namespace Grid_based_map
         {
             g = e.Graphics;
             g.FillRectangle(Brushes.Blue, CombatMenu[0]);
-            g.FillRectangle(Brushes.Red, CombatMenu[1]);
+            g.FillRectangle(Brushes.Gray, CombatMenu[1]);
             g.FillRectangle(Brushes.Yellow, CombatMenu[2]);
             g.FillRectangle(Brushes.Orange, CombatMenu[3]);
             g.FillRectangle(Brushes.Pink, CombatStats);
