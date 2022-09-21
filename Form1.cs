@@ -27,8 +27,12 @@ namespace Grid_based_map
                   ItemImage = new Rectangle(0, 0, 100, 100),
                   ItemDesc = new Rectangle(100, 0, 258, 195),
                   ItemStats = new Rectangle(0, 101, 100, 100),
-                  CombatStats = new Rectangle(900,541,372,300),
-                  CombatBox = new Rectangle(0,542,898,297)
+                  CombatStats = new Rectangle(898,543,372,296),
+                  CombatPlayer = new Rectangle(100,168,150,190),
+                  CombatFoe1 = new Rectangle(800,30,150,190),
+                  CombatFoe2 = new Rectangle(800, 300, 150, 190),
+                  CombatFoe3 = new Rectangle(1070, 165, 150, 190)
+
 
                                                                ;
         Rectangle[] CombatMenu = new Rectangle[4];
@@ -55,7 +59,7 @@ namespace Grid_based_map
             {
                 for (int h = 0; h < 2; h++)
                 {
-                    CombatMenu[RectCount]= new Rectangle(2+(448*w),543+(148 * h), 448,148);
+                    CombatMenu[RectCount]= new Rectangle(1+(448*w),543+(148 * h), 448,148);
                     RectCount++;
                 }
             }
@@ -64,11 +68,23 @@ namespace Grid_based_map
         {
             g = e.Graphics;
             g.FillRectangle(Brushes.Blue, CombatMenu[0]);
-            g.FillRectangle(Brushes.Gray, CombatMenu[1]);
+            g.DrawString("Attack", General, Brushes.Black, CombatMenu[0], Center);
+            g.FillRectangle(Brushes.Green, CombatMenu[1]);
+            g.DrawString("Swap Weapon", General, Brushes.Black, CombatMenu[1], Center);
             g.FillRectangle(Brushes.Yellow, CombatMenu[2]);
+            g.DrawString("Items", General, Brushes.Black, CombatMenu[2], Center);
             g.FillRectangle(Brushes.Orange, CombatMenu[3]);
+            g.DrawString("Flee", General, Brushes.Black, CombatMenu[3], Center);
             g.FillRectangle(Brushes.Pink, CombatStats);
-            g.DrawRectangle(Black, CombatBox);
+            g.DrawRectangle(Black, CombatMenu[0]);
+            g.DrawRectangle(Black, CombatMenu[1]);
+            g.DrawRectangle(Black, CombatMenu[2]);
+            g.DrawRectangle(Black, CombatMenu[3]);
+            g.DrawRectangle(Black, CombatStats);
+            g.DrawRectangle(Black, CombatPlayer);
+            g.DrawRectangle(Black, CombatFoe1);
+            g.DrawRectangle(Black, CombatFoe2);
+            g.DrawRectangle(Black, CombatFoe3);
         }
 
         private void Save_Btn_Click(object sender, EventArgs e)
@@ -107,18 +123,23 @@ namespace Grid_based_map
             CenterTop.Alignment = StringAlignment.Center;
         }
 
+        private void Action(int Act)
+        {
+
+        }
         private void Combat_Pnl_MouseDown(object sender, MouseEventArgs e)
         {
-            Selected_Action = -1;
+            Selected_Action = 0;
             Point Mouse = new Point(e.X, e.Y);
             foreach (Rectangle Rec in CombatMenu)
             {
                 if (Rec.Contains(Mouse))
                 {
                     Mouse = new Point();
+                    Action(Selected_Action);
                 }
+                Selected_Action++;
             }
-            Selected_Action++;
         }
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)
