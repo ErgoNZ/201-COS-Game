@@ -28,15 +28,17 @@ namespace Grid_based_map
                   ItemDesc = new Rectangle(100, 0, 258, 195),
                   ItemStats = new Rectangle(0, 101, 100, 100),
                   CombatStats = new Rectangle(898,0,372,296),
-                  CombatPlayer = new Rectangle(100,168,150,190),
-                  CombatFoe1 = new Rectangle(800,30,150,190),
-                  CombatFoe2 = new Rectangle(800, 300, 150, 190),
-                  CombatFoe3 = new Rectangle(1070, 165, 150, 190),
+                  CombatPlayer = new Rectangle(100,168,150,190),                  
                   CombatBox = new Rectangle(0, 0, 898, 297)
 
 
                                                                ;
         Rectangle[] CombatMenu = new Rectangle[5];
+        Rectangle[] CombatFoe = new Rectangle[3]{
+            new Rectangle(800,30,150,190), 
+            new Rectangle(800,300,150,190), 
+            new Rectangle(1070,165,150,190)
+        };
         int TileID = 0, Selected_Item = -1, Selected_Action= -1;
         public int tileX = 3, tileY = 3;
         bool CharOnScrn, cameraControl;
@@ -53,112 +55,13 @@ namespace Grid_based_map
         EncounterHandler Encounter = new EncounterHandler();
         Enemy[] Enemies = new Enemy[3];
         Pen Black = new Pen(Color.Black, 3);
-        private void CombatUISetup()
-        {
-            int RectCount=0;
-            for (int w = 0; w < 2; w++)
-            {
-                for (int h = 0; h < 2; h++)
-                {
-                    CombatMenu[RectCount]= new Rectangle(1+(448*w),0+(148 * h), 448,148);
-                    RectCount++;
-                }
-            }
-            CombatMenu[4] = new Rectangle(898, 0, 372, 297);
-            Action_Pnl.BringToFront();
-            Combat_Pnl.BringToFront();
-        }
-        private void Action_Pnl_Paint(object sender, PaintEventArgs e)
-        {
-            g = e.Graphics;
-            if (PlayerAction == "None")
-            {
-                g.FillRectangle(Brushes.Blue, CombatMenu[0]);
-                g.DrawString("Attack", General, Brushes.Black, CombatMenu[0], Center);
-                g.FillRectangle(Brushes.Green, CombatMenu[1]);
-                g.DrawString("Swap Weapon", General, Brushes.Black, CombatMenu[1], Center);
-                g.FillRectangle(Brushes.Yellow, CombatMenu[2]);
-                g.DrawString("Items", General, Brushes.Black, CombatMenu[2], Center);
-                g.FillRectangle(Brushes.Orange, CombatMenu[3]);
-                g.DrawString("Flee", General, Brushes.Black, CombatMenu[3], Center);
-                g.FillRectangle(Brushes.Pink, CombatStats);
-                g.DrawRectangle(Black, CombatMenu[0]);
-                g.DrawRectangle(Black, CombatMenu[1]);
-                g.DrawRectangle(Black, CombatMenu[2]);
-                g.DrawRectangle(Black, CombatMenu[3]);
-                g.DrawRectangle(Black, CombatStats);
-            }
-            if (PlayerAction == "Fight")
-            {
-                g.DrawRectangle(Black, CombatBox);
-                g.DrawRectangle(Black, CombatMenu[4]);
-            }
-        }
-        private void Combat_Pnl_Paint(object sender, PaintEventArgs e)
-        {
-            g = e.Graphics;
-            g.DrawRectangle(Black, CombatPlayer);
-            g.DrawRectangle(Black, CombatFoe1);
-            g.DrawRectangle(Black, CombatFoe2);
-            g.DrawRectangle(Black, CombatFoe3);
-        }
-        private void Action(int Act)
-        {
-            switch (Act)
-            {
-                //Fight action
-                case 0:
-                    PlayerAction = "Fight";
-                    Action_Pnl.Invalidate();
-                    break;
-                //Swap Weapon action?
-                case 1:
-
-                    break;
-                //Item action
-                case 2:
-
-                    break;
-                //Flee action
-                case 3:
-
-                    break;
-                case 4:
-                    PlayerAction = "None";
-                    Action_Pnl.Invalidate();
-                    break;
-            }
-                
-
-        }
-
+        Pen Green = new Pen(Color.Green, 3);
+        Pen Blue = new Pen(Color.Blue, 3);
+        Pen Purple = new Pen(Color.Purple, 3);
+        Random Flee = new Random();
         private void Save_Btn_Click(object sender, EventArgs e)
         {
 
-        }
-
-        private void Action_Pnl_MouseDown(object sender, MouseEventArgs e)
-        {
-            Selected_Action = 0;
-            Point Mouse = new Point(e.X, e.Y);
-            foreach (Rectangle Rec in CombatMenu)
-            {
-                if (Rec.Contains(Mouse))
-                {
-                    if (PlayerAction != "None" && Selected_Action == 4)
-                    {
-                        Mouse = new Point();
-                        Action(Selected_Action);
-                        Debug.WriteLine(Rec);
-                    }
-                    else
-                    {
-                        Mouse = new Point();
-                        Action(Selected_Action);
-                    }
-                }
-                Selected_Action++;
-            }
         }
 
         private void Quit_Btn_Click(object sender, EventArgs e)
@@ -168,7 +71,6 @@ namespace Grid_based_map
 
         Font General = new Font(FontFamily.GenericMonospace, 16, FontStyle.Regular);
         Font Item = new Font(FontFamily.GenericMonospace, 10, FontStyle.Regular);
-
         StringFormat Center = new StringFormat();
         StringFormat CenterTop = new StringFormat();
         public Form1()
@@ -184,9 +86,9 @@ namespace Grid_based_map
             Inv.AddItem(10, "Wallnut", false);
             Loot.GetLootTable("TestLootTable");
             Encounter.EncounterListSetup(Map.LevelIndicator);
+            Map_Pnl.BringToFront();
+            Info_Pnl.BringToFront();
             DrawGrid();
-            CombatUISetup();
-            Combat_Pnl.Invalidate();
             Center.Alignment = StringAlignment.Center;
             Center.LineAlignment = StringAlignment.Center;
             CenterTop.Alignment = StringAlignment.Center;
@@ -725,6 +627,9 @@ namespace Grid_based_map
                 count++;
             }
         }
+        //
+        //Comabt Stuff starts here!
+        //
         private void EncounterTick()
         {
             Encounter.EncounterRoll(Map.Tiles[Character.PlayerYPos, Character.PlayerXPos, 0]);
@@ -732,6 +637,7 @@ namespace Grid_based_map
             {
                 Map_Pnl.Hide();
                 Info_Pnl.Hide();
+                CombatUISetup();
                 Combat_Pnl.Invalidate();
                 EnemySetup();
             }
@@ -753,13 +659,11 @@ namespace Grid_based_map
                 Pos = Encounter.CurrentEncounter[i].Rest.Item1;
                 Enemies[i] = new Enemy(Name,Hp,Atk,Def,Spd,Crit,Element,Pos);
             }
-
-            EnemyTurn();
         }
         private void EnemyTurn()
         {
             for (int i = 0; i < Encounter.CurrentEncounter.Count; i++)
-            { 
+            {
                 if(Enemies[i].Fled == false)
                 {
                     if (Enemies[i].Defending == true)
@@ -771,6 +675,7 @@ namespace Grid_based_map
                     Random CritRoll = new Random();
                     Random DmgMulti = new Random();
                     Ec = Enemies[i].EnemyDecision();
+                    Debug.WriteLine(Ec);
                     if (Ec >= 0 && Ec <= 80)
                     {
                         Dmg = (int)Math.Round((Enemies[i].Atk * (double)(DmgMulti.Next(0, 2) / 10 + 1)) - Character.Def/2);
@@ -794,14 +699,180 @@ namespace Grid_based_map
                     }
                     if (Ec >= 100)
                     {
-                        Enemies[i] = null;
+                        //Flee
+                        if((int)Math.Round((double)Enemies[i].Spd/Character.Spd*100)<=Flee.Next(0, 101))
+                        {
+                            Debug.WriteLine(Enemies[i].Name +"fled!");
+                            Enemies[i] = null;
+                        }
+                        else
+                        {
+                            Debug.WriteLine(Enemies[i].Name + "attempted to flee!");
+                        }
                     }
                 }
                
             }
+            PlayerAction = "None";
+            Action_Pnl.Invalidate();
         }
         private void PlayerTurn(string Action)
         {
+            if(Action == "Flee")
+            {
+                int EnemyTotSpd=0;
+                for (int i = 0; i < Encounter.CurrentEncounter.Count; i++)
+                {
+                    EnemyTotSpd = EnemyTotSpd + Enemies[i].Spd;
+                }
+                int EscapeChance = Character.Spd / EnemyTotSpd * 100;
+                if (EscapeChance <= Flee.Next(0, 101) || EscapeChance > 100)
+                {
+                    Debug.WriteLine("Fled!");
+                    for (int i = 0; i < 5; i++)
+                    {
+                        CombatMenu[i] = Rectangle.Empty;
+                    }
+                    Combat_Pnl.SendToBack();
+                    Action_Pnl.SendToBack();
+                    Combat_Pnl.Hide();
+                    Action_Pnl.Hide();
+                    Map_Pnl.Show();
+                    Info_Pnl.Show();
+                    for (int i = 0; i < Encounter.CurrentEncounter.Count; i++)
+                    {
+                        Enemies[i] = null;
+                    }
+                    GC.Collect();
+                    Encounter.CurrentEncounter = null;
+                }
+                else
+                {
+                    Debug.WriteLine("Escape Failed!");
+                    EnemyTurn();
+                }
+
+            }
+        }
+        private void Action_Pnl_MouseDown(object sender, MouseEventArgs e)
+        {
+            Selected_Action = 0;
+            Point Mouse = new Point(e.X, e.Y);
+            foreach (Rectangle Rec in CombatMenu)
+            {
+                if (Rec.Contains(Mouse))
+                {
+                    if (PlayerAction != "None" && Selected_Action == 4)
+                    {
+                        Mouse = new Point();
+                        Action(Selected_Action);
+                    }
+                    else
+                    {
+                        Mouse = new Point();
+                        Action(Selected_Action);
+                    }
+                }
+                Selected_Action++;
+            }
+        }
+        private void CombatUISetup()
+        {
+            int RectCount = 0;
+            for (int w = 0; w < 2; w++)
+            {
+                for (int h = 0; h < 2; h++)
+                {
+                    CombatMenu[RectCount] = new Rectangle(1 + (448 * w), 0 + (148 * h), 448, 148);
+                    RectCount++;
+                }
+            }
+            CombatMenu[4] = new Rectangle(898, 0, 372, 297);
+            Action_Pnl.BringToFront();
+            Combat_Pnl.BringToFront();
+        }
+        private void Action_Pnl_Paint(object sender, PaintEventArgs e)
+        {
+            g = e.Graphics;
+            if (PlayerAction == "None")
+            {
+                g.FillRectangle(Brushes.Blue, CombatMenu[0]);
+                g.DrawString("Attack", General, Brushes.Black, CombatMenu[0], Center);
+                g.FillRectangle(Brushes.Green, CombatMenu[1]);
+                g.DrawString("Swap Weapon", General, Brushes.Black, CombatMenu[1], Center);
+                g.FillRectangle(Brushes.Yellow, CombatMenu[2]);
+                g.DrawString("Items", General, Brushes.Black, CombatMenu[2], Center);
+                g.FillRectangle(Brushes.Orange, CombatMenu[3]);
+                g.DrawString("Flee", General, Brushes.Black, CombatMenu[3], Center);
+                g.FillRectangle(Brushes.Pink, CombatStats);
+                g.DrawRectangle(Black, CombatMenu[0]);
+                g.DrawRectangle(Black, CombatMenu[1]);
+                g.DrawRectangle(Black, CombatMenu[2]);
+                g.DrawRectangle(Black, CombatMenu[3]);
+                g.DrawRectangle(Black, CombatStats);
+            }
+            if (PlayerAction == "Fight")
+            {
+                g.DrawRectangle(Black, CombatBox);
+                g.DrawRectangle(Black, CombatMenu[4]);
+                EnemyTurn();
+            }
+            if (PlayerAction == "Weapon")
+            {
+                g.DrawRectangle(Blue, CombatBox);
+                g.DrawRectangle(Black, CombatMenu[4]);
+            }
+            if (PlayerAction == "Item")
+            {
+                g.DrawRectangle(Green, CombatBox);
+                g.DrawRectangle(Black, CombatMenu[4]);
+            }
+            if (PlayerAction == "Flee")
+            {
+
+            }
+        }
+        private void Combat_Pnl_Paint(object sender, PaintEventArgs e)
+        {
+            g = e.Graphics;
+            g.DrawRectangle(Black, CombatPlayer);
+            for (int i = 0; i < Encounter.CurrentEncounter.Count; i++)
+            {
+                g.DrawRectangle(Black, CombatFoe[i]);
+                g.DrawImage(Enemies[i].Sprite, CombatFoe[i]);
+            }
+        }
+        private void Action(int Act)
+        {
+            switch (Act)
+            {
+                //Fight action
+                case 0:
+                    PlayerAction = "Fight";
+                    Action_Pnl.Invalidate();
+                    break;
+                //Swap Weapon action?
+                case 1:
+                    PlayerAction = "Weapon";
+                    Action_Pnl.Invalidate();
+                    break;
+                //Item action
+                case 2:
+                    PlayerAction = "Item";
+                    Action_Pnl.Invalidate();
+                    break;
+                //Flee action
+                case 3:
+                    PlayerAction = "Flee";
+                    PlayerTurn("Flee");
+                    Action_Pnl.Invalidate();
+                    break;
+                case 4:
+                    PlayerAction = "None";
+                    Action_Pnl.Invalidate();
+                    break;
+            }
+
 
         }
     }
