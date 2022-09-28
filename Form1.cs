@@ -733,8 +733,6 @@ namespace Grid_based_map
                     {
                         CombatMenu[i] = Rectangle.Empty;
                     }
-                    Combat_Pnl.SendToBack();
-                    Action_Pnl.SendToBack();
                     Combat_Pnl.Hide();
                     Action_Pnl.Hide();
                     Map_Pnl.Show();
@@ -744,7 +742,9 @@ namespace Grid_based_map
                         Enemies[i] = null;
                     }
                     GC.Collect();
-                    Encounter.CurrentEncounter = null;
+                    Encounter.CurrentEncounter = new List<Tuple<string, int, int, int, int, int, string, Tuple<int>>>();
+                    Encounter.Infight = false;
+                    PlayerAction = "None";
                 }
                 else
                 {
@@ -788,8 +788,10 @@ namespace Grid_based_map
                 }
             }
             CombatMenu[4] = new Rectangle(898, 0, 372, 297);
-            Action_Pnl.BringToFront();
-            Combat_Pnl.BringToFront();
+            Map_Pnl.Hide();
+            Info_Pnl.Hide();
+            Combat_Pnl.Show();
+            Action_Pnl.Show();
         }
         private void Action_Pnl_Paint(object sender, PaintEventArgs e)
         {
@@ -799,7 +801,7 @@ namespace Grid_based_map
                 g.FillRectangle(Brushes.Blue, CombatMenu[0]);
                 g.DrawString("Attack", General, Brushes.Black, CombatMenu[0], Center);
                 g.FillRectangle(Brushes.Green, CombatMenu[1]);
-                g.DrawString("Swap Weapon", General, Brushes.Black, CombatMenu[1], Center);
+                g.DrawString("Defend", General, Brushes.Black, CombatMenu[1], Center);
                 g.FillRectangle(Brushes.Yellow, CombatMenu[2]);
                 g.DrawString("Items", General, Brushes.Black, CombatMenu[2], Center);
                 g.FillRectangle(Brushes.Orange, CombatMenu[3]);
@@ -827,10 +829,6 @@ namespace Grid_based_map
                 g.DrawRectangle(Green, CombatBox);
                 g.DrawRectangle(Black, CombatMenu[4]);
             }
-            if (PlayerAction == "Flee")
-            {
-
-            }
         }
         private void Combat_Pnl_Paint(object sender, PaintEventArgs e)
         {
@@ -853,7 +851,7 @@ namespace Grid_based_map
                     break;
                 //Swap Weapon action?
                 case 1:
-                    PlayerAction = "Weapon";
+                    PlayerAction = "Defend";
                     Action_Pnl.Invalidate();
                     break;
                 //Item action

@@ -9,7 +9,6 @@ namespace Grid_based_map
     class Inventory
     {   // The tuple is set up like this Name, Amount of item, Item type, Equipabble?, ItemFile, Tuple(Hp,Atk,Def,Spd,Crit,Element?)Note:Nested tuple!,Equipped?
         //                               string,  int,          string,    Bool,        string          Multiple ints,      String                      bool
-        //^^^ this is planned result once everything is up and running
         public List<Tuple<Tuple<string, string>, int, string, bool, string, Tuple<int, int, int, int, int, string>, bool>> InvData = new List<Tuple<Tuple<string, string>, int, string, bool, string, Tuple<int, int, int, int, int, string>, bool>>();
         public List<Tuple<Tuple<string, string>, int, string, bool, string, Tuple<int, int, int, int, int, string>, bool>> CategoryData = new List<Tuple<Tuple<string, string>, int, string, bool, string, Tuple<int, int, int, int, int, string>, bool>>();
         public int CatergisedAmount;

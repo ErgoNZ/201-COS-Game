@@ -200,6 +200,7 @@ namespace Grid_based_map
                             count++;
                         }
                     }
+                    SelEncounters = new List<Tuple<double, string, string, string>>();
 
                     foreach (Tuple<string, int, int, int, int, int, string, Tuple<int>> tuple in CurrentEncounter)
                     {
