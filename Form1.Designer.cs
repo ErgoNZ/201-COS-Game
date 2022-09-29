@@ -31,20 +31,22 @@ namespace Grid_based_map
         {
             this.Map_Pnl = new System.Windows.Forms.Panel();
             this.Info_Pnl = new System.Windows.Forms.Panel();
+            this.Save_Btn = new System.Windows.Forms.Button();
+            this.Quit_Btn = new System.Windows.Forms.Button();
             this.Item_Pnl = new System.Windows.Forms.Panel();
             this.Gear_btn = new System.Windows.Forms.Button();
             this.Key_btn = new System.Windows.Forms.Button();
             this.Item_btn = new System.Windows.Forms.Button();
-            this.Quit_Btn = new System.Windows.Forms.Button();
-            this.Save_Btn = new System.Windows.Forms.Button();
             this.Equiped_Btn = new System.Windows.Forms.Button();
             this.Desc_Pnl = new System.Windows.Forms.Panel();
             this.Drop_Btn = new System.Windows.Forms.Button();
             this.Use_Btn = new System.Windows.Forms.Button();
             this.Combat_Pnl = new System.Windows.Forms.Panel();
             this.Action_Pnl = new System.Windows.Forms.Panel();
+            this.CombatInfo_Txtbox = new System.Windows.Forms.RichTextBox();
             this.Info_Pnl.SuspendLayout();
             this.Desc_Pnl.SuspendLayout();
+            this.Action_Pnl.SuspendLayout();
             this.SuspendLayout();
             // 
             // Map_Pnl
@@ -72,6 +74,34 @@ namespace Grid_based_map
             this.Info_Pnl.Size = new System.Drawing.Size(433, 841);
             this.Info_Pnl.TabIndex = 1;
             this.Info_Pnl.Paint += new System.Windows.Forms.PaintEventHandler(this.Info_Pnl_Paint);
+            // 
+            // Save_Btn
+            // 
+            this.Save_Btn.BackColor = System.Drawing.Color.Wheat;
+            this.Save_Btn.FlatAppearance.BorderSize = 0;
+            this.Save_Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Save_Btn.Location = new System.Drawing.Point(7, 742);
+            this.Save_Btn.Name = "Save_Btn";
+            this.Save_Btn.Size = new System.Drawing.Size(195, 90);
+            this.Save_Btn.TabIndex = 0;
+            this.Save_Btn.TabStop = false;
+            this.Save_Btn.Text = "button1";
+            this.Save_Btn.UseVisualStyleBackColor = false;
+            this.Save_Btn.Click += new System.EventHandler(this.Save_Btn_Click);
+            // 
+            // Quit_Btn
+            // 
+            this.Quit_Btn.BackColor = System.Drawing.Color.Wheat;
+            this.Quit_Btn.FlatAppearance.BorderSize = 0;
+            this.Quit_Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Quit_Btn.Location = new System.Drawing.Point(225, 742);
+            this.Quit_Btn.Name = "Quit_Btn";
+            this.Quit_Btn.Size = new System.Drawing.Size(195, 90);
+            this.Quit_Btn.TabIndex = 0;
+            this.Quit_Btn.TabStop = false;
+            this.Quit_Btn.Text = "button2";
+            this.Quit_Btn.UseVisualStyleBackColor = false;
+            this.Quit_Btn.Click += new System.EventHandler(this.Quit_Btn_Click);
             // 
             // Item_Pnl
             // 
@@ -126,34 +156,6 @@ namespace Grid_based_map
             this.Item_btn.Text = "Item";
             this.Item_btn.UseVisualStyleBackColor = false;
             this.Item_btn.Click += new System.EventHandler(this.Item_btn_Click);
-            // 
-            // Quit_Btn
-            // 
-            this.Quit_Btn.BackColor = System.Drawing.Color.Wheat;
-            this.Quit_Btn.FlatAppearance.BorderSize = 0;
-            this.Quit_Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Quit_Btn.Location = new System.Drawing.Point(225, 742);
-            this.Quit_Btn.Name = "Quit_Btn";
-            this.Quit_Btn.Size = new System.Drawing.Size(195, 90);
-            this.Quit_Btn.TabIndex = 0;
-            this.Quit_Btn.TabStop = false;
-            this.Quit_Btn.Text = "button2";
-            this.Quit_Btn.UseVisualStyleBackColor = false;
-            this.Quit_Btn.Click += new System.EventHandler(this.Quit_Btn_Click);
-            // 
-            // Save_Btn
-            // 
-            this.Save_Btn.BackColor = System.Drawing.Color.Wheat;
-            this.Save_Btn.FlatAppearance.BorderSize = 0;
-            this.Save_Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Save_Btn.Location = new System.Drawing.Point(7, 742);
-            this.Save_Btn.Name = "Save_Btn";
-            this.Save_Btn.Size = new System.Drawing.Size(195, 90);
-            this.Save_Btn.TabIndex = 0;
-            this.Save_Btn.TabStop = false;
-            this.Save_Btn.Text = "button1";
-            this.Save_Btn.UseVisualStyleBackColor = false;
-            this.Save_Btn.Click += new System.EventHandler(this.Save_Btn_Click);
             // 
             // Equiped_Btn
             // 
@@ -217,12 +219,31 @@ namespace Grid_based_map
             // 
             // Action_Pnl
             // 
+            this.Action_Pnl.Controls.Add(this.CombatInfo_Txtbox);
             this.Action_Pnl.Location = new System.Drawing.Point(0, 545);
             this.Action_Pnl.Name = "Action_Pnl";
             this.Action_Pnl.Size = new System.Drawing.Size(1273, 296);
             this.Action_Pnl.TabIndex = 3;
             this.Action_Pnl.Paint += new System.Windows.Forms.PaintEventHandler(this.Action_Pnl_Paint);
             this.Action_Pnl.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Action_Pnl_MouseDown);
+            // 
+            // CombatInfo_Txtbox
+            // 
+            this.CombatInfo_Txtbox.BackColor = System.Drawing.SystemColors.InfoText;
+            this.CombatInfo_Txtbox.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.CombatInfo_Txtbox.DetectUrls = false;
+            this.CombatInfo_Txtbox.Font = new System.Drawing.Font("Segoe UI Symbol", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.CombatInfo_Txtbox.ForeColor = System.Drawing.SystemColors.Info;
+            this.CombatInfo_Txtbox.ImeMode = System.Windows.Forms.ImeMode.Off;
+            this.CombatInfo_Txtbox.Location = new System.Drawing.Point(900, 0);
+            this.CombatInfo_Txtbox.Name = "CombatInfo_Txtbox";
+            this.CombatInfo_Txtbox.ReadOnly = true;
+            this.CombatInfo_Txtbox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
+            this.CombatInfo_Txtbox.Size = new System.Drawing.Size(372, 296);
+            this.CombatInfo_Txtbox.TabIndex = 0;
+            this.CombatInfo_Txtbox.Text = "->This is the Combat Action pannel\n->It will tell you what actions were taken by " +
+    "everyone invloved In the combat\n";
+            this.CombatInfo_Txtbox.TextChanged += new System.EventHandler(this.CombatInfo_Txtbox_TextChanged);
             // 
             // Form1
             // 
@@ -231,8 +252,8 @@ namespace Grid_based_map
             this.ClientSize = new System.Drawing.Size(1272, 841);
             this.Controls.Add(this.Action_Pnl);
             this.Controls.Add(this.Combat_Pnl);
-            this.Controls.Add(this.Map_Pnl);
             this.Controls.Add(this.Info_Pnl);
+            this.Controls.Add(this.Map_Pnl);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.KeyPreview = true;
             this.Name = "Form1";
@@ -241,6 +262,7 @@ namespace Grid_based_map
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown);
             this.Info_Pnl.ResumeLayout(false);
             this.Desc_Pnl.ResumeLayout(false);
+            this.Action_Pnl.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -261,6 +283,7 @@ namespace Grid_based_map
         private System.Windows.Forms.Button Equiped_Btn;
         private System.Windows.Forms.Panel Combat_Pnl;
         private System.Windows.Forms.Panel Action_Pnl;
+        private System.Windows.Forms.RichTextBox CombatInfo_Txtbox;
     }
 }
 

@@ -15,14 +15,16 @@ namespace Grid_based_map
 
         public void AddItem(int ItemAmount, string FileName, bool Equipped)
         {
+            // sets up variables needed
             string ItemName = "", ItemType = "", Element = "", Description = "";
             bool Equipabble = false;
             int Hp = 0, Atk = 0, Def = 0, Spd = 0, Crit = 0;
-            using (StreamReader MapReader = new StreamReader("../../../Items/" + FileName + ".txt"))
+            //Reads Item file for item data
+            using (StreamReader ItemReader = new StreamReader("../../../Items/" + FileName + ".txt"))
             {
                 string line;
                 int LineNum = 0;
-                while ((line = MapReader.ReadLine()) != null)
+                while ((line = ItemReader.ReadLine()) != null)
                 {
                     if (LineNum == 0)
                     {
@@ -115,10 +117,12 @@ namespace Grid_based_map
         }
         public void DelItem(int ItemAmount, string FileName, bool equipped)
         {
+            //Sets up variables
             int Index = 0;
             string ItemName = "", ItemType = "", Element = "", Description = "";
             bool Equipabble = false;
             int Hp = 0, Atk = 0, Def = 0, Spd = 0, Crit = 0;
+            //Finds item data
             using (StreamReader MapReader = new StreamReader("../../../Items/" + FileName + ".txt"))
             {
                 string line;
@@ -177,6 +181,7 @@ namespace Grid_based_map
                     LineNum++;
                 }
             }
+            //Finds the file in the inventory and deletes that amount of items from the inventory (Also makes sure that it cannot delete more items than what exists)
             foreach (Tuple<Tuple<string, string>, int, string, bool, string, Tuple<int, int, int, int, int, string>, bool> tuple in InvData)
             {
                 if (tuple.Item1.Item1 == ItemName)
@@ -208,6 +213,7 @@ namespace Grid_based_map
         {
             CategoryData.Clear();
             CatergisedAmount = 0;
+            //This is how the inventory system knows what to display to the player when the category the player is currently looking at has benn switched (For example the player hits gear category all of the items in the gear category are selected are displayed)
             if (Category == "Gear")
             {
                 foreach (Tuple<Tuple<string, string>, int, string, bool, string, Tuple<int, int, int, int, int, string>, bool> tuple in InvData)
@@ -249,6 +255,7 @@ namespace Grid_based_map
                 }
             }
         }
+        //This is meant for debug purposes REMOVE LATER
         public void Sort(string SortBy)
         {
             //Sorts by amount of items

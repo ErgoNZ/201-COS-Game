@@ -77,6 +77,9 @@ namespace Grid_based_map
         {
             InitializeComponent();
             typeof(Panel).InvokeMember("DoubleBuffered", BindingFlags.SetProperty | BindingFlags.Instance | BindingFlags.NonPublic, null, Map_Pnl, new object[] { true });
+            typeof(Panel).InvokeMember("DoubleBuffered", BindingFlags.SetProperty | BindingFlags.Instance | BindingFlags.NonPublic, null, Info_Pnl, new object[] { true });
+            typeof(Panel).InvokeMember("DoubleBuffered", BindingFlags.SetProperty | BindingFlags.Instance | BindingFlags.NonPublic, null, Combat_Pnl, new object[] { true });
+            typeof(Panel).InvokeMember("DoubleBuffered", BindingFlags.SetProperty | BindingFlags.Instance | BindingFlags.NonPublic, null, Action_Pnl, new object[] { true });
             Map.LoadMap("1_1");
             Inv.AddItem(1, "Chestplate", false);
             Inv.AddItem(1, "Chestplate1", false);
@@ -204,6 +207,12 @@ namespace Grid_based_map
             //Call the DrawGrid method to refresh the players current view and update any tiles as needed
             Info_Pnl.Invalidate();
             DrawGrid();
+        }
+
+        private void CombatInfo_Txtbox_TextChanged(object sender, EventArgs e)
+        {
+            CombatInfo_Txtbox.SelectionStart = CombatInfo_Txtbox.Text.Length;
+            CombatInfo_Txtbox.ScrollToCaret();
         }
 
         public void DrawGrid()
@@ -742,7 +751,7 @@ namespace Grid_based_map
                         Enemies[i] = null;
                     }
                     GC.Collect();
-                    Encounter.CurrentEncounter = new List<Tuple<string, int, int, int, int, int, string, Tuple<int>>>();
+                    Encounter.CurrentEncounter.Clear();
                     Encounter.Infight = false;
                     PlayerAction = "None";
                 }
@@ -812,22 +821,26 @@ namespace Grid_based_map
                 g.DrawRectangle(Black, CombatMenu[2]);
                 g.DrawRectangle(Black, CombatMenu[3]);
                 g.DrawRectangle(Black, CombatStats);
+                CombatInfo_Txtbox.Show();
             }
             if (PlayerAction == "Fight")
             {
                 g.DrawRectangle(Black, CombatBox);
                 g.DrawRectangle(Black, CombatMenu[4]);
                 EnemyTurn();
+                CombatInfo_Txtbox.Hide();
             }
-            if (PlayerAction == "Weapon")
+            if (PlayerAction == "Defend")
             {
                 g.DrawRectangle(Blue, CombatBox);
                 g.DrawRectangle(Black, CombatMenu[4]);
+                CombatInfo_Txtbox.Hide();
             }
             if (PlayerAction == "Item")
             {
                 g.DrawRectangle(Green, CombatBox);
                 g.DrawRectangle(Black, CombatMenu[4]);
+                CombatInfo_Txtbox.Hide();
             }
         }
         private void Combat_Pnl_Paint(object sender, PaintEventArgs e)
