@@ -10,7 +10,7 @@ namespace Grid_based_map
     {
         public Rectangle Char;
         public int PlayerX = -1, PlayerY = -1, PlayerXPos = 0, PlayerYPos = 0;
-        public int Hp = 1, Def = 5, Spd = 10, Atk = 7, Lvl = 1, MaxHp = 20, Crit = 3, Xp = 0;
+        public int Hp = 1, Def = 0, Spd = 10, Atk = 7, Lvl = 1, MaxHp = 20, Crit = 3, Xp = 0, TrueDef=5;
         public string Name = "Player", AtkElement = "None";
         public bool WeaponEquipped, HelmetEquipped, ChestplateEquipped, LeggingsEquipped, BootsEquipped;
         public List<string> DefElement = new List<string>();

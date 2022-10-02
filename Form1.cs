@@ -215,6 +215,11 @@ namespace Grid_based_map
             CombatInfo_Txtbox.ScrollToCaret();
         }
 
+        private void CombatInfo_Txtbox_Click(object sender, EventArgs e)
+        {
+            this.ActiveControl = null;
+        }
+
         public void DrawGrid()
         {
             //Remove the info for the player as it may not be needed
@@ -322,7 +327,7 @@ namespace Grid_based_map
             g.DrawString("PlayTime: 1:30:27", General, Brushes.Black, FilePlayTime, Center);
             g.DrawString("Hp:" + Character.Hp + "/" + Character.MaxHp, General, Brushes.Black, PlayerHp, Center);
             g.DrawString("Atk:" + Character.Atk, General, Brushes.Black, PlayerAtk, Center);
-            g.DrawString("Def:" + Character.Def, General, Brushes.Black, PlayerDef, Center);
+            g.DrawString("Def:" + Character.TrueDef, General, Brushes.Black, PlayerDef, Center);
             g.DrawString("Spd:" + Character.Spd, General, Brushes.Black, PlayerSpd, Center);
             g.DrawString("Crit:" + Character.Crit + "%", General, Brushes.Black, PlayerCrit, Center);
         }
@@ -523,7 +528,7 @@ namespace Grid_based_map
                 {
                     Character.MaxHp -= tuple.Item7.Item1;
                     Character.Atk -= tuple.Item7.Item2;
-                    Character.Def -= tuple.Item7.Item3;
+                    Character.TrueDef -= tuple.Item7.Item3;
                     Character.Spd -= tuple.Item7.Item4;
                     Character.Crit -= tuple.Item7.Item5;
                     if (tuple.Rest.Item3 == "Weapon")
@@ -565,7 +570,7 @@ namespace Grid_based_map
                         Inv.DelItem(1, tuple.Item6, true);
                         Character.MaxHp += tuple.Item7.Item1;
                         Character.Atk += tuple.Item7.Item2;
-                        Character.Def += tuple.Item7.Item3;
+                        Character.TrueDef += tuple.Item7.Item3;
                         Character.Spd += tuple.Item7.Item4;
                         Character.Crit += tuple.Item7.Item5;
                     }
@@ -576,7 +581,7 @@ namespace Grid_based_map
                         Inv.DelItem(1, tuple.Item6, true);
                         Character.MaxHp += tuple.Item7.Item1;
                         Character.Atk += tuple.Item7.Item2;
-                        Character.Def += tuple.Item7.Item3;
+                        Character.TrueDef += tuple.Item7.Item3;
                         Character.Spd += tuple.Item7.Item4;
                         Character.Crit += tuple.Item7.Item5;
                     }
@@ -587,7 +592,7 @@ namespace Grid_based_map
                         Inv.DelItem(1, tuple.Item6, true);
                         Character.MaxHp += tuple.Item7.Item1;
                         Character.Atk += tuple.Item7.Item2;
-                        Character.Def += tuple.Item7.Item3;
+                        Character.TrueDef += tuple.Item7.Item3;
                         Character.Spd += tuple.Item7.Item4;
                         Character.Crit += tuple.Item7.Item5;
                     }
@@ -598,7 +603,7 @@ namespace Grid_based_map
                         Inv.DelItem(1, tuple.Item6, true);
                         Character.MaxHp += tuple.Item7.Item1;
                         Character.Atk += tuple.Item7.Item2;
-                        Character.Def += tuple.Item7.Item3;
+                        Character.TrueDef += tuple.Item7.Item3;
                         Character.Spd += tuple.Item7.Item4;
                         Character.Crit += tuple.Item7.Item5;
                     }
@@ -609,7 +614,7 @@ namespace Grid_based_map
                         Inv.DelItem(1, tuple.Item6, true);
                         Character.MaxHp += tuple.Item7.Item1;
                         Character.Atk += tuple.Item7.Item2;
-                        Character.Def += tuple.Item7.Item3;
+                        Character.TrueDef += tuple.Item7.Item3;
                         Character.Spd += tuple.Item7.Item4;
                         Character.Crit += tuple.Item7.Item5;
                     }
@@ -648,6 +653,8 @@ namespace Grid_based_map
                 Info_Pnl.Hide();
                 CombatUISetup();
                 Combat_Pnl.Invalidate();
+                Character.Def = Character.TrueDef;
+                CombatInfo_Txtbox.Text = "Combat Start!";
                 EnemySetup();
             }
         }
@@ -684,9 +691,9 @@ namespace Grid_based_map
                     Random CritRoll = new Random();
                     Random DmgMulti = new Random();
                     Ec = Enemies[i].EnemyDecision();
-                    Debug.WriteLine(Ec);
                     if (Ec >= 0 && Ec <= 80)
                     {
+                        CombatInfo_Txtbox.Text += "\n->" + Enemies[i].Name + (i+1) + " attacked you!";
                         Dmg = (int)Math.Round((Enemies[i].Atk * (double)(DmgMulti.Next(0, 2) / 10 + 1)) - Character.Def/2);
                         foreach (string Def in Character.DefElement)
                         {
@@ -695,33 +702,42 @@ namespace Grid_based_map
                                 Dmg = Dmg / 2;
                             }
                         }
-                        if (CritRoll.Next(0, 101) <= Enemies[i].Crit)
+                        int CritRolled = CritRoll.Next(0, 101);
+                        if (CritRolled <= Enemies[i].Crit)
                         {
                             Dmg = Dmg * 2;
+                            CombatInfo_Txtbox.Text += "\n->The enemy got a critical strike against you!";
+                        }
+                        if(Dmg <= 0)
+                        {
+                            Dmg = 1;
                         }
                         Character.Hp -= Dmg;
+                        CombatInfo_Txtbox.Text += "\n->" +"And delt " +Dmg+"!";
                     }
                     if (Ec >= 81 && Ec <= 99)
                     {
                         Enemies[i].Def = (int)Math.Round(Enemies[i].Def * 1.2);
                         Enemies[i].Defending = true;
+                        CombatInfo_Txtbox.Text += "\n->" + Enemies[i].Name + (i+1) + " prepares for your next attack!";
                     }
                     if (Ec >= 100)
                     {
                         //Flee
                         if((int)Math.Round((double)Enemies[i].Spd/Character.Spd*100)<=Flee.Next(0, 101))
                         {
-                            Debug.WriteLine(Enemies[i].Name +"fled!");
-                            Enemies[i] = null;
+                            CombatInfo_Txtbox.Text += "\n->" + Enemies[i].Name+ (i + 1) + " fled from the scene!";
+                            Enemies[i].Fled = true;
                         }
                         else
                         {
-                            Debug.WriteLine(Enemies[i].Name + "attempted to flee!");
+                            CombatInfo_Txtbox.Text += "\n->" + Enemies[i].Name + (i + 1) + " attempted to flee but you managed to stop its esacpe!";
                         }
                     }
                 }
                
             }
+            Character.Def = Character.TrueDef;
             PlayerAction = "None";
             Action_Pnl.Invalidate();
         }
@@ -757,7 +773,7 @@ namespace Grid_based_map
                 }
                 else
                 {
-                    Debug.WriteLine("Escape Failed!");
+                    CombatInfo_Txtbox.Text += "\n->You Attempted to flee but couldn't find an opening!";
                     EnemyTurn();
                 }
 
@@ -865,6 +881,9 @@ namespace Grid_based_map
                 //Swap Weapon action?
                 case 1:
                     PlayerAction = "Defend";
+                    CombatInfo_Txtbox.Text += "\n->You prepared to defend against enemy attacks!";
+                    Character.Def = (int)Math.Round(Character.Def * 1.2);
+                    EnemyTurn();
                     Action_Pnl.Invalidate();
                     break;
                 //Item action

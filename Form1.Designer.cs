@@ -229,7 +229,7 @@ namespace Grid_based_map
             // 
             // CombatInfo_Txtbox
             // 
-            this.CombatInfo_Txtbox.BackColor = System.Drawing.SystemColors.InfoText;
+            this.CombatInfo_Txtbox.BackColor = System.Drawing.Color.Black;
             this.CombatInfo_Txtbox.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.CombatInfo_Txtbox.DetectUrls = false;
             this.CombatInfo_Txtbox.Font = new System.Drawing.Font("Segoe UI Symbol", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
@@ -241,8 +241,10 @@ namespace Grid_based_map
             this.CombatInfo_Txtbox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
             this.CombatInfo_Txtbox.Size = new System.Drawing.Size(372, 296);
             this.CombatInfo_Txtbox.TabIndex = 0;
+            this.CombatInfo_Txtbox.TabStop = false;
             this.CombatInfo_Txtbox.Text = "->This is the Combat Action pannel\n->It will tell you what actions were taken by " +
-    "everyone invloved In the combat\n";
+    "everyone invloved In the combat";
+            this.CombatInfo_Txtbox.Click += new System.EventHandler(this.CombatInfo_Txtbox_Click);
             this.CombatInfo_Txtbox.TextChanged += new System.EventHandler(this.CombatInfo_Txtbox_TextChanged);
             // 
             // Form1
