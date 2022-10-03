@@ -1,0 +1,10 @@
+﻿Slime Gel
+Item
+false
+3
+0
+3
+-2
+2
+Fire
+This slime gel is highly inflammable and also quite tasty! However people to get sluggish after consuming a jar of slime, so don't eat any while working!

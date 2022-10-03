@@ -8,7 +8,7 @@ namespace Grid_based_map
     class Enemy
     {
         public string Element = "", Name = "";
-        public int Hp = 0, Atk = 0, Def = 0, Spd = 0, Crit = 0,Pos=0,TrueDef=0;
+        public int Hp = 0, Atk = 0, Def = 0, Spd = 0, Crit = 0,Pos=0,TrueDef=0,MaxHp=0;
         public Image Sprite;
         public bool Defending=false,Fled=false;
         Random EnemyChoice = new Random();
@@ -16,6 +16,7 @@ namespace Grid_based_map
         {
             Name = FoeName;
             Hp = FoeHp;
+            MaxHp = FoeHp;
             Atk = FoeAtk;
             Def = FoeDef;
             TrueDef = FoeDef;
