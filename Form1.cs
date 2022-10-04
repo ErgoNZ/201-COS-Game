@@ -29,7 +29,8 @@ namespace Grid_based_map
                   ItemStats = new Rectangle(0, 101, 100, 100),
                   CombatStats = new Rectangle(898,0,372,296),
                   CombatPlayer = new Rectangle(100, 168, 150, 190),
-                  CombatBox = new Rectangle(0, 0, 898, 297)
+                  CombatBox = new Rectangle(0, 0, 898, 297),
+                  CombatItemDesc = new Rectangle(436,1,321,296)
 
 
                                                                ;
@@ -75,8 +76,6 @@ namespace Grid_based_map
         Enemy[] Enemies = new Enemy[3];
         Pen Black = new Pen(Color.Black, 3);
         Pen Outliner = new Pen(Color.Black, 8);
-        Pen Green = new Pen(Color.Green, 3);
-        Pen Blue = new Pen(Color.Blue, 3);
         Random Flee = new Random();
         private void Save_Btn_Click(object sender, EventArgs e)
         {
@@ -90,7 +89,8 @@ namespace Grid_based_map
 
         Font ComabtBack = new Font(FontFamily.GenericMonospace, 32, FontStyle.Regular);
         Font General = new Font(FontFamily.GenericMonospace, 16, FontStyle.Regular);
-        Font Item = new Font(FontFamily.GenericMonospace, 10, FontStyle.Regular);
+        Font Item = new Font(FontFamily.GenericMonospace, 14, FontStyle.Regular);
+        Font Stats = new Font(FontFamily.GenericMonospace, 10, FontStyle.Regular);
         StringFormat Center = new StringFormat();
         StringFormat CenterTop = new StringFormat();
         public Form1()
@@ -445,7 +445,7 @@ namespace Grid_based_map
                                 ItemStat += stat + ":" + tuple.Item7.Item6 + Environment.NewLine;
                             }
                         }
-                        g.DrawString(ItemStat, Item, Brushes.Black, ItemStats);
+                        g.DrawString(ItemStat, Stats, Brushes.Black, ItemStats);
                     }
                     count++;
                 }
@@ -454,9 +454,9 @@ namespace Grid_based_map
         private void InventoryUISetUp()
         {
             int count = 0;
+            Items.Clear();
             if (SelectedCat != OldCat)
             {
-                Items.Clear();
                 Item_Pnl.Invalidate();
                 Desc_Pnl.Invalidate();
             }
@@ -526,6 +526,13 @@ namespace Grid_based_map
             }
         }
         private void Use_Btn_Click(object sender, EventArgs e)
+        {
+            UseItem();
+        }
+        //
+        //Comabt Stuff starts here!
+        //
+        private void UseItem()
         {
             int count = 0;
             foreach (Tuple<Rectangle, Rectangle, string, Rectangle, int, string, Tuple<int, int, int, int, int, string>, Tuple<bool, bool, string, string>> tuple in Items)
@@ -641,15 +648,19 @@ namespace Grid_based_map
                     Items.Clear();
                     Info_Pnl.Invalidate();
                     Desc_Pnl.Invalidate();
+                    Action_Pnl.Invalidate();
+                    CombatItem_Pnl.Invalidate();
                     InventoryUISetUp();
+                    if (Encounter.Infight == true)
+                    {
+                        EnemyTurn();
+                    }
                     break;
                 }
+               
                 count++;
             }
         }
-        //
-        //Comabt Stuff starts here!
-        //
         private void EncounterTick()
         {
             Encounter.EncounterRoll(Map.Tiles[Character.PlayerYPos, Character.PlayerXPos, 0]);
@@ -845,6 +856,7 @@ namespace Grid_based_map
                    if (PlayerAction != "None" && Selected_Action == 4)
                    {
                        Mouse = new Point();
+                       Selected_Item = -1;
                        Action(Selected_Action);
                    }
                    else if (PlayerAction == "None") 
@@ -887,12 +899,17 @@ namespace Grid_based_map
             Info_Pnl.Hide();
             Combat_Pnl.Show();
             Action_Pnl.Show();
+            SelectedCat = "Item";
+            InventoryUISetUp();
         }
         private void Action_Pnl_Paint(object sender, PaintEventArgs e)
         {
-            g = e.Graphics;
+            g = e.Graphics;         
             if (PlayerAction == "None")
             {
+                CombatItem_Pnl.Hide();
+                BattleUse_Btn.Hide();
+                BattleUse_Btn.Enabled = false;
                 g.FillRectangle(Brushes.Blue, CombatMenu[0]);
                 g.DrawString("Attack", General, Brushes.Black, CombatMenu[0], Center);
                 g.FillRectangle(Brushes.Green, CombatMenu[1]);
@@ -932,7 +949,55 @@ namespace Grid_based_map
             if (PlayerAction == "Item")
             {
                 g.DrawRectangle(Outliner, CombatBox);
+                g.DrawRectangle(Black, CombatItemDesc);
+                CombatItem_Pnl.Show();
+                BattleUse_Btn.Show();
+                BattleUse_Btn.Enabled = true;
+                InventoryUISetUp();
                 CombatInfo_Txtbox.Hide();
+                int count = 0;
+                foreach (Tuple<Rectangle, Rectangle, string, Rectangle, int, string, Tuple<int, int, int, int, int, string>, Tuple<bool, bool, string, string>> tuple in Items)
+                {
+                    if (count == Selected_Item)
+                    {
+                        string ItemStat = "", stat = "";
+                        for (int i = 0; i < 6; i++)
+                        {
+                            if (i == 0)
+                            {
+                                stat = "Hp";
+                                ItemStat += stat + ":" + tuple.Item7.Item1 + Environment.NewLine;
+                            }
+                            if (i == 1)
+                            {
+                                stat = "Atk";
+                                ItemStat += stat + ":" + tuple.Item7.Item2 + Environment.NewLine;
+                            }
+                            if (i == 2)
+                            {
+                                stat = "Def";
+                                ItemStat += stat + ":" + tuple.Item7.Item3 + Environment.NewLine;
+                            }
+                            if (i == 3)
+                            {
+                                stat = "Spd";
+                                ItemStat += stat + ":" + tuple.Item7.Item4 + Environment.NewLine;
+                            }
+                            if (i == 4)
+                            {
+                                stat = "Crit";
+                                ItemStat += stat + ":" + tuple.Item7.Item5 + Environment.NewLine;
+                            }
+                            if (i == 5)
+                            {
+                                stat = "Type";
+                                ItemStat += stat + ":" + tuple.Item7.Item6 + Environment.NewLine;
+                            }
+                        }
+                        g.DrawString(ItemStat + "\n" + tuple.Rest.Item4, Item, Brushes.Black, CombatItemDesc);
+                    }
+                    count++;
+                }
             }
         }
         private void Combat_Pnl_Paint(object sender, PaintEventArgs e)
@@ -944,6 +1009,69 @@ namespace Grid_based_map
                 g.DrawRectangle(Black, CombatFoe[i]);
                 g.DrawImage(Enemies[i].Sprite, CombatFoe[i]);
             }
+        }
+        private void CombatItem_Pnl_Paint(object sender, PaintEventArgs e)
+        {
+            //usual shorting of e.grahpics down to g
+            g = e.Graphics;
+            g.Clear(Color.Gray);
+            //Displace all objects drawn on panel by the scroll amount
+            g.TranslateTransform(CombatItem_Pnl.AutoScrollPosition.X, CombatItem_Pnl.AutoScrollPosition.Y);
+            //Check every tuple in the Items list
+            int count = 0;
+            Debug.WriteLine(Items.Count);
+            foreach (Tuple<Rectangle, Rectangle, string, Rectangle, int, string, Tuple<int, int, int, int, int, string>, Tuple<bool, bool, string, string>> tuple in Items)
+            {
+                //Draws the UI for each item
+                if (count == Selected_Item)
+                {
+                    g.DrawRectangle(Pens.Blue, tuple.Item1);
+                    g.DrawRectangle(Pens.Blue, tuple.Item2);
+                    g.DrawRectangle(Pens.Blue, tuple.Item4);
+                }
+                else
+                {
+                    g.DrawRectangle(Pens.Black, tuple.Item1);
+                    g.DrawRectangle(Pens.Black, tuple.Item2);
+                    g.DrawRectangle(Pens.Black, tuple.Item4);
+                }
+                g.DrawString(tuple.Item3, General, Brushes.Black, tuple.Item2, Center);
+                g.DrawString(tuple.Item5 + "", General, Brushes.Black, tuple.Item4, Center);
+                //Does this file path exist?
+                bool FileExists = File.Exists("../../../Items/Images/" + tuple.Item6 + ".png");
+                if (FileExists == true)
+                {
+                    //Draws image as intended with no errors
+                    Item_Image = Image.FromFile("../../../Items/Images/" + tuple.Item6 + ".png");
+                    g.DrawImage(Item_Image, tuple.Item1.X + 1, tuple.Item1.Y + 1);
+                }
+                else
+                {
+                    //Draws error image when the items image cannot be found
+                    g.DrawImage(Error_Image, tuple.Item1.X + 1, tuple.Item1.Y + 1);
+                }
+                count++;
+            }
+        }
+        private void CombatItem_Pnl_MouseDown(object sender, MouseEventArgs e)
+        {
+            int count = 0;
+            Point Mouse = new Point(e.X, e.Y - CombatItem_Pnl.AutoScrollPosition.Y);
+            foreach (Tuple<Rectangle, Rectangle, string, Rectangle, int, string, Tuple<int, int, int, int, int, string>, Tuple<bool, bool, string, string>> tuple in Items)
+            {
+                if (tuple.Item2.Contains(Mouse))
+                {
+                    Selected_Item = count;
+                    Mouse = new Point();
+                    CombatItem_Pnl.Invalidate();
+                    Action_Pnl.Invalidate();
+                }
+                count++;
+            }
+        }
+        private void BattleUse_Btn_Click(object sender, EventArgs e)
+        {
+            UseItem();
         }
         private void Action(int Act)
         {

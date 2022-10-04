@@ -43,6 +43,8 @@ namespace Grid_based_map
             this.Use_Btn = new System.Windows.Forms.Button();
             this.Combat_Pnl = new System.Windows.Forms.Panel();
             this.Action_Pnl = new System.Windows.Forms.Panel();
+            this.BattleUse_Btn = new System.Windows.Forms.Button();
+            this.CombatItem_Pnl = new System.Windows.Forms.Panel();
             this.CombatInfo_Txtbox = new System.Windows.Forms.RichTextBox();
             this.Info_Pnl.SuspendLayout();
             this.Desc_Pnl.SuspendLayout();
@@ -219,6 +221,8 @@ namespace Grid_based_map
             // 
             // Action_Pnl
             // 
+            this.Action_Pnl.Controls.Add(this.BattleUse_Btn);
+            this.Action_Pnl.Controls.Add(this.CombatItem_Pnl);
             this.Action_Pnl.Controls.Add(this.CombatInfo_Txtbox);
             this.Action_Pnl.Location = new System.Drawing.Point(0, 545);
             this.Action_Pnl.Name = "Action_Pnl";
@@ -226,6 +230,34 @@ namespace Grid_based_map
             this.Action_Pnl.TabIndex = 3;
             this.Action_Pnl.Paint += new System.Windows.Forms.PaintEventHandler(this.Action_Pnl_Paint);
             this.Action_Pnl.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Action_Pnl_MouseDown);
+            // 
+            // BattleUse_Btn
+            // 
+            this.BattleUse_Btn.BackColor = System.Drawing.Color.OliveDrab;
+            this.BattleUse_Btn.Enabled = false;
+            this.BattleUse_Btn.FlatAppearance.BorderSize = 0;
+            this.BattleUse_Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BattleUse_Btn.Location = new System.Drawing.Point(759, 4);
+            this.BattleUse_Btn.Name = "BattleUse_Btn";
+            this.BattleUse_Btn.Size = new System.Drawing.Size(135, 289);
+            this.BattleUse_Btn.TabIndex = 3;
+            this.BattleUse_Btn.TabStop = false;
+            this.BattleUse_Btn.Text = "Use";
+            this.BattleUse_Btn.UseVisualStyleBackColor = false;
+            this.BattleUse_Btn.Visible = false;
+            this.BattleUse_Btn.Click += new System.EventHandler(this.BattleUse_Btn_Click);
+            // 
+            // CombatItem_Pnl
+            // 
+            this.CombatItem_Pnl.AutoScroll = true;
+            this.CombatItem_Pnl.BackColor = System.Drawing.Color.RosyBrown;
+            this.CombatItem_Pnl.Location = new System.Drawing.Point(4, 4);
+            this.CombatItem_Pnl.Name = "CombatItem_Pnl";
+            this.CombatItem_Pnl.Size = new System.Drawing.Size(432, 289);
+            this.CombatItem_Pnl.TabIndex = 2;
+            this.CombatItem_Pnl.Visible = false;
+            this.CombatItem_Pnl.Paint += new System.Windows.Forms.PaintEventHandler(this.CombatItem_Pnl_Paint);
+            this.CombatItem_Pnl.MouseDown += new System.Windows.Forms.MouseEventHandler(this.CombatItem_Pnl_MouseDown);
             // 
             // CombatInfo_Txtbox
             // 
@@ -286,6 +318,8 @@ namespace Grid_based_map
         private System.Windows.Forms.Panel Combat_Pnl;
         private System.Windows.Forms.Panel Action_Pnl;
         private System.Windows.Forms.RichTextBox CombatInfo_Txtbox;
+        private System.Windows.Forms.Button BattleUse_Btn;
+        private System.Windows.Forms.Panel CombatItem_Pnl;
     }
 }
 
