@@ -644,6 +644,11 @@ namespace Grid_based_map
                     {
                         Character.Hp = Character.MaxHp;
                     }
+                    if (Encounter.Infight == true)
+                    {
+                        CombatInfo_Txtbox.Text += "\n-> You consumed the "+tuple.Item6 + " and regained " + tuple.Item7.Item1 +" Hp!";
+                        EnemyTurn();
+                    }
                     Inv.DelItem(1, tuple.Item6, tuple.Rest.Item2);
                     Items.Clear();
                     Info_Pnl.Invalidate();
@@ -651,10 +656,6 @@ namespace Grid_based_map
                     Action_Pnl.Invalidate();
                     CombatItem_Pnl.Invalidate();
                     InventoryUISetUp();
-                    if (Encounter.Infight == true)
-                    {
-                        EnemyTurn();
-                    }
                     break;
                 }
                
