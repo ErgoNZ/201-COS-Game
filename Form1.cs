@@ -29,6 +29,8 @@ namespace Grid_based_map
                   ItemStats = new Rectangle(0, 101, 100, 100),
                   CombatStats = new Rectangle(898,0,372,296),
                   CombatPlayer = new Rectangle(100, 168, 150, 190),
+                  CombatPlayerHp = new Rectangle(50, 418, 250, 100),
+                  CombatPlayerHpBar = new Rectangle(50, 418, 250, 100),
                   CombatBox = new Rectangle(0, 0, 898, 297),
                   CombatItemDesc = new Rectangle(436,1,321,296)
 
@@ -39,6 +41,18 @@ namespace Grid_based_map
             new Rectangle(800,30,150,190), 
             new Rectangle(800,300,150,190), 
             new Rectangle(1070,165,150,190)
+        };
+        Rectangle[] BasicHpFoe = new Rectangle[3]
+        {
+            new Rectangle(800,210,150,50),
+            new Rectangle(800,480,150,50),
+            new Rectangle(1070,345,150,50)
+        };
+        Rectangle[] BasicHpBarFoe = new Rectangle[3]
+        {
+            new Rectangle(800,210,150,50),
+            new Rectangle(800,480,150,50),
+            new Rectangle(1070,345,150,50)
         };
         Rectangle[] FoeSelection = new Rectangle[3]
         {
@@ -77,6 +91,8 @@ namespace Grid_based_map
         Pen Black = new Pen(Color.Black, 3);
         Pen Outliner = new Pen(Color.Black, 8);
         Random Flee = new Random();
+        Random CritRoll = new Random();
+        Random DmgMulti = new Random();
         private void Save_Btn_Click(object sender, EventArgs e)
         {
 
@@ -696,6 +712,7 @@ namespace Grid_based_map
         }
         private void EnemyTurn()
         {
+            Combat_Pnl.Invalidate();
             UnableToFight = 0;
             for (int i = 0; i < Encounter.CurrentEncounter.Count; i++)
             {
@@ -706,17 +723,15 @@ namespace Grid_based_map
                         Enemies[i].Def = Enemies[i].TrueDef;
                         Enemies[i].Defending = false;
                     }
-                    int Ec, Dmg;
-                    Random CritRoll = new Random();
-                    Random DmgMulti = new Random();
+                    int Ec, Dmg;                  
                     Ec = Enemies[i].EnemyDecision();
                     if (Ec >= 0 && Ec <= 80)
                     {
                         CombatInfo_Txtbox.Text += "\n->" + Enemies[i].Name + (i+1) + " attacked you!";
-                        Dmg = (int)Math.Round((Enemies[i].Atk * (double)(DmgMulti.Next(0, 2) / 10 + 1)) - Character.Def/2);
+                        Dmg = (int)Math.Round((Enemies[i].Atk * (double)(DmgMulti.Next(8, 15) / 10)) - Character.Def/2);
                         foreach (string Def in Character.DefElement)
                         {
-                            if(Enemies[i].Element == Def)
+                            if(Enemies[i].Element == Def && Enemies[i].Element != "None")
                             {
                                 Dmg = Dmg / 2;
                             }
@@ -773,16 +788,11 @@ namespace Grid_based_map
             if (Action == "Fight")
             {
                 int Dmg;
-                Random CritRoll = new Random();
-                Random DmgMulti = new Random();
                 CombatInfo_Txtbox.Text += "\n->You swung at "+Enemies[Selected_Foe].Name+"!";
-                Dmg = (int)Math.Round((Character.Atk * (double)(DmgMulti.Next(0, 2) / 10 + 1)) - Enemies[Selected_Foe].Def / 2);
-                foreach (string Def in Character.DefElement)
+                Dmg = (int)Math.Round((Character.Atk * (double)((double)DmgMulti.Next(8, 15) / (double)10)) - Enemies[Selected_Foe].Def / 2);
+                if (Character.AtkElement == Enemies[Selected_Foe].Element && Character.AtkElement != "None")
                 {
-                    if (Enemies[Selected_Foe].Element == Def)
-                    {
-                        Dmg = Dmg / 2;
-                    }
+                    Dmg = Dmg / 2;
                 }
                 int CritRolled = CritRoll.Next(0, 101);
                 if (CritRolled <= Character.Crit)
@@ -1005,10 +1015,16 @@ namespace Grid_based_map
         {
             g = e.Graphics;
             g.DrawRectangle(Black, CombatPlayer);
+            CombatPlayerHpBar = new Rectangle(50, 418, (int)Math.Round((double)250 * ((double)Character.Hp / (double)Character.MaxHp)), 100);
+            g.FillRectangle(Brushes.Red, CombatPlayerHpBar);
+            g.DrawRectangle(Black, CombatPlayerHp);
+            g.DrawString("" + Character.Hp + "/" + Character.MaxHp, General, Brushes.Black, CombatPlayerHp, Center);
             for (int i = 0; i < Encounter.CurrentEncounter.Count; i++)
             {
-                g.DrawRectangle(Black, CombatFoe[i]);
+                BasicHpBarFoe[i] = new Rectangle(BasicHpFoe[i].X,BasicHpFoe[i].Y, (int)Math.Round((double)150 * ((double)Enemies[i].Hp / (double)Enemies[i].MaxHp)),BasicHpFoe[i].Height);
                 g.DrawImage(Enemies[i].Sprite, CombatFoe[i]);
+                g.FillRectangle(Brushes.Red, BasicHpBarFoe[i]);
+                g.DrawRectangle(Black, BasicHpFoe[i]);
             }
         }
         private void CombatItem_Pnl_Paint(object sender, PaintEventArgs e)
