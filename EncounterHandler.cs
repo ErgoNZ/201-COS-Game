@@ -201,18 +201,6 @@ namespace Grid_based_map
                         }
                     }
                     SelEncounters = new List<Tuple<double, string, string, string>>();
-
-                    foreach (Tuple<string, int, int, int, int, int, string, Tuple<int>> tuple in CurrentEncounter)
-                    {
-                        Debug.WriteLine("Name:" + tuple.Item1);
-                        Debug.WriteLine("Hp:" + tuple.Item2);
-                        Debug.WriteLine("Atk:" + tuple.Item3);
-                        Debug.WriteLine("Def:" + tuple.Item4);
-                        Debug.WriteLine("Spd:" + tuple.Item5);
-                        Debug.WriteLine("Crit:" + tuple.Item6);
-                        Debug.WriteLine("ElementAtk:" + tuple.Item7);
-                        Debug.WriteLine("Pos:" + tuple.Rest);
-                    }
                 }
                 Infight = true;
             }

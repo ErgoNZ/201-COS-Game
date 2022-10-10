@@ -29,6 +29,7 @@ namespace Grid_based_map
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.Map_Pnl = new System.Windows.Forms.Panel();
             this.Info_Pnl = new System.Windows.Forms.Panel();
             this.Save_Btn = new System.Windows.Forms.Button();
@@ -46,6 +47,7 @@ namespace Grid_based_map
             this.BattleUse_Btn = new System.Windows.Forms.Button();
             this.CombatItem_Pnl = new System.Windows.Forms.Panel();
             this.CombatInfo_Txtbox = new System.Windows.Forms.RichTextBox();
+            this.PlayTime_Tmr = new System.Windows.Forms.Timer(this.components);
             this.Info_Pnl.SuspendLayout();
             this.Desc_Pnl.SuspendLayout();
             this.Action_Pnl.SuspendLayout();
@@ -279,6 +281,12 @@ namespace Grid_based_map
             this.CombatInfo_Txtbox.Click += new System.EventHandler(this.CombatInfo_Txtbox_Click);
             this.CombatInfo_Txtbox.TextChanged += new System.EventHandler(this.CombatInfo_Txtbox_TextChanged);
             // 
+            // PlayTime_Tmr
+            // 
+            this.PlayTime_Tmr.Enabled = true;
+            this.PlayTime_Tmr.Interval = 1000;
+            this.PlayTime_Tmr.Tick += new System.EventHandler(this.PlayTime_Tmr_Tick);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -320,6 +328,7 @@ namespace Grid_based_map
         private System.Windows.Forms.RichTextBox CombatInfo_Txtbox;
         private System.Windows.Forms.Button BattleUse_Btn;
         private System.Windows.Forms.Panel CombatItem_Pnl;
+        private System.Windows.Forms.Timer PlayTime_Tmr;
     }
 }
 

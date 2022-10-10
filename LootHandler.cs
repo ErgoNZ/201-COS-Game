@@ -12,7 +12,8 @@ namespace Grid_based_map
         //           When rolling for item chance/When rolling for how many of that item
         List<Tuple<string, int, int, int, int>> LootTableData = new List<Tuple<string, int, int, int, int>>();
         Random Roll = new Random();
-        public int AmountGained;
+        Random Amount = new Random();
+        public int AmountGained, XPGained;
         public string Item;
         //Sorts all of the data from a txt file into a list that can be used as a proper LootTable
         public void GetLootTable(string LootTable)
@@ -61,11 +62,14 @@ namespace Grid_based_map
             Item = "";
             foreach (Tuple<string, int, int, int, int> tuple in LootTableData)
             {
-                if (tuple.Item2 <= Rolled && tuple.Item3 >= Rolled)
+                if (tuple.Item2 <= Rolled && tuple.Item3 >= Rolled && tuple.Item1 != "XP")
                 {
-                    Random Amount = new Random();
                     Item = tuple.Item1;
                     AmountGained = Amount.Next(tuple.Item4, tuple.Item5 + 1);
+                }
+                else if (tuple.Item1 == "XP")
+                {
+                    XPGained = Amount.Next(tuple.Item4, tuple.Item5 + 1);
                 }
             }
         }

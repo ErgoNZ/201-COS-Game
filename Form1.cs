@@ -73,7 +73,7 @@ namespace Grid_based_map
             new Rectangle(145, 230, 300, 50)
         };
         Rectangle[] FoeHpFill = new Rectangle[3];
-        int TileID = 0, Selected_Item = -1, Selected_Action= -1, Selected_Foe=-1,UnableToFight;
+        int TileID = 0, Selected_Item = -1, Selected_Action= -1, Selected_Foe=-1,UnableToFight,Second=0,Minute=0,Hour=0;
         public int tileX = 3, tileY = 3;
         bool CharOnScrn, cameraControl;
         string SelectedCat, OldCat, PlayerAction="None";
@@ -242,6 +242,22 @@ namespace Grid_based_map
             this.ActiveControl = null;
         }
 
+        private void PlayTime_Tmr_Tick(object sender, EventArgs e)
+        {
+            Second++;
+            if(Second>= 60)
+            {
+                Minute++;
+                Second = 0;
+            }
+            if(Minute >= 60)
+            {
+                Hour++;
+                Minute = 0;
+            }
+            Info_Pnl.Invalidate();
+        }
+
         public void DrawGrid()
         {
             //Remove the info for the player as it may not be needed
@@ -346,7 +362,7 @@ namespace Grid_based_map
             g.DrawString(Character.Name, General, Brushes.Black, PlayerName, Center);
             g.DrawString("LVL:" + Character.Lvl, General, Brushes.Black, PlayerLvl, Center);
             //Placeholder playtime display
-            g.DrawString("PlayTime: 1:30:27", General, Brushes.Black, FilePlayTime, Center);
+            g.DrawString("PlayTime: " + Hour +":" +Minute +":"+Second, General, Brushes.Black, FilePlayTime, Center);
             g.DrawString("Hp:" + Character.Hp + "/" + Character.MaxHp, General, Brushes.Black, PlayerHp, Center);
             g.DrawString("Atk:" + Character.Atk, General, Brushes.Black, PlayerAtk, Center);
             g.DrawString("Def:" + Character.TrueDef, General, Brushes.Black, PlayerDef, Center);
@@ -1128,6 +1144,7 @@ namespace Grid_based_map
         }
         private void CombatEnd()
         {
+            int XPGainedTotal = 0;
             for (int i = 0; i < Encounter.CurrentEncounter.Count; i++)
             {
                 Loot.GetLootTable(Enemies[i].Name);
@@ -1135,13 +1152,17 @@ namespace Grid_based_map
                 if (Loot.Item != "")
                 {
                     Inv.AddItem(Loot.AmountGained, Loot.Item, false);
-                    CombatInfo_Txtbox.Text += "\n ->You found "+Loot.AmountGained+" "+Loot.Item+"!";
+                    CombatInfo_Txtbox.Text += "\n ->You found " + Loot.AmountGained + " " + Loot.Item + "!";
                     Items.Clear();
                     Info_Pnl.Invalidate();
                     Desc_Pnl.Invalidate();
                     InventoryUISetUp();
                 }
+                XPGainedTotal += Loot.XPGained;
             }
+            Character.Xp += Loot.XPGained;
+            CombatInfo_Txtbox.Text += "\n ->You Gained " + XPGainedTotal + " XP!";
+            Character.XpCheck();
             Encounter.Infight = false;
         }
     }
