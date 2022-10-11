@@ -116,9 +116,8 @@ namespace Grid_based_map
             typeof(Panel).InvokeMember("DoubleBuffered", BindingFlags.SetProperty | BindingFlags.Instance | BindingFlags.NonPublic, null, Info_Pnl, new object[] { true });
             typeof(Panel).InvokeMember("DoubleBuffered", BindingFlags.SetProperty | BindingFlags.Instance | BindingFlags.NonPublic, null, Combat_Pnl, new object[] { true });
             typeof(Panel).InvokeMember("DoubleBuffered", BindingFlags.SetProperty | BindingFlags.Instance | BindingFlags.NonPublic, null, Action_Pnl, new object[] { true });
-            Map.LoadMap("1_1");
+            Map.LoadMap("1.1");
             Inv.AddItem(1, "Chestplate", false);
-            Inv.AddItem(1, "Chestplate1", false);
             Inv.AddItem(1, "Helmet", false);
             Inv.AddItem(1, "SwordBasic", false);
             Inv.AddItem(5, "Apple", false);
@@ -696,16 +695,35 @@ namespace Grid_based_map
         }
         private void EncounterTick()
         {
-            Encounter.EncounterRoll(Map.Tiles[Character.PlayerYPos, Character.PlayerXPos, 0]);
-            if (Encounter.Infight == true)
+            if(Map.Tiles[Character.PlayerYPos, Character.PlayerXPos, 3] == 0)
             {
-                Map_Pnl.Hide();
-                Info_Pnl.Hide();
-                CombatUISetup();
-                Combat_Pnl.Invalidate();
-                Character.Def = Character.TrueDef;
-                CombatInfo_Txtbox.Text = "Combat Start!";
-                EnemySetup();
+                Encounter.EncounterRoll(Map.Tiles[Character.PlayerYPos, Character.PlayerXPos, 0]);
+                if (Encounter.Infight == true)
+                {
+                    Map_Pnl.Hide();
+                    Info_Pnl.Hide();
+                    CombatUISetup();
+                    Combat_Pnl.Invalidate();
+                    Character.Def = Character.TrueDef;
+                    CombatInfo_Txtbox.Text = "Combat Start!";
+                    EnemySetup();
+                }
+            }
+            else
+            {
+                string MapTransition = "" + Map.Tiles[Character.PlayerYPos, Character.PlayerXPos, 3];
+                string PlayerPosition = "" + Map.Tiles[Character.PlayerYPos, Character.PlayerXPos, 4];
+                string[] Positions = PlayerPosition.Split(".");
+                Character.PlayerXPos = int.Parse(Positions[0]);
+                try
+                {
+                    Character.PlayerYPos = int.Parse(Positions[1]);
+                }
+                catch (Exception)
+                {
+                    Character.PlayerYPos = 0;
+                }
+                Map.LoadMap(MapTransition);
             }
         }
         private void EnemySetup()
@@ -841,7 +859,6 @@ namespace Grid_based_map
                 int EscapeChance = Character.Spd / EnemyTotSpd * 100;
                 if (EscapeChance <= Flee.Next(0, 101) || EscapeChance > 100)
                 {
-                    Debug.WriteLine("Fled!");
                     for (int i = 0; i < 5; i++)
                     {
                         CombatMenu[i] = Rectangle.Empty;

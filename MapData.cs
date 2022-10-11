@@ -11,13 +11,14 @@ namespace Grid_based_map
     {
         //0= free movement 1= no movement 2= Cannot move left 3= Cannot move right 4= up 5= down
         //(x,0,0) is a visual indicator, (0,x,0) Repersents the player pos, (0,0,x) is the type of movemnt restriction the tile has.
-        public double[,,] Tiles = new double[10, 10, 3];
+        public double[,,] Tiles = new double[10, 10, 5];
         public int[,,] PlayerTiles = new int[10, 10, 2];
         public double[,,] ViewRange = new double[7, 7, 2];
         public int YLimit = 0, XLimit = 0, LevelIndicator = 0;
         public List<Image> TileSprites = new List<Image>();
         public void LoadMap(string ReqMap)
         {
+            Array.Clear(Tiles, 0, Tiles.Length);
             TileSprites.Clear();
             try
             {
@@ -65,6 +66,17 @@ namespace Grid_based_map
                                 Tiles[h, w, 0] = LevelIndicator + .2;
                                 Tiles[h, w, 2] = 1;
                             }
+                            if (line.Contains("."))
+                            {
+                                string ZoneTransition = line.Substring(2, 3);
+                                string PlayerPlacement = line.Substring(5);
+                                Debug.WriteLine(ZoneTransition);
+                                Debug.WriteLine(PlayerPlacement);
+                                Tiles[h, w, 0] = LevelIndicator + .3;
+                                Tiles[h, w, 2] = 0;
+                                Tiles[h, w, 3] = double.Parse(ZoneTransition);
+                                Tiles[h, w, 4] = double.Parse(PlayerPlacement);
+                            }                      
                         }
                         if (LineNum >= 4)
                         {
