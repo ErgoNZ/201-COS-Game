@@ -33,14 +33,14 @@ namespace Grid_based_map
                 using (StreamReader FileReader = new StreamReader("../../../CombatData/Encounters/" + FightData + ".txt"))
                 {
                     string line, Foe1 = "", Foe2 = "", Foe3 = "";
-                    double Tile = 0;
+                    int level = 0;
                     int count = 0;
 
                     while ((line = FileReader.ReadLine()) != null)
                     {
                         if (count == 0)
                         {
-                            Tile = double.Parse(line);
+                            level = int.Parse(line);
                         }
                         if (count == 1)
                         {
@@ -53,14 +53,14 @@ namespace Grid_based_map
                         if (count == 3)
                         {
                             Foe3 = line;
-                            EncounterData.Add(new Tuple<double, string, string, string>(Tile, Foe1, Foe2, Foe3));
+                            EncounterData.Add(new Tuple<double, string, string, string>(level, Foe1, Foe2, Foe3));
                         }
                         count++;
                     }
                 }
             }
         }
-        public void EncounterRoll(double TileData)
+        public void EncounterRoll(int TileData)
         {
             SelEncounters.Clear();
             if (Roll.Next(0, 101) >= 95)

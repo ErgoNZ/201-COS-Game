@@ -16,14 +16,15 @@ namespace Grid_based_map
         public double[,,] ViewRange = new double[7, 7, 2];
         public int YLimit = 0, XLimit = 0, LevelIndicator = 0;
         public List<Image> TileSprites = new List<Image>();
+        Random SpriteRandomizer = new Random();
         public void LoadMap(string ReqMap)
         {
-            Array.Clear(Tiles, 0, Tiles.Length);
             TileSprites.Clear();
+            Array.Clear(Tiles, 0, Tiles.Length);
             try
             {
                 int h = 0, w = 0;
-                int LineNum = 0;
+                int LineNum = 0;              
                 // Read and display lines from the file until the end of the file is reached.
                 using (StreamReader MapReader = new StreamReader("../../../Maps/" + ReqMap + ".txt"))
                 {
@@ -37,6 +38,7 @@ namespace Grid_based_map
                         else if (LineNum == 1)
                         {
                             XLimit = int.Parse(line);
+                            Tiles = new double[YLimit, XLimit, 5];
                         }
                         if (h == YLimit)
                         {
@@ -51,14 +53,31 @@ namespace Grid_based_map
                         {
                             for (int i = 1; i <= int.Parse(line); i++)
                             {
-                                TileSprites.Add(Image.FromFile("../../../Maps/TileSprites/" + LevelIndicator + "_" + i + ".png"));
+                                if (i == 1)
+                                {
+                                    TileSprites.Add(Image.FromFile("../../../Maps/TileSprites/" + LevelIndicator + "_1.png"));
+                                    TileSprites.Add(Image.FromFile("../../../Maps/TileSprites/" + LevelIndicator + "_11.png"));
+                                    TileSprites.Add(Image.FromFile("../../../Maps/TileSprites/" + LevelIndicator + "_12.png"));
+                                    TileSprites.Add(Image.FromFile("../../../Maps/TileSprites/" + LevelIndicator + "_13.png"));
+                                }
+                                else
+                                {
+                                    try
+                                    {
+                                        TileSprites.Add(Image.FromFile("../../../Maps/TileSprites/" + LevelIndicator + "_" + i + ".png"));
+                                    }
+                                    catch (Exception)
+                                    {
+                                        TileSprites.Add(Image.FromFile("../../../Maps/TileSprites/ERROR_ERROR.png"));
+                                    }
+                                }
                             }
                         }
                         if (LineNum >= 4)
                         {
                             if (line == "1")
                             {
-                                Tiles[h, w, 0] = LevelIndicator + .1;
+                                Tiles[h, w, 0] = LevelIndicator + .1 + ((double)SpriteRandomizer.Next(0, 4)/(double)100);
                                 Tiles[h, w, 2] = 0;
                             }
                             if (line == "2")
@@ -66,13 +85,23 @@ namespace Grid_based_map
                                 Tiles[h, w, 0] = LevelIndicator + .2;
                                 Tiles[h, w, 2] = 1;
                             }
+                            if (line == "3")
+                            {
+                                Tiles[h, w, 0] = LevelIndicator + .3;
+                                Tiles[h, w, 2] = 1;
+                            }
+                            if (line == "4")
+                            {
+                                Tiles[h, w, 0] = LevelIndicator + .4;
+                                Tiles[h, w, 2] = 0;
+                            }
                             if (line.Contains("."))
                             {
                                 string ZoneTransition = line.Substring(2, 3);
                                 string PlayerPlacement = line.Substring(5);
                                 Debug.WriteLine(ZoneTransition);
                                 Debug.WriteLine(PlayerPlacement);
-                                Tiles[h, w, 0] = LevelIndicator + .3;
+                                Tiles[h, w, 0] = LevelIndicator + .4;
                                 Tiles[h, w, 2] = 0;
                                 Tiles[h, w, 3] = double.Parse(ZoneTransition);
                                 Tiles[h, w, 4] = double.Parse(PlayerPlacement);

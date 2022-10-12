@@ -74,7 +74,7 @@ namespace Grid_based_map
         };
         Rectangle[] FoeHpFill = new Rectangle[3];
         int TileID = 0, Selected_Item = -1, Selected_Action= -1, Selected_Foe=-1,UnableToFight,Second=0,Minute=0,Hour=0;
-        public int tileX = 3, tileY = 3;
+        public int tileX = 10, tileY = 10;
         bool CharOnScrn, cameraControl;
         string SelectedCat, OldCat, PlayerAction="None";
         Image Error_Image = Image.FromFile("../../../Items/Images/Error.png");
@@ -112,11 +112,11 @@ namespace Grid_based_map
         public Form1()
         {
             InitializeComponent();
+            Map.LoadMap("1.1");
             typeof(Panel).InvokeMember("DoubleBuffered", BindingFlags.SetProperty | BindingFlags.Instance | BindingFlags.NonPublic, null, Map_Pnl, new object[] { true });
             typeof(Panel).InvokeMember("DoubleBuffered", BindingFlags.SetProperty | BindingFlags.Instance | BindingFlags.NonPublic, null, Info_Pnl, new object[] { true });
             typeof(Panel).InvokeMember("DoubleBuffered", BindingFlags.SetProperty | BindingFlags.Instance | BindingFlags.NonPublic, null, Combat_Pnl, new object[] { true });
             typeof(Panel).InvokeMember("DoubleBuffered", BindingFlags.SetProperty | BindingFlags.Instance | BindingFlags.NonPublic, null, Action_Pnl, new object[] { true });
-            Map.LoadMap("1.1");
             Inv.AddItem(1, "Chestplate", false);
             Inv.AddItem(1, "Helmet", false);
             Inv.AddItem(1, "SwordBasic", false);
@@ -263,6 +263,7 @@ namespace Grid_based_map
             Character.Char = Rectangle.Empty;
             //Updating current player position
             Map.Tiles[Character.PlayerYPos, Character.PlayerXPos, 1] = 1;
+            CameraSnap();
             //Removing all tiles currently on screen
             for (int i = 0; i < 49; i++)
             {
@@ -329,11 +330,30 @@ namespace Grid_based_map
                     if (Map.ViewRange[h, w, 0] == Map.LevelIndicator + .1)
                     {
                         g.DrawImage(Map.TileSprites.ElementAt(0), Tile[TileID]);
-
                     }
-                    else if (Map.ViewRange[h, w, 0] == Map.LevelIndicator + .2)
+                    if (Map.ViewRange[h, w, 0] == Map.LevelIndicator + .11)
                     {
                         g.DrawImage(Map.TileSprites.ElementAt(1), Tile[TileID]);
+                    }
+                    if (Map.ViewRange[h, w, 0] == Map.LevelIndicator + .12)
+                    {
+                        g.DrawImage(Map.TileSprites.ElementAt(2), Tile[TileID]);
+                    }
+                    if (Map.ViewRange[h, w, 0] == Map.LevelIndicator + .1300000000000001)
+                    {
+                        g.DrawImage(Map.TileSprites.ElementAt(3), Tile[TileID]);
+                    }
+                    if (Map.ViewRange[h, w, 0] == Map.LevelIndicator + .2)
+                    {
+                        g.DrawImage(Map.TileSprites.ElementAt(4), Tile[TileID]);
+                    }
+                    if (Map.ViewRange[h, w, 0] == Map.LevelIndicator + .3)
+                    {
+                        g.DrawImage(Map.TileSprites.ElementAt(5), Tile[TileID]);
+                    }
+                    if (Map.ViewRange[h, w, 0] == Map.LevelIndicator + .4)
+                    {
+                        g.DrawImage(Map.TileSprites.ElementAt(6), Tile[TileID]);
                     }
                     //finding players position in relation to the cameras position
                     if (Map.ViewRange[h, w, 1] == 1)
@@ -697,7 +717,7 @@ namespace Grid_based_map
         {
             if(Map.Tiles[Character.PlayerYPos, Character.PlayerXPos, 3] == 0)
             {
-                Encounter.EncounterRoll(Map.Tiles[Character.PlayerYPos, Character.PlayerXPos, 0]);
+                Encounter.EncounterRoll(Map.LevelIndicator);
                 if (Encounter.Infight == true)
                 {
                     Map_Pnl.Hide();
