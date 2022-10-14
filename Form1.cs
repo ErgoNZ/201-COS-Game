@@ -73,7 +73,7 @@ namespace Grid_based_map
             new Rectangle(145, 230, 300, 50)
         };
         Rectangle[] FoeHpFill = new Rectangle[3];
-        int TileID = 0, Selected_Item = -1, Selected_Action= -1, Selected_Foe=-1,UnableToFight,Second=0,Minute=0,Hour=0;
+        int TileID = 0, Selected_Item = -1, Selected_Action= -1, Selected_Foe=-1,UnableToFight,Second=0,Minute=10,Hour=10;
         public int tileX = 10, tileY = 10;
         bool CharOnScrn, cameraControl;
         string SelectedCat, OldCat, PlayerAction="None";
@@ -112,7 +112,7 @@ namespace Grid_based_map
         public Form1()
         {
             InitializeComponent();
-            Map.LoadMap("1.1");
+            Map.LoadMap("4.1");
             typeof(Panel).InvokeMember("DoubleBuffered", BindingFlags.SetProperty | BindingFlags.Instance | BindingFlags.NonPublic, null, Map_Pnl, new object[] { true });
             typeof(Panel).InvokeMember("DoubleBuffered", BindingFlags.SetProperty | BindingFlags.Instance | BindingFlags.NonPublic, null, Info_Pnl, new object[] { true });
             typeof(Panel).InvokeMember("DoubleBuffered", BindingFlags.SetProperty | BindingFlags.Instance | BindingFlags.NonPublic, null, Combat_Pnl, new object[] { true });
@@ -126,6 +126,7 @@ namespace Grid_based_map
             Encounter.EncounterListSetup(Map.LevelIndicator);
             Map_Pnl.BringToFront();
             Info_Pnl.BringToFront();
+            CameraSnap();
             DrawGrid();
             Center.Alignment = StringAlignment.Center;
             Center.LineAlignment = StringAlignment.Center;
@@ -227,6 +228,7 @@ namespace Grid_based_map
             }
             //Call the DrawGrid method to refresh the players current view and update any tiles as needed
             Info_Pnl.Invalidate();
+            Debug.WriteLine(tileX+":"+tileY);
             DrawGrid();
         }
 
@@ -263,7 +265,6 @@ namespace Grid_based_map
             Character.Char = Rectangle.Empty;
             //Updating current player position
             Map.Tiles[Character.PlayerYPos, Character.PlayerXPos, 1] = 1;
-            CameraSnap();
             //Removing all tiles currently on screen
             for (int i = 0; i < 49; i++)
             {
@@ -327,6 +328,10 @@ namespace Grid_based_map
             {
                 for (int w = 0; w < 7; w++)
                 {
+                    if (Map.ViewRange[h,w,0] == 0)
+                    {
+                        g.FillRectangle(Brushes.Black, Tile[TileID]);
+                    }
                     if (Map.ViewRange[h, w, 0] == Map.LevelIndicator + .1)
                     {
                         g.DrawImage(Map.TileSprites.ElementAt(0), Tile[TileID]);
@@ -339,7 +344,7 @@ namespace Grid_based_map
                     {
                         g.DrawImage(Map.TileSprites.ElementAt(2), Tile[TileID]);
                     }
-                    if (Map.ViewRange[h, w, 0] == Map.LevelIndicator + .1300000000000001)
+                    if (Map.ViewRange[h, w, 0] == Map.LevelIndicator + .13)
                     {
                         g.DrawImage(Map.TileSprites.ElementAt(3), Tile[TileID]);
                     }
@@ -717,7 +722,7 @@ namespace Grid_based_map
         {
             if(Map.Tiles[Character.PlayerYPos, Character.PlayerXPos, 3] == 0)
             {
-                Encounter.EncounterRoll(Map.LevelIndicator);
+                // Encounter.EncounterRoll(Map.LevelIndicator);
                 if (Encounter.Infight == true)
                 {
                     Map_Pnl.Hide();

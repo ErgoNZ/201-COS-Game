@@ -10,7 +10,7 @@ namespace Grid_based_map
     {
         public Rectangle Char;
         Random StatIncrease = new Random();
-        public int PlayerX = -1, PlayerY = -1, PlayerXPos = 33, PlayerYPos = 38;
+        public int PlayerX = -1, PlayerY = -1, PlayerXPos = 15, PlayerYPos = 13;
         public int Hp = 25, Def = 0, Spd = 5, Atk = 99, Lvl = 1, MaxHp = 25, Crit = 2, Xp = 0, TrueDef=2;
         public string Name = "Player", AtkElement = "None";
         public bool WeaponEquipped, HelmetEquipped, ChestplateEquipped, LeggingsEquipped, BootsEquipped;

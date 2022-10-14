@@ -55,10 +55,20 @@ namespace Grid_based_map
                             {
                                 if (i == 1)
                                 {
-                                    TileSprites.Add(Image.FromFile("../../../Maps/TileSprites/" + LevelIndicator + "_1.png"));
-                                    TileSprites.Add(Image.FromFile("../../../Maps/TileSprites/" + LevelIndicator + "_11.png"));
-                                    TileSprites.Add(Image.FromFile("../../../Maps/TileSprites/" + LevelIndicator + "_12.png"));
-                                    TileSprites.Add(Image.FromFile("../../../Maps/TileSprites/" + LevelIndicator + "_13.png"));
+                                    if(LevelIndicator != 4)
+                                    {
+                                        TileSprites.Add(Image.FromFile("../../../Maps/TileSprites/" + LevelIndicator + "_1.png"));
+                                        TileSprites.Add(Image.FromFile("../../../Maps/TileSprites/" + LevelIndicator + "_11.png"));
+                                        TileSprites.Add(Image.FromFile("../../../Maps/TileSprites/" + LevelIndicator + "_12.png"));
+                                        TileSprites.Add(Image.FromFile("../../../Maps/TileSprites/" + LevelIndicator + "_13.png"));
+                                    }
+                                    else
+                                    {
+                                        TileSprites.Add(Image.FromFile("../../../Maps/TileSprites/4_1.png"));
+                                        TileSprites.Add(Image.FromFile("../../../Maps/TileSprites/4_11.png"));
+                                        TileSprites.Add(Image.FromFile("../../../Maps/TileSprites/4_12.png"));
+                                        TileSprites.Add(Image.FromFile("../../../Maps/TileSprites/4_13.png"));
+                                    }
                                 }
                                 else
                                 {
@@ -77,7 +87,8 @@ namespace Grid_based_map
                         {
                             if (line == "1")
                             {
-                                Tiles[h, w, 0] = LevelIndicator + .1 + ((double)SpriteRandomizer.Next(0, 4)/(double)100);
+                                double Tileid = LevelIndicator + .1 + ((double)SpriteRandomizer.Next(0, 4) / (double)100);
+                                Tiles[h, w, 0] = Math.Round(Tileid, 2);
                                 Tiles[h, w, 2] = 0;
                             }
                             if (line == "2")
@@ -99,8 +110,6 @@ namespace Grid_based_map
                             {
                                 string ZoneTransition = line.Substring(2, 3);
                                 string PlayerPlacement = line.Substring(5);
-                                Debug.WriteLine(ZoneTransition);
-                                Debug.WriteLine(PlayerPlacement);
                                 Tiles[h, w, 0] = LevelIndicator + .4;
                                 Tiles[h, w, 2] = 0;
                                 Tiles[h, w, 3] = double.Parse(ZoneTransition);
@@ -118,9 +127,9 @@ namespace Grid_based_map
                     }
                 }
             }
-            catch (Exception Ex)
+            catch (Exception)
             {
-                Debug.WriteLine(Ex);
+
             }
         }
     }
