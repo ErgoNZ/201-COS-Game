@@ -1,0 +1,7 @@
+Servant
+100
+15
+5
+20
+2
+Crystal

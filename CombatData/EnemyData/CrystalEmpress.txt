@@ -1,0 +1,7 @@
+Empress
+400
+10
+20
+50
+5
+Crystal

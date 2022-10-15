@@ -60,6 +60,137 @@ namespace Grid_based_map
                 }
             }
         }
+        public void SetEncounter(string Foe,string Foe2,string Foe3)
+        {
+            CurrentEncounter.Clear();
+            Infight = true;
+            if (Foe != null || Foe != "None")
+            {
+                using (StreamReader FileReader = new StreamReader("../../../CombatData/EnemyData/" + Foe + ".txt"))
+                {
+                    string line = "", Element = "", Name = "";
+                    int count = 0, Hp = 0, Atk = 0, Def = 0, Spd = 0, Crit = 0, Position = 0;
+                    while ((line = FileReader.ReadLine()) != null)
+                    {
+                        if (count == 0)
+                        {
+                            Name = line;
+                        }
+                        if (count == 1)
+                        {
+                            Hp = int.Parse(line);
+                        }
+                        if (count == 2)
+                        {
+                            Atk = int.Parse(line);
+                        }
+                        if (count == 3)
+                        {
+                            Def = int.Parse(line);
+                        }
+                        if (count == 4)
+                        {
+                            Spd = int.Parse(line);
+                        }
+                        if (count == 5)
+                        {
+                            Crit = int.Parse(line);
+                        }
+                        if (count == 6)
+                        {
+                            Element = line;
+                            Position = 1;
+                            CurrentEncounter.Add(new Tuple<string, int, int, int, int, int, string, Tuple<int>>(Name, Hp, Atk, Def, Spd, Crit, Element, Tuple.Create<int>(Position)));
+                        }
+                        count++;
+                    }
+                }
+            }
+            if (Foe2 != null || Foe2 != "None")
+            {
+                using (StreamReader FileReader = new StreamReader("../../../CombatData/EnemyData/" + Foe2 + ".txt"))
+                {
+                    string line = "", Element = "", Name = "";
+                    int count = 0, Hp = 0, Atk = 0, Def = 0, Spd = 0, Crit = 0, Position = 0;
+                    while ((line = FileReader.ReadLine()) != null)
+                    {
+                        if (count == 0)
+                        {
+                            Name = line;
+                        }
+                        if (count == 1)
+                        {
+                            Hp = int.Parse(line);
+                        }
+                        if (count == 2)
+                        {
+                            Atk = int.Parse(line);
+                        }
+                        if (count == 3)
+                        {
+                            Def = int.Parse(line);
+                        }
+                        if (count == 4)
+                        {
+                            Spd = int.Parse(line);
+                        }
+                        if (count == 5)
+                        {
+                            Crit = int.Parse(line);
+                        }
+                        if (count == 6)
+                        {
+                            Element = line;
+                            Position = 1;
+                            CurrentEncounter.Add(new Tuple<string, int, int, int, int, int, string, Tuple<int>>(Name, Hp, Atk, Def, Spd, Crit, Element, Tuple.Create<int>(Position)));
+                        }
+                        count++;
+                    }
+                }
+            }
+            if (Foe3 != null || Foe3 != "None")
+            {
+                using (StreamReader FileReader = new StreamReader("../../../CombatData/EnemyData/" + Foe3 + ".txt"))
+                {
+                    string line = "", Element = "", Name = "";
+                    int count = 0, Hp = 0, Atk = 0, Def = 0, Spd = 0, Crit = 0, Position = 0;
+                    while ((line = FileReader.ReadLine()) != null)
+                    {
+                        if (count == 0)
+                        {
+                            Name = line;
+                        }
+                        if (count == 1)
+                        {
+                            Hp = int.Parse(line);
+                        }
+                        if (count == 2)
+                        {
+                            Atk = int.Parse(line);
+                        }
+                        if (count == 3)
+                        {
+                            Def = int.Parse(line);
+                        }
+                        if (count == 4)
+                        {
+                            Spd = int.Parse(line);
+                        }
+                        if (count == 5)
+                        {
+                            Crit = int.Parse(line);
+                        }
+                        if (count == 6)
+                        {
+                            Element = line;
+                            Position = 1;
+                            CurrentEncounter.Add(new Tuple<string, int, int, int, int, int, string, Tuple<int>>(Name, Hp, Atk, Def, Spd, Crit, Element, Tuple.Create<int>(Position)));
+                        }
+                        count++;
+                    }
+                }
+            }
+        }
         public void EncounterRoll(int TileData)
         {
             SelEncounters.Clear();
@@ -159,7 +290,7 @@ namespace Grid_based_map
                         }
                     }
                 }
-                if (SelEncounters[Index].Item4 != null || SelEncounters[Index].Item4 != "None")
+                if (SelEncounters[Index].Item4 != "None")
                 {
                     using (StreamReader FileReader = new StreamReader("../../../CombatData/EnemyData/" + SelEncounters[Index].Item4 + ".txt"))
                     {

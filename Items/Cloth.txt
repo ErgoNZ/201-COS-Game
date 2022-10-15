@@ -1,0 +1,10 @@
+Cloth
+Item
+False
+10
+0
+0
+0
+0
+None
+This could be used to bandage your wounds!

@@ -1,4 +1,4 @@
-Wallnut
+Walnut
 Item
 False
 3
@@ -7,4 +7,4 @@ False
 0
 0
 None
-Its a wallnut!
+Its a walnut!

@@ -24,7 +24,7 @@ namespace Grid_based_map
             Crit = FoeCrit;
             Element = FoeElement;
             Pos = FoePos;
-            Sprite = Image.FromFile("../../../CombatData/EnemyData/Sprites/" + FoeName + ".gif");           
+            Sprite = Image.FromFile("../../../CombatData/EnemyData/Sprites/" + FoeName + ".png");           
         }
         public int EnemyDecision()
         {

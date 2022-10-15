@@ -1,0 +1,10 @@
+Slime Sword
+Weapon
+True
+5
+5
+0
+1
+1
+Slash
+This sword appears to of been slowly transformed from being stuck inside the slime.

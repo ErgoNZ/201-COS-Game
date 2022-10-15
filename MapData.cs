@@ -10,7 +10,8 @@ namespace Grid_based_map
     class MapData
     {
         //0= free movement 1= no movement 2= Cannot move left 3= Cannot move right 4= up 5= down
-        //(x,0,0) is a visual indicator, (0,x,0) Repersents the player pos, (0,0,x) is the type of movemnt restriction the tile has.
+        //(x,0,0,0,0) is a visual indicator, (0,x,0,0,0) Repersents the player pos, (0,0,x,0,0) is the type of movemnt restriction the tile has,
+        //(0,0,0,x,0) is the id of the map the player will be moved to and (0,0,0,0,x) is where the player will be placed on that map.
         public double[,,] Tiles = new double[10, 10, 5];
         public int[,,] PlayerTiles = new int[10, 10, 2];
         public double[,,] ViewRange = new double[7, 7, 2];
@@ -55,20 +56,10 @@ namespace Grid_based_map
                             {
                                 if (i == 1)
                                 {
-                                    if(LevelIndicator != 4)
-                                    {
                                         TileSprites.Add(Image.FromFile("../../../Maps/TileSprites/" + LevelIndicator + "_1.png"));
                                         TileSprites.Add(Image.FromFile("../../../Maps/TileSprites/" + LevelIndicator + "_11.png"));
                                         TileSprites.Add(Image.FromFile("../../../Maps/TileSprites/" + LevelIndicator + "_12.png"));
                                         TileSprites.Add(Image.FromFile("../../../Maps/TileSprites/" + LevelIndicator + "_13.png"));
-                                    }
-                                    else
-                                    {
-                                        TileSprites.Add(Image.FromFile("../../../Maps/TileSprites/4_1.png"));
-                                        TileSprites.Add(Image.FromFile("../../../Maps/TileSprites/4_11.png"));
-                                        TileSprites.Add(Image.FromFile("../../../Maps/TileSprites/4_12.png"));
-                                        TileSprites.Add(Image.FromFile("../../../Maps/TileSprites/4_13.png"));
-                                    }
                                 }
                                 else
                                 {
@@ -106,15 +97,20 @@ namespace Grid_based_map
                                 Tiles[h, w, 0] = LevelIndicator + .4;
                                 Tiles[h, w, 2] = 0;
                             }
+                            if (line == "5")
+                            {
+                                Tiles[h, w, 0] = LevelIndicator + .5;
+                                Tiles[h, w, 2] = 0;
+                            }
                             if (line.Contains("."))
                             {
-                                string ZoneTransition = line.Substring(2, 3);
-                                string PlayerPlacement = line.Substring(5);
-                                Tiles[h, w, 0] = LevelIndicator + .4;
-                                Tiles[h, w, 2] = 0;
-                                Tiles[h, w, 3] = double.Parse(ZoneTransition);
-                                Tiles[h, w, 4] = double.Parse(PlayerPlacement);
-                            }                      
+                                    string ZoneTransition = line.Substring(2, 3);
+                                    string PlayerPlacement = line.Substring(5);
+                                    Tiles[h, w, 0] = LevelIndicator + .4;
+                                    Tiles[h, w, 2] = 0;
+                                    Tiles[h, w, 3] = double.Parse(ZoneTransition);
+                                    Tiles[h, w, 4] = double.Parse(PlayerPlacement);
+                            }
                         }
                         if (LineNum >= 4)
                         {

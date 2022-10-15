@@ -112,7 +112,7 @@ namespace Grid_based_map
         public Form1()
         {
             InitializeComponent();
-            Map.LoadMap("4.1");
+            Map.LoadMap("1.1");
             typeof(Panel).InvokeMember("DoubleBuffered", BindingFlags.SetProperty | BindingFlags.Instance | BindingFlags.NonPublic, null, Map_Pnl, new object[] { true });
             typeof(Panel).InvokeMember("DoubleBuffered", BindingFlags.SetProperty | BindingFlags.Instance | BindingFlags.NonPublic, null, Info_Pnl, new object[] { true });
             typeof(Panel).InvokeMember("DoubleBuffered", BindingFlags.SetProperty | BindingFlags.Instance | BindingFlags.NonPublic, null, Combat_Pnl, new object[] { true });
@@ -121,7 +121,8 @@ namespace Grid_based_map
             Inv.AddItem(1, "Helmet", false);
             Inv.AddItem(1, "SwordBasic", false);
             Inv.AddItem(5, "Apple", false);
-            Inv.AddItem(10, "Wallnut", false);
+            Inv.AddItem(5, "Apple1", false);
+            Inv.AddItem(10, "Walnut", false);
             Loot.GetLootTable("TestLootTable");
             Encounter.EncounterListSetup(Map.LevelIndicator);
             Map_Pnl.BringToFront();
@@ -384,10 +385,10 @@ namespace Grid_based_map
             g.FillRectangle(Brushes.Brown, Sec2);
             g.FillRectangle(Brushes.SaddleBrown, Sec4);
             g.DrawString(Character.Name, General, Brushes.Black, PlayerName, Center);
-            g.DrawString("LVL:" + Character.Lvl, General, Brushes.Black, PlayerLvl, Center);
+            g.DrawString("LVL:" + Character.Lvl +"\n XP:" + Character.Xp, General, Brushes.Black, PlayerLvl, Center);
             //Placeholder playtime display
             g.DrawString("PlayTime: " + Hour +":" +Minute +":"+Second, General, Brushes.Black, FilePlayTime, Center);
-            g.DrawString("Hp:" + Character.Hp + "/" + Character.MaxHp, General, Brushes.Black, PlayerHp, Center);
+            g.DrawString("HP:" + Character.Hp + "/" + Character.MaxHp, General, Brushes.Black, PlayerHp, Center);
             g.DrawString("Atk:" + Character.Atk, General, Brushes.Black, PlayerAtk, Center);
             g.DrawString("Def:" + Character.TrueDef, General, Brushes.Black, PlayerDef, Center);
             g.DrawString("Spd:" + Character.Spd, General, Brushes.Black, PlayerSpd, Center);
@@ -720,9 +721,20 @@ namespace Grid_based_map
         }
         private void EncounterTick()
         {
-            if(Map.Tiles[Character.PlayerYPos, Character.PlayerXPos, 3] == 0)
+            if(Map.Tiles[Character.PlayerYPos, Character.PlayerXPos, 0] == Map.LevelIndicator + .5)
             {
-                // Encounter.EncounterRoll(Map.LevelIndicator);
+                Map_Pnl.Hide();
+                Info_Pnl.Hide();
+                CombatUISetup();
+                Combat_Pnl.Invalidate();
+                Character.Def = Character.TrueDef;
+                CombatInfo_Txtbox.Text = "Boss Fight!";
+                Encounter.SetEncounter("CrystalServant","CrystalEmpress","CrystalServant");
+                EnemySetup();
+            }
+            else if (Map.Tiles[Character.PlayerYPos, Character.PlayerXPos, 3] == 0)
+            {
+                Encounter.EncounterRoll(Map.LevelIndicator);
                 if (Encounter.Infight == true)
                 {
                     Map_Pnl.Hide();
@@ -806,27 +818,19 @@ namespace Grid_based_map
                             Dmg = 1;
                         }
                         Character.Hp -= Dmg;
-                        CombatInfo_Txtbox.Text += "\n->" +"And delt " +Dmg+"!";
+                        CombatInfo_Txtbox.Text += "\n->" +"And dealt " +Dmg+"!";
+                        if(Character.Hp <= 0)
+                        {
+                            PlayerDead();
+                            break;
+                        }
                     }
-                    if (Ec >= 81 && Ec <= 99)
+                    if (Ec >= 81 && Ec <= 100)
                     {
                         Enemies[i].Def = (int)Math.Round(Enemies[i].Def * 1.2);
                         Enemies[i].Defending = true;
                         CombatInfo_Txtbox.Text += "\n->" + Enemies[i].Name + (i+1) + " prepares for your next attack!";
-                    }
-                    if (Ec >= 100)
-                    {
-                        //Flee
-                        if((int)Math.Round((double)Enemies[i].Spd/Character.Spd*100)<=Flee.Next(0, 101))
-                        {
-                            CombatInfo_Txtbox.Text += "\n->" + Enemies[i].Name+ (i + 1) + " fled from the scene!";
-                            Enemies[i].Fled = true;
-                        }
-                        else
-                        {
-                            CombatInfo_Txtbox.Text += "\n->" + Enemies[i].Name + (i + 1) + " attempted to flee but you managed to stop its esacpe!";
-                        }
-                    }
+                    }                  
                 }
                 else
                 {
@@ -914,10 +918,6 @@ namespace Grid_based_map
            Selected_Action = 0;
            Selected_Foe = 0;
            Point Mouse = new Point(e.X, e.Y);
-           if(Encounter.Infight == false)
-            {
-                PlayerTurn("Flee");
-            }
            foreach (Rectangle Rec in CombatMenu)
            {
                if (Rec.Contains(Mouse))
@@ -1090,6 +1090,17 @@ namespace Grid_based_map
             //usual shorting of e.grahpics down to g
             g = e.Graphics;
             g.Clear(Color.Gray);
+            //Scales the scroll bar with the amount of items present in selected category
+            CombatItem_Pnl.AutoScrollMinSize = new Size(0, 52 * Items.Count);
+            //if the item count doesn't make the list go past 120px then the bar is hidden
+            if (51.1 * Items.Count <= 400)
+            {
+                CombatItem_Pnl.VerticalScroll.Visible = false;
+            }
+            else
+            {
+                CombatItem_Pnl.VerticalScroll.Visible = true;
+            }
             //Displace all objects drawn on panel by the scroll amount
             g.TranslateTransform(CombatItem_Pnl.AutoScrollPosition.X, CombatItem_Pnl.AutoScrollPosition.Y);
             //Check every tuple in the Items list
@@ -1206,6 +1217,25 @@ namespace Grid_based_map
             CombatInfo_Txtbox.Text += "\n ->You Gained " + XPGainedTotal + " XP!";
             Character.XpCheck();
             Encounter.Infight = false;
+            for (int i = 0; i < 5; i++)
+            {
+                CombatMenu[i] = Rectangle.Empty;
+            }
+            Combat_Pnl.Hide();
+            Action_Pnl.Hide();
+            Map_Pnl.Show();
+            Info_Pnl.Show();
+            for (int i = 0; i < Encounter.CurrentEncounter.Count; i++)
+            {
+                Enemies[i] = null;
+            }
+            GC.Collect();
+            Encounter.CurrentEncounter.Clear();
+            PlayerAction = "None";
+        }
+        private void PlayerDead()
+        {
+
         }
     }
 
