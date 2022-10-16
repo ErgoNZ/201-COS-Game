@@ -25,7 +25,6 @@ namespace Grid_based_map
                 while ((line = FileReader.ReadLine()) != null)
                 {
                     EncounterTable.Add(line);
-                    Debug.WriteLine(line);
                 }
             }
             foreach (string FightData in EncounterTable)
@@ -194,7 +193,7 @@ namespace Grid_based_map
         public void EncounterRoll(int TileData)
         {
             SelEncounters.Clear();
-            if (Roll.Next(0, 101) >= 95)
+            if (Roll.Next(0, 101) >= 97)
             {
                 foreach (Tuple<double, string, string, string> tuple in EncounterData)
                 {

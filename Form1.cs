@@ -73,7 +73,7 @@ namespace Grid_based_map
             new Rectangle(145, 230, 300, 50)
         };
         Rectangle[] FoeHpFill = new Rectangle[3];
-        int TileID = 0, Selected_Item = -1, Selected_Action= -1, Selected_Foe=-1,UnableToFight,Second=0,Minute=10,Hour=10;
+        int TileID = 0, Selected_Item = -1, Selected_Action= -1, Selected_Foe=-1,UnableToFight,Second=0,Minute=0,Hour=0;
         public int tileX = 10, tileY = 10;
         bool CharOnScrn, cameraControl;
         string SelectedCat, OldCat, PlayerAction="None";
@@ -120,8 +120,6 @@ namespace Grid_based_map
             Inv.AddItem(1, "Chestplate", false);
             Inv.AddItem(1, "Helmet", false);
             Inv.AddItem(1, "SwordBasic", false);
-            Inv.AddItem(1, "GhastlyBlade", false);
-            Inv.AddItem(1, "BirdbatMeat", false);
             Inv.AddItem(5, "Apple", false);
             Inv.AddItem(10, "Walnut", false);
             Encounter.EncounterListSetup(Map.LevelIndicator);
@@ -229,7 +227,6 @@ namespace Grid_based_map
             }
             //Call the DrawGrid method to refresh the players current view and update any tiles as needed
             Info_Pnl.Invalidate();
-            Debug.WriteLine(tileX+":"+tileY);
             DrawGrid();
         }
 
@@ -956,6 +953,10 @@ namespace Grid_based_map
         private void CombatUISetup()
         {
             int RectCount = 0;
+            if(Character.Hp>Character.MaxHp)
+            {
+                Character.Hp = Character.MaxHp;
+            }
             for (int w = 0; w < 2; w++)
             {
                 for (int h = 0; h < 2; h++)
@@ -1213,8 +1214,8 @@ namespace Grid_based_map
                     InventoryUISetUp();
                 }
                 XPGainedTotal += Loot.XPGained;
+                Character.Xp += Loot.XPGained;
             }
-            Character.Xp += Loot.XPGained;
             CombatInfo_Txtbox.Text += "\n ->You Gained " + XPGainedTotal + " XP!";
             Character.XpCheck();
             Encounter.Infight = false;

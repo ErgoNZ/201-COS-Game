@@ -17,16 +17,16 @@ namespace Grid_based_map
         public List<string> DefElement = new List<string>();
         List<Tuple<int, int>> XpReq = new List<Tuple<int, int>>
         {
-            new Tuple<int, int>(1,5),
-            new Tuple<int, int>(2,15),
-            new Tuple<int, int>(3,30),
-            new Tuple<int, int>(4,60),
-            new Tuple<int, int>(5,80),
-            new Tuple<int, int>(6,100),
-            new Tuple<int, int>(7,130),
-            new Tuple<int, int>(8,175),
-            new Tuple<int, int>(9,250),
-            new Tuple<int, int>(10,400),
+            new Tuple<int, int>(1,15),
+            new Tuple<int, int>(2,45),
+            new Tuple<int, int>(3,100),
+            new Tuple<int, int>(4,160),
+            new Tuple<int, int>(5,250),
+            new Tuple<int, int>(6,500),
+            new Tuple<int, int>(7,750),
+            new Tuple<int, int>(8,1250),
+            new Tuple<int, int>(9,2500),
+            new Tuple<int, int>(10,5000),
         };
         public void XpCheck()
         {

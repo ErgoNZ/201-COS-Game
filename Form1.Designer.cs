@@ -48,9 +48,14 @@ namespace Grid_based_map
             this.CombatItem_Pnl = new System.Windows.Forms.Panel();
             this.CombatInfo_Txtbox = new System.Windows.Forms.RichTextBox();
             this.PlayTime_Tmr = new System.Windows.Forms.Timer(this.components);
+            this.Menu_Pnl = new System.Windows.Forms.Panel();
+            this.Instructions_Btn = new System.Windows.Forms.Button();
+            this.Start_Pnl = new System.Windows.Forms.Button();
+            this.NameInsert_Txt = new System.Windows.Forms.TextBox();
             this.Info_Pnl.SuspendLayout();
             this.Desc_Pnl.SuspendLayout();
             this.Action_Pnl.SuspendLayout();
+            this.Menu_Pnl.SuspendLayout();
             this.SuspendLayout();
             // 
             // Map_Pnl
@@ -287,11 +292,57 @@ namespace Grid_based_map
             this.PlayTime_Tmr.Interval = 1000;
             this.PlayTime_Tmr.Tick += new System.EventHandler(this.PlayTime_Tmr_Tick);
             // 
+            // Menu_Pnl
+            // 
+            this.Menu_Pnl.Controls.Add(this.Instructions_Btn);
+            this.Menu_Pnl.Controls.Add(this.Start_Pnl);
+            this.Menu_Pnl.Controls.Add(this.NameInsert_Txt);
+            this.Menu_Pnl.Location = new System.Drawing.Point(0, 0);
+            this.Menu_Pnl.Name = "Menu_Pnl";
+            this.Menu_Pnl.Size = new System.Drawing.Size(1272, 841);
+            this.Menu_Pnl.TabIndex = 4;
+            this.Menu_Pnl.Visible = false;
+            // 
+            // Instructions_Btn
+            // 
+            this.Instructions_Btn.Font = new System.Drawing.Font("Segoe UI", 21.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.Instructions_Btn.Location = new System.Drawing.Point(545, 315);
+            this.Instructions_Btn.Name = "Instructions_Btn";
+            this.Instructions_Btn.Size = new System.Drawing.Size(222, 91);
+            this.Instructions_Btn.TabIndex = 2;
+            this.Instructions_Btn.TabStop = false;
+            this.Instructions_Btn.Text = "Instructions!";
+            this.Instructions_Btn.UseVisualStyleBackColor = true;
+            // 
+            // Start_Pnl
+            // 
+            this.Start_Pnl.Font = new System.Drawing.Font("Segoe UI", 26.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.Start_Pnl.Location = new System.Drawing.Point(545, 190);
+            this.Start_Pnl.Name = "Start_Pnl";
+            this.Start_Pnl.Size = new System.Drawing.Size(222, 90);
+            this.Start_Pnl.TabIndex = 1;
+            this.Start_Pnl.TabStop = false;
+            this.Start_Pnl.Text = "Start";
+            this.Start_Pnl.UseVisualStyleBackColor = true;
+            // 
+            // NameInsert_Txt
+            // 
+            this.NameInsert_Txt.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.NameInsert_Txt.Location = new System.Drawing.Point(545, 286);
+            this.NameInsert_Txt.MaxLength = 20;
+            this.NameInsert_Txt.Name = "NameInsert_Txt";
+            this.NameInsert_Txt.PlaceholderText = "Enter you name here before you begin!";
+            this.NameInsert_Txt.Size = new System.Drawing.Size(222, 22);
+            this.NameInsert_Txt.TabIndex = 0;
+            this.NameInsert_Txt.TabStop = false;
+            this.NameInsert_Txt.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1272, 841);
+            this.Controls.Add(this.Menu_Pnl);
             this.Controls.Add(this.Action_Pnl);
             this.Controls.Add(this.Combat_Pnl);
             this.Controls.Add(this.Info_Pnl);
@@ -305,6 +356,8 @@ namespace Grid_based_map
             this.Info_Pnl.ResumeLayout(false);
             this.Desc_Pnl.ResumeLayout(false);
             this.Action_Pnl.ResumeLayout(false);
+            this.Menu_Pnl.ResumeLayout(false);
+            this.Menu_Pnl.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -329,6 +382,10 @@ namespace Grid_based_map
         private System.Windows.Forms.Button BattleUse_Btn;
         private System.Windows.Forms.Panel CombatItem_Pnl;
         private System.Windows.Forms.Timer PlayTime_Tmr;
+        private System.Windows.Forms.Panel Menu_Pnl;
+        private System.Windows.Forms.Button Instructions_Btn;
+        private System.Windows.Forms.Button Start_Pnl;
+        private System.Windows.Forms.TextBox NameInsert_Txt;
     }
 }
 
