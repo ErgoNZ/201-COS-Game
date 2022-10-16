@@ -1,0 +1,10 @@
+Ghastly Blade
+Weapon
+True
+-5
+10
+-2
+10
+3
+Undead
+The blade forged from the leftover essence of a corrupted spirit.

@@ -1,0 +1,10 @@
+Birdbat Meat
+Item
+False
+15
+0
+0
+0
+0
+None
+Meat from a BirdBat.

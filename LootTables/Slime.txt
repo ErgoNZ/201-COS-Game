@@ -1,4 +1,4 @@
-﻿Slime_Gel
+﻿SlimeGel
 0
 80
 1

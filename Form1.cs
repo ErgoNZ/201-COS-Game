@@ -62,9 +62,9 @@ namespace Grid_based_map
         };
         Rectangle[] FoeName = new Rectangle[3]
         {
-            new Rectangle(13,24,100,32),
-            new Rectangle(13,132, 100, 32),
-            new Rectangle(13, 240, 100, 32)
+            new Rectangle(13,24,110,40),
+            new Rectangle(13,132, 110, 40),
+            new Rectangle(13, 240, 110, 40)
         };
         Rectangle[] FoeHpBar = new Rectangle[3]
         {
@@ -120,10 +120,10 @@ namespace Grid_based_map
             Inv.AddItem(1, "Chestplate", false);
             Inv.AddItem(1, "Helmet", false);
             Inv.AddItem(1, "SwordBasic", false);
+            Inv.AddItem(1, "GhastlyBlade", false);
+            Inv.AddItem(1, "BirdbatMeat", false);
             Inv.AddItem(5, "Apple", false);
-            Inv.AddItem(5, "Apple1", false);
             Inv.AddItem(10, "Walnut", false);
-            Loot.GetLootTable("TestLootTable");
             Encounter.EncounterListSetup(Map.LevelIndicator);
             Map_Pnl.BringToFront();
             Info_Pnl.BringToFront();
@@ -761,6 +761,7 @@ namespace Grid_based_map
                     Character.PlayerYPos = 0;
                 }
                 Map.LoadMap(MapTransition);
+                Encounter.EncounterListSetup(Map.LevelIndicator);
             }
         }
         private void EnemySetup()

@@ -206,7 +206,7 @@ namespace Grid_based_map
                 //Enemy data is read here from their files
                 int Index = Roll.Next(0, SelEncounters.Count);
                 //Tuple(Hp,Atk,Def,Spd,Crit,Element,Position)
-                if (SelEncounters[Index].Item2 != null || SelEncounters[Index].Item2 != "None")
+                if ( SelEncounters[Index].Item2 != "None")
                 {
                     using (StreamReader FileReader = new StreamReader("../../../CombatData/EnemyData/" + SelEncounters[Index].Item2 + ".txt"))
                     {
