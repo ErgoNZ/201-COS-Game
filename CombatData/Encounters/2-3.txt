@@ -1,0 +1,4 @@
+2
+EarthElemental
+FireSnake
+LavaElemental

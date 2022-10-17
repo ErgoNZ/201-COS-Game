@@ -1,0 +1,7 @@
+Fire Snake
+30
+12
+3
+20
+4
+Fire

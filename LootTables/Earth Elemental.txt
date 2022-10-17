@@ -1,0 +1,15 @@
+EarthSteak
+0
+25
+1
+2
+EarthChestplate
+90
+100
+1
+1
+XP
+0
+100
+5
+10

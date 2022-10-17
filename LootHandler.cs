@@ -72,17 +72,6 @@ namespace Grid_based_map
                     XPGained = Amount.Next(tuple.Item4, tuple.Item5 + 1);
                 }
             }
-        }
-        public void PrintLootTable()
-        {
-            foreach (Tuple<string, int, int, int, int> tuple in LootTableData)
-            {
-                Debug.WriteLine("FileName:" + tuple.Item1);
-                Debug.WriteLine("MinChance:" + tuple.Item2);
-                Debug.WriteLine("MaxChance:" + tuple.Item3);
-                Debug.WriteLine("MinAmount:" + tuple.Item4);
-                Debug.WriteLine("MaxAmount:" + tuple.Item5);
-            }
-        }
+        }        
     }
 }

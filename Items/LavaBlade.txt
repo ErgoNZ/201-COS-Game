@@ -1,0 +1,10 @@
+Lava Blade
+Weapon
+True
+-15
+17
+-2
+-1
+0
+Fire
+A lava coated rock pulled from a Lava Elemental. How does the lava stay attached to the rock?

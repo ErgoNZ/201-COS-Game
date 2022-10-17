@@ -92,7 +92,7 @@ namespace Grid_based_map
                 //and instead increases it by the amount being added.
                 foreach (Tuple<Tuple<string, string>, int, string, bool, string, Tuple<int, int, int, int, int, string>, bool> tuple in InvData)
                 {
-                    if (tuple.Item1.Item1 == ItemName)
+                    if (tuple.Item1.Item1 == ItemName && tuple.Item1.Item2 =="Item")
                     {
                         if (ItemAmount > 0)
                         {

@@ -11,7 +11,7 @@ namespace Grid_based_map
         public Rectangle Char;
         Random StatIncrease = new Random();
         public int PlayerX = -1, PlayerY = -1, PlayerXPos = 20, PlayerYPos = 22;
-        public int Hp = 30, Def = 0, Spd = 5, Atk = 5, Lvl = 1, MaxHp = 30, Crit = 2, Xp = 0, TrueDef=2;
+        public int Hp = 30, Def = 0, Spd = 5, Atk = 3, Lvl = 1, MaxHp = 30, Crit = 2, Xp = 0, TrueDef=1;
         public string Name = "Player", AtkElement = "None";
         public bool WeaponEquipped, HelmetEquipped, ChestplateEquipped, LeggingsEquipped, BootsEquipped;
         public List<string> DefElement = new List<string>();
@@ -33,10 +33,10 @@ namespace Grid_based_map
             if(Xp >= XpReq[Lvl-1].Item2)
             {
                 Lvl++;
-                TrueDef += StatIncrease.Next(1, 3);
-                MaxHp += StatIncrease.Next(4, 7);
-                Spd += StatIncrease.Next(2, 4);
-                Atk += StatIncrease.Next(2, 4);
+                TrueDef += StatIncrease.Next(1, 2);
+                MaxHp += StatIncrease.Next(5, 7);
+                Spd += StatIncrease.Next(1, 3);
+                Atk += StatIncrease.Next(1, 3);
                 Crit += StatIncrease.Next(0, 2);
             }
         }

@@ -1,0 +1,10 @@
+Earth Steak
+Item
+False
+25
+0
+0
+0
+0
+None
+A freshly grilled steak from an Earth Elemental.

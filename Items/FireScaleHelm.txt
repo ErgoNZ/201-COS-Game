@@ -1,0 +1,10 @@
+Fire Scale Helm
+Helmet
+True
+-5
+3
+4
+5
+1
+Fire
+A helmet crafted from the scales of a Lava Snake.

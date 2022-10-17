@@ -1,0 +1,7 @@
+Lava Elemental
+50
+16
+6
+3
+5
+Fire

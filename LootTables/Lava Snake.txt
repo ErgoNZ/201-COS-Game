@@ -1,0 +1,10 @@
+FireScaleHelm
+0
+5
+1
+1
+XP
+0
+100
+5
+8
