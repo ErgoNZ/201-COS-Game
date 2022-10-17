@@ -11,10 +11,9 @@ namespace Grid_based_map
         public Rectangle Char;
         Random StatIncrease = new Random();
         public int PlayerX = -1, PlayerY = -1, PlayerXPos = 20, PlayerYPos = 22;
-        public int Hp = 30, Def = 0, Spd = 5, Atk = 3, Lvl = 1, MaxHp = 30, Crit = 2, Xp = 0, TrueDef=1;
+        public int Hp = 30, Def = 0, Spd = 5, Atk = 3, Lvl = 1, MaxHp = 30, Crit = 2, Xp = 0, TrueDef = 1;
         public string Name = "Player", AtkElement = "None";
         public bool WeaponEquipped, HelmetEquipped, ChestplateEquipped, LeggingsEquipped, BootsEquipped;
-        public List<string> DefElement = new List<string>();
         List<Tuple<int, int>> XpReq = new List<Tuple<int, int>>
         {
             new Tuple<int, int>(1,15),
@@ -28,9 +27,20 @@ namespace Grid_based_map
             new Tuple<int, int>(9,2500),
             new Tuple<int, int>(10,5000),
         };
+        public void Reset()
+        {
+            PlayerX = -1; PlayerY = -1; PlayerXPos = 20; PlayerYPos = 22;
+            Hp = 30; Def = 0; Spd = 5; Atk = 3; Lvl = 1; MaxHp = 30; Crit = 2; Xp = 0; TrueDef = 1;
+            Name = "Player"; AtkElement = "None";
+            WeaponEquipped = false;
+            HelmetEquipped = false;
+            ChestplateEquipped = false;
+            LeggingsEquipped = false;
+            BootsEquipped = false;
+        }
         public void XpCheck()
         {
-            if(Xp >= XpReq[Lvl-1].Item2)
+            if (Xp >= XpReq[Lvl - 1].Item2)
             {
                 Lvl++;
                 TrueDef += StatIncrease.Next(1, 2);

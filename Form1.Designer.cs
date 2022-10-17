@@ -301,34 +301,35 @@ namespace Grid_based_map
             this.Menu_Pnl.Name = "Menu_Pnl";
             this.Menu_Pnl.Size = new System.Drawing.Size(1272, 841);
             this.Menu_Pnl.TabIndex = 4;
-            this.Menu_Pnl.Visible = false;
             // 
             // Instructions_Btn
             // 
             this.Instructions_Btn.Font = new System.Drawing.Font("Segoe UI", 21.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.Instructions_Btn.Location = new System.Drawing.Point(545, 315);
+            this.Instructions_Btn.Location = new System.Drawing.Point(519, 439);
             this.Instructions_Btn.Name = "Instructions_Btn";
             this.Instructions_Btn.Size = new System.Drawing.Size(222, 91);
             this.Instructions_Btn.TabIndex = 2;
             this.Instructions_Btn.TabStop = false;
             this.Instructions_Btn.Text = "Instructions!";
             this.Instructions_Btn.UseVisualStyleBackColor = true;
+            this.Instructions_Btn.Click += new System.EventHandler(this.Instructions_Btn_Click);
             // 
             // Start_Pnl
             // 
             this.Start_Pnl.Font = new System.Drawing.Font("Segoe UI", 26.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.Start_Pnl.Location = new System.Drawing.Point(545, 190);
+            this.Start_Pnl.Location = new System.Drawing.Point(519, 267);
             this.Start_Pnl.Name = "Start_Pnl";
             this.Start_Pnl.Size = new System.Drawing.Size(222, 90);
             this.Start_Pnl.TabIndex = 1;
             this.Start_Pnl.TabStop = false;
             this.Start_Pnl.Text = "Start";
             this.Start_Pnl.UseVisualStyleBackColor = true;
+            this.Start_Pnl.Click += new System.EventHandler(this.Start_Pnl_Click);
             // 
             // NameInsert_Txt
             // 
             this.NameInsert_Txt.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.NameInsert_Txt.Location = new System.Drawing.Point(545, 286);
+            this.NameInsert_Txt.Location = new System.Drawing.Point(519, 386);
             this.NameInsert_Txt.MaxLength = 20;
             this.NameInsert_Txt.Name = "NameInsert_Txt";
             this.NameInsert_Txt.PlaceholderText = "Enter you name here before you begin!";
@@ -336,6 +337,7 @@ namespace Grid_based_map
             this.NameInsert_Txt.TabIndex = 0;
             this.NameInsert_Txt.TabStop = false;
             this.NameInsert_Txt.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.NameInsert_Txt.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.NameInsert_Txt_KeyPress);
             // 
             // Form1
             // 

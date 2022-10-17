@@ -12,6 +12,12 @@ namespace Grid_based_map
         public List<Tuple<Tuple<string, string>, int, string, bool, string, Tuple<int, int, int, int, int, string>, bool>> InvData = new List<Tuple<Tuple<string, string>, int, string, bool, string, Tuple<int, int, int, int, int, string>, bool>>();
         public List<Tuple<Tuple<string, string>, int, string, bool, string, Tuple<int, int, int, int, int, string>, bool>> CategoryData = new List<Tuple<Tuple<string, string>, int, string, bool, string, Tuple<int, int, int, int, int, string>, bool>>();
         public int CatergisedAmount;
+        public void Reset()
+        {
+            InvData = new List<Tuple<Tuple<string, string>, int, string, bool, string, Tuple<int, int, int, int, int, string>, bool>>();
+            CategoryData = new List<Tuple<Tuple<string, string>, int, string, bool, string, Tuple<int, int, int, int, int, string>, bool>>();
+            CatergisedAmount = 0;
+        }
 
         public void AddItem(int ItemAmount, string FileName, bool Equipped)
         {
@@ -89,7 +95,7 @@ namespace Grid_based_map
             else
             {
                 //This checks all current items in the inventory and attempts to find if the item being added already exists
-                //and instead increases it by the amount being added.
+                //and instead increases it by the amount being added. Also makes sure not to give duplicate peices of gear.
                 foreach (Tuple<Tuple<string, string>, int, string, bool, string, Tuple<int, int, int, int, int, string>, bool> tuple in InvData)
                 {
                     if (tuple.Item1.Item1 == ItemName && tuple.Item1.Item2 =="Item")
@@ -255,34 +261,5 @@ namespace Grid_based_map
                 }
             }
         }
-        //This is meant for debug purposes REMOVE LATER
-        public void Sort(string SortBy)
-        {
-            //Sorts by amount of items
-            if (SortBy == "Amount")
-            {
-                InvData.Sort((x, y) => y.Item2.CompareTo(x.Item2));
-            }
-            //Sorts by Alphebetical order of item names
-            if (SortBy == "Alphebetical")
-            {
-                InvData.Sort();
-            }
-        }
-        public void PrintInv()
-        {
-            //Debugging method to check current inventory
-            foreach (Tuple<Tuple<string, string>, int, string, bool, string, Tuple<int, int, int, int, int, string>, bool> tuple in InvData)
-            {
-                Debug.WriteLine("Name:" + tuple.Item1);
-                Debug.WriteLine("Amount:" + tuple.Item2);
-                Debug.WriteLine("Type:" + tuple.Item3);
-                Debug.WriteLine("Equipabble:" + tuple.Item4);
-                Debug.WriteLine("FileName:" + tuple.Item5);
-                Debug.WriteLine("Stats:" + tuple.Item6);
-                Debug.WriteLine("Equipped:" + tuple.Item7);
-            }
-        }
-
     }
 }

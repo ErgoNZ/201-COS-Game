@@ -75,13 +75,12 @@ namespace Grid_based_map
         Rectangle[] FoeHpFill = new Rectangle[3];
         int TileID = 0, Selected_Item = -1, Selected_Action= -1, Selected_Foe=-1,UnableToFight,Second=0,Minute=0,Hour=0;
         public int tileX = 10, tileY = 10;
-        bool CharOnScrn, cameraControl;
+        bool CharOnScrn, cameraControl, GameStart = false;
         string SelectedCat, OldCat, PlayerAction="None";
         Image Error_Image = Image.FromFile("../../../Items/Images/Error.png");
         Image Item_Image;
         //         Rec amount Rec Name  Name   Image   amount File    Stats                                 Equipped/Equippable/item type/Description
         List<Tuple<Rectangle, Rectangle, string, Rectangle, int, string, Tuple<int, int, int, int, int, string>, Tuple<bool, bool, string, string>>> Items = new List<Tuple<Rectangle, Rectangle, string, Rectangle, int, string, Tuple<int, int, int, int, int, string>, Tuple<bool, bool, string, string>>>();
-
         Player Character = new Player();
         MapData Map = new MapData();
         Inventory Inv = new Inventory();
@@ -112,21 +111,13 @@ namespace Grid_based_map
         public Form1()
         {
             InitializeComponent();
-            Map.LoadMap("1.1");
             typeof(Panel).InvokeMember("DoubleBuffered", BindingFlags.SetProperty | BindingFlags.Instance | BindingFlags.NonPublic, null, Map_Pnl, new object[] { true });
             typeof(Panel).InvokeMember("DoubleBuffered", BindingFlags.SetProperty | BindingFlags.Instance | BindingFlags.NonPublic, null, Info_Pnl, new object[] { true });
             typeof(Panel).InvokeMember("DoubleBuffered", BindingFlags.SetProperty | BindingFlags.Instance | BindingFlags.NonPublic, null, Combat_Pnl, new object[] { true });
             typeof(Panel).InvokeMember("DoubleBuffered", BindingFlags.SetProperty | BindingFlags.Instance | BindingFlags.NonPublic, null, Action_Pnl, new object[] { true });
-            Inv.AddItem(1, "Chestplate", false);
-            Inv.AddItem(1, "Helmet", false);
-            Inv.AddItem(1, "SwordBasic", false);
-            Inv.AddItem(5, "Apple", false);
-            Inv.AddItem(10, "Walnut", false);
-            Encounter.EncounterListSetup(Map.LevelIndicator);
             Map_Pnl.BringToFront();
             Info_Pnl.BringToFront();
-            CameraSnap();
-            DrawGrid();
+            Menu_Pnl.BringToFront();        
             Center.Alignment = StringAlignment.Center;
             Center.LineAlignment = StringAlignment.Center;
             CenterTop.Alignment = StringAlignment.Center;
@@ -135,105 +126,147 @@ namespace Grid_based_map
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
             cameraControl = false;
-            if (Encounter.Infight != true)
+            if (GameStart)
             {
-                //Movement of the camera
-                if (e.KeyData == Keys.Left)
+                if (Encounter.Infight != true)
                 {
-                    if (tileX > 3)
+                    //Movement of the camera
+                    if (e.KeyData == Keys.Left)
                     {
-                        tileX--;
-                    }
-                    cameraControl = true;
-                }
-                if (e.KeyData == Keys.Right)
-                {
-                    if (tileX < Map.XLimit - 4)
-                    {
-                        tileX++;
-                    }
-                    cameraControl = true;
-                }
-                if (e.KeyData == Keys.Up)
-                {
-                    if (tileY > 3)
-                    {
-                        tileY--;
-                    }
-                    cameraControl = true;
-                }
-                if (e.KeyData == Keys.Down)
-                {
-                    if (tileY < Map.YLimit - 4)
-                    {
-                        tileY++;
-                    }
-                    cameraControl = true;
-                }
-                //Movement of the player
-                Map.Tiles[Character.PlayerYPos, Character.PlayerXPos, 1] = 0;
-                //0= free movement 1= no movement 2= Cannot move left 3= Cannot move right 4= up 5= down
-                if (CharOnScrn == true)
-                {
-                    if (e.KeyData == Keys.A && Character.PlayerXPos > 0 && Map.Tiles[Character.PlayerYPos, Character.PlayerXPos - 1, 2] != 1 && Map.Tiles[Character.PlayerYPos, Character.PlayerXPos - 1, 2] != 2)
-                    {
-                        Character.PlayerXPos--;
-                        cameraControl = false;
-                        EncounterTick();
                         if (tileX > 3)
                         {
                             tileX--;
                         }
+                        cameraControl = true;
                     }
-                    if (e.KeyData == Keys.D && Character.PlayerXPos < Map.XLimit - 1 && Map.Tiles[Character.PlayerYPos, Character.PlayerXPos + 1, 2] != 1 && Map.Tiles[Character.PlayerYPos, Character.PlayerXPos + 1, 2] != 3)
+                    if (e.KeyData == Keys.Right)
                     {
                         if (tileX < Map.XLimit - 4)
                         {
                             tileX++;
                         }
-                        Character.PlayerXPos++;
-                        cameraControl = false;
-                        EncounterTick();
+                        cameraControl = true;
                     }
-                    if (e.KeyData == Keys.W && Character.PlayerYPos > 0 && Map.Tiles[Character.PlayerYPos - 1, Character.PlayerXPos, 2] != 1 && Map.Tiles[Character.PlayerYPos - 1, Character.PlayerXPos, 2] != 4)
+                    if (e.KeyData == Keys.Up)
                     {
-                        Character.PlayerYPos--;
-                        cameraControl = false;
-                        EncounterTick();
                         if (tileY > 3)
                         {
                             tileY--;
                         }
+                        cameraControl = true;
                     }
-                    if (e.KeyData == Keys.S && Character.PlayerYPos < Map.YLimit - 1 && Map.Tiles[Character.PlayerYPos + 1, Character.PlayerXPos, 2] != 1 && Map.Tiles[Character.PlayerYPos + 1, Character.PlayerXPos, 2] != 5)
+                    if (e.KeyData == Keys.Down)
                     {
-                        if (tileY < Map.YLimit - 3)
+                        if (tileY < Map.YLimit - 4)
                         {
                             tileY++;
                         }
-                        Character.PlayerYPos++;
-                        cameraControl = false;
-                        EncounterTick();
+                        cameraControl = true;
+                    }
+                    //Movement of the player
+                    Map.Tiles[Character.PlayerYPos, Character.PlayerXPos, 1] = 0;
+                    //0= free movement 1= no movement 2= Cannot move left 3= Cannot move right 4= up 5= down
+                    if (CharOnScrn == true)
+                    {
+                        if (e.KeyData == Keys.A && Character.PlayerXPos > 0 && Map.Tiles[Character.PlayerYPos, Character.PlayerXPos - 1, 2] != 1 && Map.Tiles[Character.PlayerYPos, Character.PlayerXPos - 1, 2] != 2)
+                        {
+                            Character.PlayerXPos--;
+                            cameraControl = false;
+                            EncounterTick();
+                            if (tileX > 3)
+                            {
+                                tileX--;
+                            }
+                        }
+                        if (e.KeyData == Keys.D && Character.PlayerXPos < Map.XLimit - 1 && Map.Tiles[Character.PlayerYPos, Character.PlayerXPos + 1, 2] != 1 && Map.Tiles[Character.PlayerYPos, Character.PlayerXPos + 1, 2] != 3)
+                        {
+                            if (tileX < Map.XLimit - 4)
+                            {
+                                tileX++;
+                            }
+                            Character.PlayerXPos++;
+                            cameraControl = false;
+                            EncounterTick();
+                        }
+                        if (e.KeyData == Keys.W && Character.PlayerYPos > 0 && Map.Tiles[Character.PlayerYPos - 1, Character.PlayerXPos, 2] != 1 && Map.Tiles[Character.PlayerYPos - 1, Character.PlayerXPos, 2] != 4)
+                        {
+                            Character.PlayerYPos--;
+                            cameraControl = false;
+                            EncounterTick();
+                            if (tileY > 3)
+                            {
+                                tileY--;
+                            }
+                        }
+                        if (e.KeyData == Keys.S && Character.PlayerYPos < Map.YLimit - 1 && Map.Tiles[Character.PlayerYPos + 1, Character.PlayerXPos, 2] != 1 && Map.Tiles[Character.PlayerYPos + 1, Character.PlayerXPos, 2] != 5)
+                        {
+                            if (tileY < Map.YLimit - 3)
+                            {
+                                tileY++;
+                            }
+                            Character.PlayerYPos++;
+                            cameraControl = false;
+                            EncounterTick();
+                        }
+                    }
+                    if (cameraControl == false)
+                    {
+                        CameraSnap();
+                    }
+                    if (e.KeyData == Keys.C)
+                    {
+                        CameraSnap();
                     }
                 }
-                if (cameraControl == false)
-                {
-                    CameraSnap();
-                }
-                if (e.KeyData == Keys.C)
-                {
-                    CameraSnap();
-                }
-            }
-            //Call the DrawGrid method to refresh the players current view and update any tiles as needed
-            Info_Pnl.Invalidate();
-            DrawGrid();
+                //Call the DrawGrid method to refresh the players current view and update any tiles as needed
+                Info_Pnl.Invalidate();
+                DrawGrid();
+            }          
         }
 
         private void CombatInfo_Txtbox_TextChanged(object sender, EventArgs e)
         {
             CombatInfo_Txtbox.SelectionStart = CombatInfo_Txtbox.Text.Length;
             CombatInfo_Txtbox.ScrollToCaret();
+        }
+
+        private void NameInsert_Txt_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsLetter(e.KeyChar) && !char.IsControl(e.KeyChar) && !char.IsWhiteSpace(e.KeyChar))
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void Instructions_Btn_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("How to play:\nThis game is about exploring a new land in hopes of taking down the Crystal Empress.\nTo get closer to her tower you will need to travel through underground" +
+                " tunnels that are idicated by holes in the ground.\nYour stats and inventory are on the right-hand side of your screen, you can click on items to select them and get more detailed information on them." +
+                " You can switch between item types by clicking on the buttons above the inventory. These are Equipped, Key, Item and Gear.\nWASD to move around the map. Arrow keys to move the camera around the map" +
+                " and plan your routes if you so wish to.\nYour journey wont be easy as the wildlife under the Crystal Empress's control will impede your progress. Protect yourself and get items from them to heal and" +
+                " become better equiped for your fight against her!");
+        }
+
+        private void Start_Pnl_Click(object sender, EventArgs e)
+        {
+            if(NameInsert_Txt.Text != "")
+            {
+                Inv.Reset();
+                Character.Reset();
+                Encounter.Reset();
+                Character.Name = NameInsert_Txt.Text;
+                Inv.AddItem(1, "Chestplate", false);
+                Inv.AddItem(1, "Helmet", false);
+                Inv.AddItem(1, "SwordBasic", false);
+                Inv.AddItem(5, "Apple", false);
+                Inv.AddItem(10, "Walnut", false);
+                Map.LoadMap("1.1");
+                Encounter.EncounterListSetup(Map.LevelIndicator);
+                CameraSnap();
+                DrawGrid();
+                GC.Collect();
+                Menu_Pnl.Hide();
+            }
         }
 
         private void CombatInfo_Txtbox_Click(object sender, EventArgs e)
@@ -797,14 +830,7 @@ namespace Grid_based_map
                     if (Ec >= 0 && Ec <= 80)
                     {
                         CombatInfo_Txtbox.Text += "\n->" + Enemies[i].Name + (i+1) + " attacked you!";
-                        Dmg = (int)Math.Round((Enemies[i].Atk * (double)(DmgMulti.Next(8, 15) / 10)) - Character.Def/2);
-                        foreach (string Def in Character.DefElement)
-                        {
-                            if(Enemies[i].Element == Def && Enemies[i].Element != "None")
-                            {
-                                Dmg = Dmg / 2;
-                            }
-                        }
+                        Dmg = (int)Math.Round((Enemies[i].Atk * (double)(DmgMulti.Next(8, 15) / 10)) - Character.Def/2);                       
                         int CritRolled = CritRoll.Next(0, 101);
                         if (CritRolled <= Enemies[i].Crit)
                         {

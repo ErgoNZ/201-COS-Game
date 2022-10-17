@@ -12,9 +12,18 @@ namespace Grid_based_map
         List<Tuple<double, string, string, string>> SelEncounters = new List<Tuple<double, string, string, string>>();
         //Tuple(Name,Hp,Atk,Def,Spd,Crit,Element,Position)
         public List<Tuple<string, int, int, int, int, int, string, Tuple<int>>> CurrentEncounter = new List<Tuple<string, int, int, int, int, int, string, Tuple<int>>>();
-        List<Tuple<string, int, int>> TurnOrder = new List<Tuple<string, int, int>>();
         Random Roll = new Random();
         public bool Infight;
+        public void Reset()
+        {
+            EncounterTable = new List<string>();
+            EncounterData = new List<Tuple<double, string, string, string>>();
+            SelEncounters = new List<Tuple<double, string, string, string>>();
+            //Tuple(Name,Hp,Atk,Def,Spd,Crit,Element,Position)
+            CurrentEncounter = new List<Tuple<string, int, int, int, int, int, string, Tuple<int>>>();
+            Roll = new Random();
+            Infight = false;
+        }
         public void EncounterListSetup(int LevelData)
         {
             EncounterTable.Clear();
