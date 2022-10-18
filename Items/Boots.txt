@@ -1,0 +1,10 @@
+Boots
+Boots
+True
+0
+0
+2
+3
+0
+None
+Simple boots to protect your feet.

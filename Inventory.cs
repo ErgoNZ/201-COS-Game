@@ -98,7 +98,7 @@ namespace Grid_based_map
                 //and instead increases it by the amount being added. Also makes sure not to give duplicate peices of gear.
                 foreach (Tuple<Tuple<string, string>, int, string, bool, string, Tuple<int, int, int, int, int, string>, bool> tuple in InvData)
                 {
-                    if (tuple.Item1.Item1 == ItemName && tuple.Item1.Item2 =="Item")
+                    if (tuple.Item1.Item1 == ItemName && tuple.Item3 == "Item")
                     {
                         if (ItemAmount > 0)
                         {
@@ -108,8 +108,12 @@ namespace Grid_based_map
                             break;
                         }
                     }
+                    else if(tuple.Item1.Item1 == ItemName && tuple.Item3 != "Item")
+                    {
+                        break;
+                    }
                     //if the item being added isn't already in the players inventory and the item amount isn't a negative number add it.
-                    else if (Index == InvCount - 1)
+                    else if (Index == InvCount - 1 )
                     {
                         if (ItemAmount > 0)
                         {

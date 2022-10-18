@@ -92,14 +92,17 @@ namespace Grid_based_map
         Random Flee = new Random();
         Random CritRoll = new Random();
         Random DmgMulti = new Random();
-        private void Save_Btn_Click(object sender, EventArgs e)
-        {
-
-        }
 
         private void Quit_Btn_Click(object sender, EventArgs e)
         {
-
+            DialogResult res = MessageBox.Show("Are you sure you want to quit back to the main menu?","Are you sure?", MessageBoxButtons.YesNo);
+            if (res == DialogResult.Yes)
+            {
+                Menu_Pnl.Show();
+                Menu_Pnl.BringToFront();
+                Menu_Pnl.Invalidate();
+                GameStart = false;
+            }
         }
 
         Font ComabtBack = new Font(FontFamily.GenericMonospace, 32, FontStyle.Regular);
@@ -257,11 +260,14 @@ namespace Grid_based_map
                 Character.Name = NameInsert_Txt.Text;
                 Inv.AddItem(1, "Chestplate", false);
                 Inv.AddItem(1, "Helmet", false);
+                Inv.AddItem(1, "Leggings", false);
+                Inv.AddItem(1, "Boots", false);
                 Inv.AddItem(1, "SwordBasic", false);
                 Inv.AddItem(5, "Apple", false);
                 Inv.AddItem(10, "Walnut", false);
                 Map.LoadMap("1.1");
                 Encounter.EncounterListSetup(Map.LevelIndicator);
+                GameStart = true;
                 CameraSnap();
                 DrawGrid();
                 GC.Collect();
@@ -652,8 +658,8 @@ namespace Grid_based_map
                     {
                         Character.BootsEquipped = false;
                     }
-                    Inv.AddItem(1, tuple.Item6, false);
                     Inv.DelItem(1, tuple.Item6, false);
+                    Inv.AddItem(1, tuple.Item6, false);
                     Items.Clear();
                     Info_Pnl.Invalidate();
                     Desc_Pnl.Invalidate();
@@ -666,8 +672,8 @@ namespace Grid_based_map
                     {
                         Character.AtkElement = tuple.Item7.Item6;
                         Character.WeaponEquipped = true;
-                        Inv.AddItem(1, tuple.Item6, true);
                         Inv.DelItem(1, tuple.Item6, true);
+                        Inv.AddItem(1, tuple.Item6, true);
                         Character.MaxHp += tuple.Item7.Item1;
                         Character.Atk += tuple.Item7.Item2;
                         Character.TrueDef += tuple.Item7.Item3;
@@ -677,8 +683,8 @@ namespace Grid_based_map
                     if (tuple.Rest.Item3 == "Helmet" && Character.HelmetEquipped == false)
                     {
                         Character.HelmetEquipped = true;
-                        Inv.AddItem(1, tuple.Item6, true);
                         Inv.DelItem(1, tuple.Item6, true);
+                        Inv.AddItem(1, tuple.Item6, true);
                         Character.MaxHp += tuple.Item7.Item1;
                         Character.Atk += tuple.Item7.Item2;
                         Character.TrueDef += tuple.Item7.Item3;
@@ -687,9 +693,9 @@ namespace Grid_based_map
                     }
                     if (tuple.Rest.Item3 == "Chestplate" && Character.ChestplateEquipped == false)
                     {
-                        Character.ChestplateEquipped = true;
-                        Inv.AddItem(1, tuple.Item6, true);
+                        Character.ChestplateEquipped = true;                       
                         Inv.DelItem(1, tuple.Item6, true);
+                        Inv.AddItem(1, tuple.Item6, true);
                         Character.MaxHp += tuple.Item7.Item1;
                         Character.Atk += tuple.Item7.Item2;
                         Character.TrueDef += tuple.Item7.Item3;
@@ -698,9 +704,9 @@ namespace Grid_based_map
                     }
                     if (tuple.Rest.Item3 == "Leggings" && Character.LeggingsEquipped == false)
                     {
-                        Character.LeggingsEquipped = true;
-                        Inv.AddItem(1, tuple.Item6, true);
+                        Character.LeggingsEquipped = true;                        
                         Inv.DelItem(1, tuple.Item6, true);
+                        Inv.AddItem(1, tuple.Item6, true);
                         Character.MaxHp += tuple.Item7.Item1;
                         Character.Atk += tuple.Item7.Item2;
                         Character.TrueDef += tuple.Item7.Item3;
@@ -709,9 +715,9 @@ namespace Grid_based_map
                     }
                     if (tuple.Rest.Item3 == "Boots" && Character.BootsEquipped == false)
                     {
-                        Character.BootsEquipped = true;
-                        Inv.AddItem(1, tuple.Item6, true);
+                        Character.BootsEquipped = true;                       
                         Inv.DelItem(1, tuple.Item6, true);
+                        Inv.AddItem(1, tuple.Item6, true);
                         Character.MaxHp += tuple.Item7.Item1;
                         Character.Atk += tuple.Item7.Item2;
                         Character.TrueDef += tuple.Item7.Item3;
@@ -1133,7 +1139,6 @@ namespace Grid_based_map
             g.TranslateTransform(CombatItem_Pnl.AutoScrollPosition.X, CombatItem_Pnl.AutoScrollPosition.Y);
             //Check every tuple in the Items list
             int count = 0;
-            Debug.WriteLine(Items.Count);
             foreach (Tuple<Rectangle, Rectangle, string, Rectangle, int, string, Tuple<int, int, int, int, int, string>, Tuple<bool, bool, string, string>> tuple in Items)
             {
                 //Draws the UI for each item
@@ -1263,7 +1268,27 @@ namespace Grid_based_map
         }
         private void PlayerDead()
         {
-
+            MessageBox.Show("You have perished! \nTo start a new game just hit the ok button and press start in the main menu.");
+            Menu_Pnl.Show();
+            Menu_Pnl.BringToFront();
+            Menu_Pnl.Invalidate();
+            GameStart = false;
+            Encounter.Infight = false;
+            for (int i = 0; i < 5; i++)
+            {
+                CombatMenu[i] = Rectangle.Empty;
+            }
+            Combat_Pnl.Hide();
+            Action_Pnl.Hide();
+            Map_Pnl.Show();
+            Info_Pnl.Show();
+            for (int i = 0; i < Encounter.CurrentEncounter.Count; i++)
+            {
+                Enemies[i] = null;
+            }
+            GC.Collect();
+            Encounter.CurrentEncounter.Clear();
+            PlayerAction = "None";
         }
     }
 

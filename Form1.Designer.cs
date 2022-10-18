@@ -32,7 +32,6 @@ namespace Grid_based_map
             this.components = new System.ComponentModel.Container();
             this.Map_Pnl = new System.Windows.Forms.Panel();
             this.Info_Pnl = new System.Windows.Forms.Panel();
-            this.Save_Btn = new System.Windows.Forms.Button();
             this.Quit_Btn = new System.Windows.Forms.Button();
             this.Item_Pnl = new System.Windows.Forms.Panel();
             this.Gear_btn = new System.Windows.Forms.Button();
@@ -70,7 +69,6 @@ namespace Grid_based_map
             // Info_Pnl
             // 
             this.Info_Pnl.BackColor = System.Drawing.Color.Transparent;
-            this.Info_Pnl.Controls.Add(this.Save_Btn);
             this.Info_Pnl.Controls.Add(this.Quit_Btn);
             this.Info_Pnl.Controls.Add(this.Item_Pnl);
             this.Info_Pnl.Controls.Add(this.Gear_btn);
@@ -84,28 +82,14 @@ namespace Grid_based_map
             this.Info_Pnl.TabIndex = 1;
             this.Info_Pnl.Paint += new System.Windows.Forms.PaintEventHandler(this.Info_Pnl_Paint);
             // 
-            // Save_Btn
-            // 
-            this.Save_Btn.BackColor = System.Drawing.Color.Wheat;
-            this.Save_Btn.FlatAppearance.BorderSize = 0;
-            this.Save_Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Save_Btn.Location = new System.Drawing.Point(7, 742);
-            this.Save_Btn.Name = "Save_Btn";
-            this.Save_Btn.Size = new System.Drawing.Size(195, 90);
-            this.Save_Btn.TabIndex = 0;
-            this.Save_Btn.TabStop = false;
-            this.Save_Btn.Text = "button1";
-            this.Save_Btn.UseVisualStyleBackColor = false;
-            this.Save_Btn.Click += new System.EventHandler(this.Save_Btn_Click);
-            // 
             // Quit_Btn
             // 
             this.Quit_Btn.BackColor = System.Drawing.Color.Wheat;
             this.Quit_Btn.FlatAppearance.BorderSize = 0;
             this.Quit_Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Quit_Btn.Location = new System.Drawing.Point(225, 742);
+            this.Quit_Btn.Location = new System.Drawing.Point(8, 742);
             this.Quit_Btn.Name = "Quit_Btn";
-            this.Quit_Btn.Size = new System.Drawing.Size(195, 90);
+            this.Quit_Btn.Size = new System.Drawing.Size(415, 90);
             this.Quit_Btn.TabIndex = 0;
             this.Quit_Btn.TabStop = false;
             this.Quit_Btn.Text = "button2";
@@ -368,7 +352,6 @@ namespace Grid_based_map
 
         private System.Windows.Forms.Panel Map_Pnl;
         private System.Windows.Forms.Panel Info_Pnl;
-        private System.Windows.Forms.Button Save_Btn;
         private System.Windows.Forms.Button Quit_Btn;
         private System.Windows.Forms.Panel Item_Pnl;
         private System.Windows.Forms.Button Gear_btn;
