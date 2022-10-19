@@ -104,6 +104,7 @@ namespace Grid_based_map
                             }
                             if (line.Contains("."))
                             {
+                                //Sets up the required information for the tile to transport the player to another level or location
                                     string ZoneTransition = line.Substring(2, 3);
                                     string PlayerPlacement = line.Substring(5);
                                     Tiles[h, w, 0] = LevelIndicator + .4;

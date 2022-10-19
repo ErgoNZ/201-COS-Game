@@ -9,21 +9,20 @@ using System.Reflection;
 
 namespace Grid_based_map
 {
-    public partial class Form1 : Form
+    public partial class FrmGame : Form
     { //Seting up all required variables/objects for the game to function
         Graphics g;
         Rectangle[] Tile = new Rectangle[49];
         Rectangle PlayerName = new Rectangle(88, 0, 250, 50),
                   PlayerLvl = new Rectangle(52, 40, 100, 50),
                   FilePlayTime = new Rectangle(255, 40, 150, 50),
-                  Sec1 = new Rectangle(0, 0, 432, 100),
-                  Sec2 = new Rectangle(0, 100, 432, 125),
+                  BasicInfoArea = new Rectangle(0, 0, 432, 100),
+                  StatsArea = new Rectangle(0, 100, 432, 125),
                   PlayerHp = new Rectangle(88, 95, 250, 50),
                   PlayerAtk = new Rectangle(52, 125, 100, 50),
                   PlayerDef = new Rectangle(52, 175, 100, 50),
                   PlayerSpd = new Rectangle(280, 125, 100, 50),
-                  PlayerCrit = new Rectangle(280, 175, 100, 50),
-                  Sec4 = new Rectangle(0, 500, 300, 100),
+                  PlayerCrit = new Rectangle(280, 175, 100, 50),                 
                   ItemImage = new Rectangle(0, 0, 100, 100),
                   ItemDesc = new Rectangle(100, 0, 258, 195),
                   ItemStats = new Rectangle(0, 101, 100, 100),
@@ -73,9 +72,9 @@ namespace Grid_based_map
             new Rectangle(145, 230, 300, 50)
         };
         Rectangle[] FoeHpFill = new Rectangle[3];
-        int TileID = 0, Selected_Item = -1, Selected_Action= -1, Selected_Foe=-1,UnableToFight,Second=0,Minute=0,Hour=0;
+        int TileID = 0, SelectedItem = -1, SelectedAction= -1, SelectedFoe=-1,UnableToFight,Second=0,Minute=0,Hour=0;
         public int tileX = 10, tileY = 10;
-        bool CharOnScrn, cameraControl, GameStart = false;
+        bool CharOnScrn, CaneraControl, GameStart = false;
         string SelectedCat, OldCat, PlayerAction="None";
         Image Error_Image = Image.FromFile("../../../Items/Images/Error.png");
         Image Item_Image;
@@ -93,27 +92,16 @@ namespace Grid_based_map
         Random CritRoll = new Random();
         Random DmgMulti = new Random();
 
-        private void Quit_Btn_Click(object sender, EventArgs e)
-        {
-            DialogResult res = MessageBox.Show("Are you sure you want to quit back to the main menu?","Are you sure?", MessageBoxButtons.YesNo);
-            if (res == DialogResult.Yes)
-            {
-                Menu_Pnl.Show();
-                Menu_Pnl.BringToFront();
-                Menu_Pnl.Invalidate();
-                GameStart = false;
-            }
-        }
-
         Font ComabtBack = new Font(FontFamily.GenericMonospace, 32, FontStyle.Regular);
         Font General = new Font(FontFamily.GenericMonospace, 16, FontStyle.Regular);
         Font Item = new Font(FontFamily.GenericMonospace, 14, FontStyle.Regular);
         Font Stats = new Font(FontFamily.GenericMonospace, 10, FontStyle.Regular);
         StringFormat Center = new StringFormat();
         StringFormat CenterTop = new StringFormat();
-        public Form1()
+        public FrmGame()
         {
             InitializeComponent();
+            //Double buffering all major/highly used pannels 
             typeof(Panel).InvokeMember("DoubleBuffered", BindingFlags.SetProperty | BindingFlags.Instance | BindingFlags.NonPublic, null, Map_Pnl, new object[] { true });
             typeof(Panel).InvokeMember("DoubleBuffered", BindingFlags.SetProperty | BindingFlags.Instance | BindingFlags.NonPublic, null, Info_Pnl, new object[] { true });
             typeof(Panel).InvokeMember("DoubleBuffered", BindingFlags.SetProperty | BindingFlags.Instance | BindingFlags.NonPublic, null, Combat_Pnl, new object[] { true });
@@ -128,7 +116,7 @@ namespace Grid_based_map
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
-            cameraControl = false;
+            CaneraControl = false;
             if (GameStart)
             {
                 if (Encounter.Infight != true)
@@ -140,7 +128,7 @@ namespace Grid_based_map
                         {
                             tileX--;
                         }
-                        cameraControl = true;
+                        CaneraControl = true;
                     }
                     if (e.KeyData == Keys.Right)
                     {
@@ -148,7 +136,7 @@ namespace Grid_based_map
                         {
                             tileX++;
                         }
-                        cameraControl = true;
+                        CaneraControl = true;
                     }
                     if (e.KeyData == Keys.Up)
                     {
@@ -156,7 +144,7 @@ namespace Grid_based_map
                         {
                             tileY--;
                         }
-                        cameraControl = true;
+                        CaneraControl = true;
                     }
                     if (e.KeyData == Keys.Down)
                     {
@@ -164,7 +152,7 @@ namespace Grid_based_map
                         {
                             tileY++;
                         }
-                        cameraControl = true;
+                        CaneraControl = true;
                     }
                     //Movement of the player
                     Map.Tiles[Character.PlayerYPos, Character.PlayerXPos, 1] = 0;
@@ -174,7 +162,7 @@ namespace Grid_based_map
                         if (e.KeyData == Keys.A && Character.PlayerXPos > 0 && Map.Tiles[Character.PlayerYPos, Character.PlayerXPos - 1, 2] != 1 && Map.Tiles[Character.PlayerYPos, Character.PlayerXPos - 1, 2] != 2)
                         {
                             Character.PlayerXPos--;
-                            cameraControl = false;
+                            CaneraControl = false;
                             EncounterTick();
                             if (tileX > 3)
                             {
@@ -188,13 +176,13 @@ namespace Grid_based_map
                                 tileX++;
                             }
                             Character.PlayerXPos++;
-                            cameraControl = false;
+                            CaneraControl = false;
                             EncounterTick();
                         }
                         if (e.KeyData == Keys.W && Character.PlayerYPos > 0 && Map.Tiles[Character.PlayerYPos - 1, Character.PlayerXPos, 2] != 1 && Map.Tiles[Character.PlayerYPos - 1, Character.PlayerXPos, 2] != 4)
                         {
                             Character.PlayerYPos--;
-                            cameraControl = false;
+                            CaneraControl = false;
                             EncounterTick();
                             if (tileY > 3)
                             {
@@ -208,11 +196,11 @@ namespace Grid_based_map
                                 tileY++;
                             }
                             Character.PlayerYPos++;
-                            cameraControl = false;
+                            CaneraControl = false;
                             EncounterTick();
                         }
                     }
-                    if (cameraControl == false)
+                    if (CaneraControl == false)
                     {
                         CameraSnap();
                     }
@@ -227,10 +215,10 @@ namespace Grid_based_map
             }          
         }
 
-        private void CombatInfo_Txtbox_TextChanged(object sender, EventArgs e)
+        private void CombatInfo_TxtBox_TextChanged(object sender, EventArgs e)
         {
-            CombatInfo_Txtbox.SelectionStart = CombatInfo_Txtbox.Text.Length;
-            CombatInfo_Txtbox.ScrollToCaret();
+            CombatInfo_TxtBox.SelectionStart = CombatInfo_TxtBox.Text.Length;
+            CombatInfo_TxtBox.ScrollToCaret();
         }
 
         private void NameInsert_Txt_KeyPress(object sender, KeyPressEventArgs e)
@@ -250,6 +238,11 @@ namespace Grid_based_map
                 " become better equiped for your fight against her!\nMake sure to equip your sowrd and armour before venturing out into the world!");
         }
 
+        private void Btn_Quit_Click(object sender, EventArgs e)
+        {
+            PlayerDead();
+        }
+
         private void Start_Pnl_Click(object sender, EventArgs e)
         {
             if(NameInsert_Txt.Text != "")
@@ -265,7 +258,7 @@ namespace Grid_based_map
                 Inv.AddItem(1, "SwordBasic", false);
                 Inv.AddItem(5, "Apple", false);
                 Inv.AddItem(10, "Walnut", false);
-                Map.LoadMap("1.1");
+                Map.LoadMap("4.1");
                 Second = 0;
                 Minute = 0;
                 Hour = 0;
@@ -282,8 +275,7 @@ namespace Grid_based_map
                 MessageBox.Show("You need to enter in a name before you can start playing!");
             }
         }
-
-        private void CombatInfo_Txtbox_Click(object sender, EventArgs e)
+        private void CombatInfo_TxtBox_Click(object sender, EventArgs e)
         {
             this.ActiveControl = null;
         }
@@ -425,9 +417,8 @@ namespace Grid_based_map
         private void Info_Pnl_Paint(object sender, PaintEventArgs e)
         {
             g = e.Graphics;
-            g.FillRectangle(Brushes.SaddleBrown, Sec1);
-            g.FillRectangle(Brushes.Brown, Sec2);
-            g.FillRectangle(Brushes.SaddleBrown, Sec4);
+            g.FillRectangle(Brushes.SaddleBrown, BasicInfoArea);
+            g.FillRectangle(Brushes.Brown, StatsArea);
             g.DrawString(Character.Name, General, Brushes.Black, PlayerName, Center);
             g.DrawString("LVL:" + Character.Lvl +"\n XP:" + Character.Xp, General, Brushes.Black, PlayerLvl, Center);
             //Placeholder playtime display
@@ -454,7 +445,7 @@ namespace Grid_based_map
             {
 
                 //Draws the UI for each item
-                if (count == Selected_Item)
+                if (count == SelectedItem)
                 {
                     g.DrawRectangle(Pens.Blue, tuple.Item1);
                     g.DrawRectangle(Pens.Blue, tuple.Item2);
@@ -499,7 +490,7 @@ namespace Grid_based_map
                 int count = 0;
                 foreach (Tuple<Rectangle, Rectangle, string, Rectangle, int, string, Tuple<int, int, int, int, int, string>, Tuple<bool, bool, string, string>> tuple in Items)
                 {
-                    if (count == Selected_Item)
+                    if (count == SelectedItem)
                     {
                         bool FileExists = File.Exists("../../../Items/Images/" + tuple.Item6 + ".png");
                         if (FileExists == true)
@@ -584,7 +575,7 @@ namespace Grid_based_map
         {
             SelectedCat = "Key";
             Use_Btn.Text = "Use/Equip";
-            Selected_Item = -1;
+            SelectedItem = -1;
             InventoryUISetUp();
         }
 
@@ -592,7 +583,7 @@ namespace Grid_based_map
         {
             SelectedCat = "Item";
             Use_Btn.Text = "Use/Equip";
-            Selected_Item = -1;
+            SelectedItem = -1;
             InventoryUISetUp();
         }
 
@@ -600,14 +591,14 @@ namespace Grid_based_map
         {
             SelectedCat = "Gear";
             Use_Btn.Text = "Use/Equip";
-            Selected_Item = -1;
+            SelectedItem = -1;
             InventoryUISetUp();
         }
         private void Equiped_Btn_Click(object sender, EventArgs e)
         {
             SelectedCat = "Equipped";
             Use_Btn.Text = "Unequip";
-            Selected_Item = -1;
+            SelectedItem = -1;
             InventoryUISetUp();
         }
         private void Item_Pnl_MouseDown(object sender, MouseEventArgs e)
@@ -618,7 +609,7 @@ namespace Grid_based_map
             {
                 if (tuple.Item2.Contains(Mouse))
                 {
-                    Selected_Item = count;
+                    SelectedItem = count;
                     Mouse = new Point();
                     Item_Pnl.Invalidate();
                     Desc_Pnl.Invalidate();
@@ -638,7 +629,7 @@ namespace Grid_based_map
             int count = 0;
             foreach (Tuple<Rectangle, Rectangle, string, Rectangle, int, string, Tuple<int, int, int, int, int, string>, Tuple<bool, bool, string, string>> tuple in Items)
             {
-                if (tuple.Rest.Item1 == true && Selected_Item == count)
+                if (tuple.Rest.Item1 == true && SelectedItem == count)
                 {
                     Character.MaxHp -= tuple.Item7.Item1;
                     Character.Atk -= tuple.Item7.Item2;
@@ -674,7 +665,7 @@ namespace Grid_based_map
                     InventoryUISetUp();
                     break;
                 }
-                else if (tuple.Rest.Item1 == false && count == Selected_Item && tuple.Rest.Item2 == true)
+                else if (tuple.Rest.Item1 == false && count == SelectedItem && tuple.Rest.Item2 == true)
                 {
                     if (tuple.Rest.Item3 == "Weapon" && Character.WeaponEquipped == false)
                     {
@@ -738,7 +729,7 @@ namespace Grid_based_map
                     InventoryUISetUp();
                     break;
                 }
-                else if (count == Selected_Item && SelectedCat != "Key")
+                else if (count == SelectedItem && SelectedCat != "Key")
                 {
                     Character.Hp = Character.Hp + tuple.Item7.Item1;
                     if (Character.Hp >= Character.MaxHp)
@@ -747,7 +738,7 @@ namespace Grid_based_map
                     }
                     if (Encounter.Infight == true)
                     {
-                        CombatInfo_Txtbox.Text += "\n-> You consumed the "+tuple.Item6 + " and regained " + tuple.Item7.Item1 +" Hp!";
+                        CombatInfo_TxtBox.Text += "\n-> You consumed the "+tuple.Item6 + " and regained " + tuple.Item7.Item1 +" Hp!";
                         EnemyTurn();
                     }
                     Inv.DelItem(1, tuple.Item6, tuple.Rest.Item2);
@@ -772,7 +763,7 @@ namespace Grid_based_map
                 CombatUISetup();
                 Combat_Pnl.Invalidate();
                 Character.Def = Character.TrueDef;
-                CombatInfo_Txtbox.Text = "Boss Fight!";
+                CombatInfo_TxtBox.Text = "Boss Fight!";
                 Encounter.SetEncounter("CrystalServant","CrystalEmpress","CrystalServant");
                 EnemySetup();
             }
@@ -786,7 +777,7 @@ namespace Grid_based_map
                     CombatUISetup();
                     Combat_Pnl.Invalidate();
                     Character.Def = Character.TrueDef;
-                    CombatInfo_Txtbox.Text = "Combat Start!";
+                    CombatInfo_TxtBox.Text = "Combat Start!";
                     EnemySetup();
                 }
             }
@@ -843,20 +834,20 @@ namespace Grid_based_map
                     Ec = Enemies[i].EnemyDecision();
                     if (Ec >= 0 && Ec <= 80)
                     {
-                        CombatInfo_Txtbox.Text += "\n->" + Enemies[i].Name + (i+1) + " attacked you!";
+                        CombatInfo_TxtBox.Text += "\n->" + Enemies[i].Name + (i+1) + " attacked you!";
                         Dmg = (int)Math.Round((Enemies[i].Atk * (double)(DmgMulti.Next(8, 15) / 10)) - Character.Def/2);                       
                         int CritRolled = CritRoll.Next(0, 101);
                         if (CritRolled <= Enemies[i].Crit)
                         {
                             Dmg = Dmg * 2;
-                            CombatInfo_Txtbox.Text += "\n->The enemy got a critical strike against you!";
+                            CombatInfo_TxtBox.Text += "\n->The enemy got a critical strike against you!";
                         }
                         if(Dmg <= 0)
                         {
                             Dmg = 1;
                         }
                         Character.Hp -= Dmg;
-                        CombatInfo_Txtbox.Text += "\n->" +"And dealt " +Dmg+"!";
+                        CombatInfo_TxtBox.Text += "\n->" +"And dealt " +Dmg+"!";
                         if(Character.Hp <= 0)
                         {
                             PlayerDead();
@@ -867,7 +858,7 @@ namespace Grid_based_map
                     {
                         Enemies[i].Def = (int)Math.Round(Enemies[i].Def * 1.2);
                         Enemies[i].Defending = true;
-                        CombatInfo_Txtbox.Text += "\n->" + Enemies[i].Name + (i+1) + " prepares for your next attack!";
+                        CombatInfo_TxtBox.Text += "\n->" + Enemies[i].Name + (i+1) + " prepares for your next attack!";
                     }                  
                 }
                 else
@@ -889,9 +880,9 @@ namespace Grid_based_map
             if (Action == "Fight")
             {
                 int Dmg;
-                CombatInfo_Txtbox.Text += "\n->You swung at "+Enemies[Selected_Foe].Name+"!";
-                Dmg = (int)Math.Round((Character.Atk * (double)((double)DmgMulti.Next(8, 15) / (double)10)) - Enemies[Selected_Foe].Def / 2);
-                if (Character.AtkElement == Enemies[Selected_Foe].Element && Character.AtkElement != "None")
+                CombatInfo_TxtBox.Text += "\n->You swung at "+Enemies[SelectedFoe].Name+"!";
+                Dmg = (int)Math.Round((Character.Atk * (double)((double)DmgMulti.Next(8, 15) / (double)10)) - Enemies[SelectedFoe].Def / 2);
+                if (Character.AtkElement == Enemies[SelectedFoe].Element && Character.AtkElement != "None")
                 {
                     Dmg = Dmg / 2;
                 }
@@ -899,19 +890,19 @@ namespace Grid_based_map
                 if (CritRolled <= Character.Crit)
                 {
                     Dmg = Dmg * 2;
-                    CombatInfo_Txtbox.Text += "\n->You got a critical strike against the enemy!";
+                    CombatInfo_TxtBox.Text += "\n->You got a critical strike against the enemy!";
                 }
                 if (Dmg <= 0)
                 {
                     Dmg = 1;
                 }
-                Enemies[Selected_Foe].Hp -= Dmg;
-                CombatInfo_Txtbox.Text += "\n->" + "And delt " + Dmg + "!";
-                if(Enemies[Selected_Foe].Hp <= 0)
+                Enemies[SelectedFoe].Hp -= Dmg;
+                CombatInfo_TxtBox.Text += "\n->" + "And delt " + Dmg + "!";
+                if(Enemies[SelectedFoe].Hp <= 0)
                 {
-                    Enemies[Selected_Foe].Fled = true;
-                    Enemies[Selected_Foe].Hp = 0;
-                    CombatInfo_Txtbox.Text += "\n->The attack was fatal";
+                    Enemies[SelectedFoe].Fled = true;
+                    Enemies[SelectedFoe].Hp = 0;
+                    CombatInfo_TxtBox.Text += "\n->The attack was fatal";
                 }
                 EnemyTurn();
             }
@@ -945,7 +936,7 @@ namespace Grid_based_map
                 }
                 else
                 {
-                    CombatInfo_Txtbox.Text += "\n->You Attempted to flee but couldn't find an opening!";
+                    CombatInfo_TxtBox.Text += "\n->You Attempted to flee but couldn't find an opening!";
                     EnemyTurn();
                 }
 
@@ -953,26 +944,26 @@ namespace Grid_based_map
         }
         private void Action_Pnl_MouseDown(object sender, MouseEventArgs e)
         {
-           Selected_Action = 0;
-           Selected_Foe = 0;
+           SelectedAction = 0;
+           SelectedFoe = 0;
            Point Mouse = new Point(e.X, e.Y);
            foreach (Rectangle Rec in CombatMenu)
            {
                if (Rec.Contains(Mouse))
                {
-                   if (PlayerAction != "None" && Selected_Action == 4)
+                   if (PlayerAction != "None" && SelectedAction == 4)
                    {
                        Mouse = new Point();
-                       Selected_Item = -1;
-                       Action(Selected_Action);
+                       SelectedItem = -1;
+                       Action(SelectedAction);
                    }
                    else if (PlayerAction == "None") 
                    {
                        Mouse = new Point();
-                       Action(Selected_Action);
+                       Action(SelectedAction);
                    }                  
                }
-               Selected_Action++;
+               SelectedAction++;
            }
            if(PlayerAction == "Fight")
             {
@@ -986,7 +977,7 @@ namespace Grid_based_map
                             PlayerTurn("Fight");
                         }
                     }
-                    Selected_Foe++;
+                    SelectedFoe++;
                 }
             }      
         }
@@ -1035,7 +1026,7 @@ namespace Grid_based_map
                 g.DrawRectangle(Black, CombatMenu[2]);
                 g.DrawRectangle(Black, CombatMenu[3]);
                 g.DrawRectangle(Black, CombatStats);
-                CombatInfo_Txtbox.Show();
+                CombatInfo_TxtBox.Show();
             }
             if(PlayerAction != "None")
             {
@@ -1055,7 +1046,7 @@ namespace Grid_based_map
                     g.DrawRectangle(Black, FoeSelection[i]);
                     g.DrawString(""+Enemies[i].Hp+"/"+Enemies[i].MaxHp, General, Brushes.Black, FoeHpBar[i], Center);
                 }
-                CombatInfo_Txtbox.Hide();
+                CombatInfo_TxtBox.Hide();
             }
             if (PlayerAction == "Item")
             {
@@ -1065,11 +1056,11 @@ namespace Grid_based_map
                 BattleUse_Btn.Show();
                 BattleUse_Btn.Enabled = true;
                 InventoryUISetUp();
-                CombatInfo_Txtbox.Hide();
+                CombatInfo_TxtBox.Hide();
                 int count = 0;
                 foreach (Tuple<Rectangle, Rectangle, string, Rectangle, int, string, Tuple<int, int, int, int, int, string>, Tuple<bool, bool, string, string>> tuple in Items)
                 {
-                    if (count == Selected_Item)
+                    if (count == SelectedItem)
                     {
                         string ItemStat = "", stat = "";
                         for (int i = 0; i < 6; i++)
@@ -1150,7 +1141,7 @@ namespace Grid_based_map
             foreach (Tuple<Rectangle, Rectangle, string, Rectangle, int, string, Tuple<int, int, int, int, int, string>, Tuple<bool, bool, string, string>> tuple in Items)
             {
                 //Draws the UI for each item
-                if (count == Selected_Item)
+                if (count == SelectedItem)
                 {
                     g.DrawRectangle(Pens.Blue, tuple.Item1);
                     g.DrawRectangle(Pens.Blue, tuple.Item2);
@@ -1188,7 +1179,7 @@ namespace Grid_based_map
             {
                 if (tuple.Item2.Contains(Mouse))
                 {
-                    Selected_Item = count;
+                    SelectedItem = count;
                     Mouse = new Point();
                     CombatItem_Pnl.Invalidate();
                     Action_Pnl.Invalidate();
@@ -1212,7 +1203,7 @@ namespace Grid_based_map
                 //Defend
                 case 1:
                     PlayerAction = "Defend";
-                    CombatInfo_Txtbox.Text += "\n->You prepared to defend against enemy attacks!";
+                    CombatInfo_TxtBox.Text += "\n->You prepared to defend against enemy attacks!";
                     Character.Def = (int)Math.Round(Character.Def * 1.2);
                     EnemyTurn();
                     Action_Pnl.Invalidate();
@@ -1246,7 +1237,7 @@ namespace Grid_based_map
                 if (Loot.Item != "")
                 {
                     Inv.AddItem(Loot.AmountGained, Loot.Item, false);
-                    CombatInfo_Txtbox.Text += "\n ->You found " + Loot.AmountGained + " " + Loot.Item + "!";
+                    CombatInfo_TxtBox.Text += "\n ->You found " + Loot.AmountGained + " " + Loot.Item + "!";
                     Items.Clear();
                     Info_Pnl.Invalidate();
                     Desc_Pnl.Invalidate();
@@ -1255,7 +1246,7 @@ namespace Grid_based_map
                 XPGainedTotal += Loot.XPGained;
                 Character.Xp += Loot.XPGained;
             }
-            CombatInfo_Txtbox.Text += "\n ->You Gained " + XPGainedTotal + " XP!";
+            CombatInfo_TxtBox.Text += "\n ->You Gained " + XPGainedTotal + " XP!";
             Character.XpCheck();
             Encounter.Infight = false;
             for (int i = 0; i < 5; i++)

@@ -1,4 +1,4 @@
-Servant
+Crystal Servant
 100
 15
 5

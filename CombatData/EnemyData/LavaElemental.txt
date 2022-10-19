@@ -1,6 +1,6 @@
 Lava Elemental
 50
-16
+13
 6
 3
 5

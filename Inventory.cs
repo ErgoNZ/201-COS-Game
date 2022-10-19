@@ -228,7 +228,7 @@ namespace Grid_based_map
             {
                 foreach (Tuple<Tuple<string, string>, int, string, bool, string, Tuple<int, int, int, int, int, string>, bool> tuple in InvData)
                 {
-                    if (tuple.Item3 == "Weapon" && tuple.Item7 == false || tuple.Item3 == "Helmet" && tuple.Item7 == false || tuple.Item3 == "Chestplate" && tuple.Item7 == false || tuple.Item3 == "leggings" && tuple.Item7 == false || tuple.Item3 == "Boots" && tuple.Item7 == false)
+                    if (tuple.Item3 == "Weapon" && tuple.Item7 == false || tuple.Item3 == "Helmet" && tuple.Item7 == false || tuple.Item3 == "Chestplate" && tuple.Item7 == false || tuple.Item3 == "Leggings" && tuple.Item7 == false || tuple.Item3 == "Boots" && tuple.Item7 == false)
                     {
                         CategoryData.Add(new Tuple<Tuple<string, string>, int, string, bool, string, Tuple<int, int, int, int, int, string>, bool>(tuple.Item1, tuple.Item2, tuple.Item3, tuple.Item4, tuple.Item5, tuple.Item6, tuple.Item7));
                     }

@@ -14,6 +14,7 @@ namespace Grid_based_map
         public List<Tuple<string, int, int, int, int, int, string, Tuple<int>>> CurrentEncounter = new List<Tuple<string, int, int, int, int, int, string, Tuple<int>>>();
         Random Roll = new Random();
         public bool Infight;
+        //Resets everything back to the default state
         public void Reset()
         {
             EncounterTable = new List<string>();
@@ -24,6 +25,7 @@ namespace Grid_based_map
             Roll = new Random();
             Infight = false;
         }
+        //This sets up all of the possible encounters for the level that is currently loaded
         public void EncounterListSetup(int LevelData)
         {
             EncounterTable.Clear();
@@ -68,6 +70,7 @@ namespace Grid_based_map
                 }
             }
         }
+        //This method is to force a customised encounter
         public void SetEncounter(string Foe,string Foe2,string Foe3)
         {
             CurrentEncounter.Clear();
@@ -201,6 +204,7 @@ namespace Grid_based_map
         }
         public void EncounterRoll(int TileData)
         {
+            //Resets the current encounter
             SelEncounters.Clear();
             if (Roll.Next(0, 101) >= 97)
             {

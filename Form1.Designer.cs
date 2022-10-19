@@ -1,7 +1,7 @@
 ﻿
 namespace Grid_based_map
 {
-    partial class Form1
+    partial class FrmGame
     {
         /// <summary>
         ///  Required designer variable.
@@ -34,9 +34,9 @@ namespace Grid_based_map
             this.Info_Pnl = new System.Windows.Forms.Panel();
             this.Quit_Btn = new System.Windows.Forms.Button();
             this.Item_Pnl = new System.Windows.Forms.Panel();
-            this.Gear_btn = new System.Windows.Forms.Button();
-            this.Key_btn = new System.Windows.Forms.Button();
-            this.Item_btn = new System.Windows.Forms.Button();
+            this.Gear_Btn = new System.Windows.Forms.Button();
+            this.Key_Btn = new System.Windows.Forms.Button();
+            this.Item_Btn = new System.Windows.Forms.Button();
             this.Equiped_Btn = new System.Windows.Forms.Button();
             this.Desc_Pnl = new System.Windows.Forms.Panel();
             this.Drop_Btn = new System.Windows.Forms.Button();
@@ -45,7 +45,7 @@ namespace Grid_based_map
             this.Action_Pnl = new System.Windows.Forms.Panel();
             this.BattleUse_Btn = new System.Windows.Forms.Button();
             this.CombatItem_Pnl = new System.Windows.Forms.Panel();
-            this.CombatInfo_Txtbox = new System.Windows.Forms.RichTextBox();
+            this.CombatInfo_TxtBox = new System.Windows.Forms.RichTextBox();
             this.PlayTime_Tmr = new System.Windows.Forms.Timer(this.components);
             this.Menu_Pnl = new System.Windows.Forms.Panel();
             this.Instructions_Btn = new System.Windows.Forms.Button();
@@ -71,9 +71,9 @@ namespace Grid_based_map
             this.Info_Pnl.BackColor = System.Drawing.Color.Transparent;
             this.Info_Pnl.Controls.Add(this.Quit_Btn);
             this.Info_Pnl.Controls.Add(this.Item_Pnl);
-            this.Info_Pnl.Controls.Add(this.Gear_btn);
-            this.Info_Pnl.Controls.Add(this.Key_btn);
-            this.Info_Pnl.Controls.Add(this.Item_btn);
+            this.Info_Pnl.Controls.Add(this.Gear_Btn);
+            this.Info_Pnl.Controls.Add(this.Key_Btn);
+            this.Info_Pnl.Controls.Add(this.Item_Btn);
             this.Info_Pnl.Controls.Add(this.Equiped_Btn);
             this.Info_Pnl.Controls.Add(this.Desc_Pnl);
             this.Info_Pnl.Location = new System.Drawing.Point(840, 0);
@@ -92,9 +92,9 @@ namespace Grid_based_map
             this.Quit_Btn.Size = new System.Drawing.Size(415, 90);
             this.Quit_Btn.TabIndex = 0;
             this.Quit_Btn.TabStop = false;
-            this.Quit_Btn.Text = "button2";
+            this.Quit_Btn.Text = "Exit to main menu";
             this.Quit_Btn.UseVisualStyleBackColor = false;
-            this.Quit_Btn.Click += new System.EventHandler(this.Quit_Btn_Click);
+            this.Quit_Btn.Click += new System.EventHandler(this.Btn_Quit_Click);
             // 
             // Item_Pnl
             // 
@@ -108,47 +108,47 @@ namespace Grid_based_map
             this.Item_Pnl.Paint += new System.Windows.Forms.PaintEventHandler(this.Item_Pnl_Paint);
             this.Item_Pnl.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Item_Pnl_MouseDown);
             // 
-            // Gear_btn
+            // Gear_Btn
             // 
-            this.Gear_btn.BackColor = System.Drawing.Color.Silver;
-            this.Gear_btn.FlatAppearance.BorderSize = 0;
-            this.Gear_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Gear_btn.Location = new System.Drawing.Point(330, 225);
-            this.Gear_btn.Name = "Gear_btn";
-            this.Gear_btn.Size = new System.Drawing.Size(103, 42);
-            this.Gear_btn.TabIndex = 0;
-            this.Gear_btn.TabStop = false;
-            this.Gear_btn.Text = "Gear";
-            this.Gear_btn.UseVisualStyleBackColor = false;
-            this.Gear_btn.Click += new System.EventHandler(this.Gear_btn_Click);
+            this.Gear_Btn.BackColor = System.Drawing.Color.Silver;
+            this.Gear_Btn.FlatAppearance.BorderSize = 0;
+            this.Gear_Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Gear_Btn.Location = new System.Drawing.Point(330, 225);
+            this.Gear_Btn.Name = "Gear_Btn";
+            this.Gear_Btn.Size = new System.Drawing.Size(103, 42);
+            this.Gear_Btn.TabIndex = 0;
+            this.Gear_Btn.TabStop = false;
+            this.Gear_Btn.Text = "Gear";
+            this.Gear_Btn.UseVisualStyleBackColor = false;
+            this.Gear_Btn.Click += new System.EventHandler(this.Gear_btn_Click);
             // 
-            // Key_btn
+            // Key_Btn
             // 
-            this.Key_btn.BackColor = System.Drawing.Color.Gold;
-            this.Key_btn.FlatAppearance.BorderSize = 0;
-            this.Key_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Key_btn.Location = new System.Drawing.Point(110, 225);
-            this.Key_btn.Name = "Key_btn";
-            this.Key_btn.Size = new System.Drawing.Size(110, 42);
-            this.Key_btn.TabIndex = 0;
-            this.Key_btn.TabStop = false;
-            this.Key_btn.Text = "Key";
-            this.Key_btn.UseVisualStyleBackColor = false;
-            this.Key_btn.Click += new System.EventHandler(this.Key_btn_Click);
+            this.Key_Btn.BackColor = System.Drawing.Color.Gold;
+            this.Key_Btn.FlatAppearance.BorderSize = 0;
+            this.Key_Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Key_Btn.Location = new System.Drawing.Point(110, 225);
+            this.Key_Btn.Name = "Key_Btn";
+            this.Key_Btn.Size = new System.Drawing.Size(110, 42);
+            this.Key_Btn.TabIndex = 0;
+            this.Key_Btn.TabStop = false;
+            this.Key_Btn.Text = "Key";
+            this.Key_Btn.UseVisualStyleBackColor = false;
+            this.Key_Btn.Click += new System.EventHandler(this.Key_btn_Click);
             // 
-            // Item_btn
+            // Item_Btn
             // 
-            this.Item_btn.BackColor = System.Drawing.Color.Red;
-            this.Item_btn.FlatAppearance.BorderSize = 0;
-            this.Item_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Item_btn.Location = new System.Drawing.Point(220, 225);
-            this.Item_btn.Name = "Item_btn";
-            this.Item_btn.Size = new System.Drawing.Size(110, 42);
-            this.Item_btn.TabIndex = 0;
-            this.Item_btn.TabStop = false;
-            this.Item_btn.Text = "Item";
-            this.Item_btn.UseVisualStyleBackColor = false;
-            this.Item_btn.Click += new System.EventHandler(this.Item_btn_Click);
+            this.Item_Btn.BackColor = System.Drawing.Color.Red;
+            this.Item_Btn.FlatAppearance.BorderSize = 0;
+            this.Item_Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Item_Btn.Location = new System.Drawing.Point(220, 225);
+            this.Item_Btn.Name = "Item_Btn";
+            this.Item_Btn.Size = new System.Drawing.Size(110, 42);
+            this.Item_Btn.TabIndex = 0;
+            this.Item_Btn.TabStop = false;
+            this.Item_Btn.Text = "Item";
+            this.Item_Btn.UseVisualStyleBackColor = false;
+            this.Item_Btn.Click += new System.EventHandler(this.Item_btn_Click);
             // 
             // Equiped_Btn
             // 
@@ -214,7 +214,7 @@ namespace Grid_based_map
             // 
             this.Action_Pnl.Controls.Add(this.BattleUse_Btn);
             this.Action_Pnl.Controls.Add(this.CombatItem_Pnl);
-            this.Action_Pnl.Controls.Add(this.CombatInfo_Txtbox);
+            this.Action_Pnl.Controls.Add(this.CombatInfo_TxtBox);
             this.Action_Pnl.Location = new System.Drawing.Point(0, 545);
             this.Action_Pnl.Name = "Action_Pnl";
             this.Action_Pnl.Size = new System.Drawing.Size(1273, 296);
@@ -250,25 +250,25 @@ namespace Grid_based_map
             this.CombatItem_Pnl.Paint += new System.Windows.Forms.PaintEventHandler(this.CombatItem_Pnl_Paint);
             this.CombatItem_Pnl.MouseDown += new System.Windows.Forms.MouseEventHandler(this.CombatItem_Pnl_MouseDown);
             // 
-            // CombatInfo_Txtbox
+            // CombatInfo_TxtBox
             // 
-            this.CombatInfo_Txtbox.BackColor = System.Drawing.Color.Black;
-            this.CombatInfo_Txtbox.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.CombatInfo_Txtbox.DetectUrls = false;
-            this.CombatInfo_Txtbox.Font = new System.Drawing.Font("Segoe UI Symbol", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.CombatInfo_Txtbox.ForeColor = System.Drawing.SystemColors.Info;
-            this.CombatInfo_Txtbox.ImeMode = System.Windows.Forms.ImeMode.Off;
-            this.CombatInfo_Txtbox.Location = new System.Drawing.Point(900, 0);
-            this.CombatInfo_Txtbox.Name = "CombatInfo_Txtbox";
-            this.CombatInfo_Txtbox.ReadOnly = true;
-            this.CombatInfo_Txtbox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
-            this.CombatInfo_Txtbox.Size = new System.Drawing.Size(372, 296);
-            this.CombatInfo_Txtbox.TabIndex = 0;
-            this.CombatInfo_Txtbox.TabStop = false;
-            this.CombatInfo_Txtbox.Text = "->This is the Combat Action pannel\n->It will tell you what actions were taken by " +
+            this.CombatInfo_TxtBox.BackColor = System.Drawing.Color.Black;
+            this.CombatInfo_TxtBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.CombatInfo_TxtBox.DetectUrls = false;
+            this.CombatInfo_TxtBox.Font = new System.Drawing.Font("Segoe UI Symbol", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.CombatInfo_TxtBox.ForeColor = System.Drawing.SystemColors.Info;
+            this.CombatInfo_TxtBox.ImeMode = System.Windows.Forms.ImeMode.Off;
+            this.CombatInfo_TxtBox.Location = new System.Drawing.Point(900, 0);
+            this.CombatInfo_TxtBox.Name = "CombatInfo_TxtBox";
+            this.CombatInfo_TxtBox.ReadOnly = true;
+            this.CombatInfo_TxtBox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
+            this.CombatInfo_TxtBox.Size = new System.Drawing.Size(372, 296);
+            this.CombatInfo_TxtBox.TabIndex = 0;
+            this.CombatInfo_TxtBox.TabStop = false;
+            this.CombatInfo_TxtBox.Text = "->This is the Combat Action pannel\n->It will tell you what actions were taken by " +
     "everyone invloved In the combat";
-            this.CombatInfo_Txtbox.Click += new System.EventHandler(this.CombatInfo_Txtbox_Click);
-            this.CombatInfo_Txtbox.TextChanged += new System.EventHandler(this.CombatInfo_Txtbox_TextChanged);
+            this.CombatInfo_TxtBox.Click += new System.EventHandler(this.CombatInfo_TxtBox_Click);
+            this.CombatInfo_TxtBox.TextChanged += new System.EventHandler(this.CombatInfo_TxtBox_TextChanged);
             // 
             // PlayTime_Tmr
             // 
@@ -322,7 +322,7 @@ namespace Grid_based_map
             this.NameInsert_Txt.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.NameInsert_Txt.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.NameInsert_Txt_KeyPress);
             // 
-            // Form1
+            // FrmGame
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -334,9 +334,9 @@ namespace Grid_based_map
             this.Controls.Add(this.Map_Pnl);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.KeyPreview = true;
-            this.Name = "Form1";
+            this.Name = "FrmGame";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Form1";
+            this.Text = "Crystal Takeover";
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown);
             this.Info_Pnl.ResumeLayout(false);
             this.Desc_Pnl.ResumeLayout(false);
@@ -353,16 +353,16 @@ namespace Grid_based_map
         private System.Windows.Forms.Panel Info_Pnl;
         private System.Windows.Forms.Button Quit_Btn;
         private System.Windows.Forms.Panel Item_Pnl;
-        private System.Windows.Forms.Button Gear_btn;
-        private System.Windows.Forms.Button Item_btn;
-        private System.Windows.Forms.Button Key_btn;
+        private System.Windows.Forms.Button Gear_Btn;
+        private System.Windows.Forms.Button Item_Btn;
+        private System.Windows.Forms.Button Key_Btn;
         private System.Windows.Forms.Panel Desc_Pnl;
         private System.Windows.Forms.Button Drop_Btn;
         private System.Windows.Forms.Button Use_Btn;
         private System.Windows.Forms.Button Equiped_Btn;
         private System.Windows.Forms.Panel Combat_Pnl;
         private System.Windows.Forms.Panel Action_Pnl;
-        private System.Windows.Forms.RichTextBox CombatInfo_Txtbox;
+        private System.Windows.Forms.RichTextBox CombatInfo_TxtBox;
         private System.Windows.Forms.Button BattleUse_Btn;
         private System.Windows.Forms.Panel CombatItem_Pnl;
         private System.Windows.Forms.Timer PlayTime_Tmr;

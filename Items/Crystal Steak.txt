@@ -1,0 +1,10 @@
+Crystal Steak
+Item
+False
+30
+0
+0
+0
+0
+None
+Steak covered in crystals from the corrupted creatures in the crystal wasteland. Is it safe to eat?

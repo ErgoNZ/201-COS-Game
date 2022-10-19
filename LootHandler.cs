@@ -9,7 +9,7 @@ namespace Grid_based_map
     class LootHandler
     {
         //   ItemFile Lowest value/Highest value  Lowest amount/Highest amount
-        //           When rolling for item chance/When rolling for how many of that item
+        //             ^When rolling for item chance/ ^When rolling for how many of that item
         List<Tuple<string, int, int, int, int>> LootTableData = new List<Tuple<string, int, int, int, int>>();
         Random Roll = new Random();
         Random Amount = new Random();
@@ -72,6 +72,7 @@ namespace Grid_based_map
                     XPGained = Amount.Next(tuple.Item4, tuple.Item5 + 1);
                 }
             }
+            LootTableData.Clear();
         }        
     }
 }

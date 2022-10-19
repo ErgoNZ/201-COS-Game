@@ -1,0 +1,10 @@
+Lava Boots
+Boots
+True
+-5
+4
+5
+5
+1
+None
+Boots made of lava?

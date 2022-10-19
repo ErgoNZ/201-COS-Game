@@ -8,10 +8,11 @@ namespace Grid_based_map
     class Enemy
     {
         public string Element = "", Name = "";
-        public int Hp = 0, Atk = 0, Def = 0, Spd = 0, Crit = 0,Pos=0,TrueDef=0,MaxHp=0;
+        public int Hp = 0, Atk = 0, Def = 0, Spd = 0, Crit = 0, Pos = 0, TrueDef = 0, MaxHp = 0;
         public Image Sprite;
         public bool Defending=false,Fled=false;
         Random EnemyChoice = new Random();
+        //Setting up enemy infomation
         public Enemy(string FoeName,int FoeHp,int FoeAtk, int FoeDef, int FoeSpd, int FoeCrit,string FoeElement,int FoePos)
         {
             Name = FoeName;
@@ -26,6 +27,7 @@ namespace Grid_based_map
             Pos = FoePos;
             Sprite = Image.FromFile("../../../CombatData/EnemyData/Sprites/" + FoeName + ".png");           
         }
+        //This just picks a random number
         public int EnemyDecision()
         {
             int EC;
