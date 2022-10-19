@@ -74,7 +74,7 @@ namespace Grid_based_map
         Rectangle[] FoeHpFill = new Rectangle[3];
         int TileID = 0, SelectedItem = -1, SelectedAction= -1, SelectedFoe=-1,UnableToFight,Second=0,Minute=0,Hour=0;
         public int tileX = 10, tileY = 10;
-        bool CharOnScrn, CaneraControl, GameStart = false;
+        bool CharOnScrn, CaneraControl, GameStart = false, BossFight = false;
         string SelectedCat, OldCat, PlayerAction="None";
         Image Error_Image = Image.FromFile("../../../Items/Images/Error.png");
         Image Item_Image;
@@ -396,6 +396,10 @@ namespace Grid_based_map
                     if (Map.ViewRange[h, w, 0] == Map.LevelIndicator + .4)
                     {
                         g.DrawImage(Map.TileSprites.ElementAt(6), Tile[TileID]);
+                    }
+                    if (Map.ViewRange[h, w, 0] == Map.LevelIndicator + .5)
+                    {
+                        g.DrawImage(Map.TileSprites.ElementAt(7), Tile[TileID]);
                     }
                     //finding players position in relation to the cameras position
                     if (Map.ViewRange[h, w, 1] == 1)
@@ -764,6 +768,7 @@ namespace Grid_based_map
                 Combat_Pnl.Invalidate();
                 Character.Def = Character.TrueDef;
                 CombatInfo_TxtBox.Text = "Boss Fight!";
+                BossFight = true;
                 Encounter.SetEncounter("CrystalServant","CrystalEmpress","CrystalServant");
                 EnemySetup();
             }
@@ -1264,6 +1269,10 @@ namespace Grid_based_map
             GC.Collect();
             Encounter.CurrentEncounter.Clear();
             PlayerAction = "None";
+            if (BossFight)
+            {
+                MessageBox.Show("You defeated the Crystal Empress and saved the rest of the world from the crystal corruption!");
+            }
         }
         private void PlayerDead()
         {
