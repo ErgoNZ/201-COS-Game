@@ -247,7 +247,7 @@ namespace Grid_based_map
                 " tunnels that are idicated by holes in the ground.\nYour stats and inventory are on the right-hand side of your screen, you can click on items to select them and get more detailed information on them." +
                 " You can switch between item types by clicking on the buttons above the inventory. These are Equipped, Key, Item and Gear.\nWASD to move around the map. Arrow keys to move the camera around the map" +
                 " and plan your routes if you so wish to.\nYour journey wont be easy as the wildlife under the Crystal Empress's control will impede your progress. Protect yourself and get items from them to heal and" +
-                " become better equiped for your fight against her!");
+                " become better equiped for your fight against her!\nMake sure to equip your sowrd and armour before venturing out into the world!");
         }
 
         private void Start_Pnl_Click(object sender, EventArgs e)
@@ -266,12 +266,20 @@ namespace Grid_based_map
                 Inv.AddItem(5, "Apple", false);
                 Inv.AddItem(10, "Walnut", false);
                 Map.LoadMap("1.1");
+                Second = 0;
+                Minute = 0;
+                Hour = 0;
+                PlayTime_Tmr.Start();
                 Encounter.EncounterListSetup(Map.LevelIndicator);
                 GameStart = true;
                 CameraSnap();
                 DrawGrid();
                 GC.Collect();
                 Menu_Pnl.Hide();
+            }
+            else
+            {
+                MessageBox.Show("You need to enter in a name before you can start playing!");
             }
         }
 
@@ -1268,6 +1276,7 @@ namespace Grid_based_map
         }
         private void PlayerDead()
         {
+            PlayTime_Tmr.Stop();
             MessageBox.Show("You have perished! \nTo start a new game just hit the ok button and press start in the main menu.");
             Menu_Pnl.Show();
             Menu_Pnl.BringToFront();

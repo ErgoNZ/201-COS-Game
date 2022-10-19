@@ -272,7 +272,6 @@ namespace Grid_based_map
             // 
             // PlayTime_Tmr
             // 
-            this.PlayTime_Tmr.Enabled = true;
             this.PlayTime_Tmr.Interval = 1000;
             this.PlayTime_Tmr.Tick += new System.EventHandler(this.PlayTime_Tmr_Tick);
             // 
