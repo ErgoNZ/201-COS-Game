@@ -56,13 +56,15 @@ namespace Grid_based_map
                             {
                                 if (i == 1)
                                 {
-                                        TileSprites.Add(Image.FromFile("../../../Maps/TileSprites/" + LevelIndicator + "_1.png"));
-                                        TileSprites.Add(Image.FromFile("../../../Maps/TileSprites/" + LevelIndicator + "_11.png"));
-                                        TileSprites.Add(Image.FromFile("../../../Maps/TileSprites/" + LevelIndicator + "_12.png"));
-                                        TileSprites.Add(Image.FromFile("../../../Maps/TileSprites/" + LevelIndicator + "_13.png"));
+                                    //grabbing basic tile sprite + other variations of the basic tile
+                                    TileSprites.Add(Image.FromFile("../../../Maps/TileSprites/" + LevelIndicator + "_1.png"));
+                                    TileSprites.Add(Image.FromFile("../../../Maps/TileSprites/" + LevelIndicator + "_11.png"));
+                                    TileSprites.Add(Image.FromFile("../../../Maps/TileSprites/" + LevelIndicator + "_12.png"));
+                                    TileSprites.Add(Image.FromFile("../../../Maps/TileSprites/" + LevelIndicator + "_13.png"));
                                 }
                                 else
                                 {
+                                    //try get sprite for current tile else replace it with a error tile as backup to prevent crash
                                     try
                                     {
                                         TileSprites.Add(Image.FromFile("../../../Maps/TileSprites/" + LevelIndicator + "_" + i + ".png"));
@@ -76,8 +78,10 @@ namespace Grid_based_map
                         }
                         if (LineNum >= 4)
                         {
+                            //Setting up tile info based off the text from the current line
                             if (line == "1")
                             {
+                                //Setting up random sprites for basic tiles so map has some visual variation 
                                 double Tileid = LevelIndicator + .1 + ((double)SpriteRandomizer.Next(0, 4) / (double)100);
                                 Tiles[h, w, 0] = Math.Round(Tileid, 2);
                                 Tiles[h, w, 2] = 0;
@@ -124,6 +128,7 @@ namespace Grid_based_map
                     }
                 }
             }
+            //just in case anything else goes wrong the game doesn't crash (Hopefully)
             catch (Exception)
             {
 

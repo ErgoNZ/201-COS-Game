@@ -1,7 +1,7 @@
 ﻿
 namespace Grid_based_map
 {
-    partial class FrmGame
+    partial class Game_Frm
     {
         /// <summary>
         ///  Required designer variable.
@@ -94,7 +94,7 @@ namespace Grid_based_map
             this.Quit_Btn.TabStop = false;
             this.Quit_Btn.Text = "Exit to main menu";
             this.Quit_Btn.UseVisualStyleBackColor = false;
-            this.Quit_Btn.Click += new System.EventHandler(this.Btn_Quit_Click);
+            this.Quit_Btn.Click += new System.EventHandler(this.Quit_Btn_Click);
             // 
             // Item_Pnl
             // 
@@ -322,7 +322,7 @@ namespace Grid_based_map
             this.NameInsert_Txt.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.NameInsert_Txt.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.NameInsert_Txt_KeyPress);
             // 
-            // FrmGame
+            // Game_Frm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -334,7 +334,7 @@ namespace Grid_based_map
             this.Controls.Add(this.Map_Pnl);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.KeyPreview = true;
-            this.Name = "FrmGame";
+            this.Name = "Game_Frm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Crystal Takeover";
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown);

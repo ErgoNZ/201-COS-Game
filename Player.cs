@@ -8,6 +8,7 @@ namespace Grid_based_map
 {
     class Player
     {
+        //Variable set up
         public Rectangle Char;
         Random StatIncrease = new Random();
         public int PlayerX = -1, PlayerY = -1, PlayerXPos = 20, PlayerYPos = 22;

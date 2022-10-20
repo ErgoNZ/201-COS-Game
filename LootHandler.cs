@@ -20,7 +20,7 @@ namespace Grid_based_map
         {
             int count = 0, ChanceMin = 0, ChanceMax = 0, AmountMin = 0, AmountMax = 0;
             string line, Filename = "";
-
+            //Read info from the required loot table file until it hits a blank line
             using (StreamReader LootReader = new StreamReader("../../../LootTables/" + LootTable + ".txt"))
             {
                 while ((line = LootReader.ReadLine()) != null)

@@ -7,6 +7,7 @@ namespace Grid_based_map
 {
     class Enemy
     {
+        //Setting up required enemy variables
         public string Element = "", Name = "";
         public int Hp = 0, Atk = 0, Def = 0, Spd = 0, Crit = 0, Pos = 0, TrueDef = 0, MaxHp = 0;
         public Image Sprite;
@@ -27,7 +28,7 @@ namespace Grid_based_map
             Pos = FoePos;
             Sprite = Image.FromFile("../../../CombatData/EnemyData/Sprites/" + FoeName + ".png");           
         }
-        //This just picks a random number
+        //This just picks a random number. It's called when it is the enemy's turn
         public int EnemyDecision()
         {
             int EC;

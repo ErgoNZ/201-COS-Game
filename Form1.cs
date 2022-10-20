@@ -9,8 +9,9 @@ using System.Reflection;
 
 namespace Grid_based_map
 {
-    public partial class FrmGame : Form
-    { //Seting up all required variables/objects for the game to function
+    public partial class Game_Frm : Form
+    { 
+        //Seting up all required variables/objects for the game to function
         Graphics g;
         Rectangle[] Tile = new Rectangle[49];
         Rectangle PlayerName = new Rectangle(88, 0, 250, 50),
@@ -22,19 +23,16 @@ namespace Grid_based_map
                   PlayerAtk = new Rectangle(52, 125, 100, 50),
                   PlayerDef = new Rectangle(52, 175, 100, 50),
                   PlayerSpd = new Rectangle(280, 125, 100, 50),
-                  PlayerCrit = new Rectangle(280, 175, 100, 50),                 
+                  PlayerCrit = new Rectangle(280, 175, 100, 50),
                   ItemImage = new Rectangle(0, 0, 100, 100),
                   ItemDesc = new Rectangle(100, 0, 258, 195),
                   ItemStats = new Rectangle(0, 101, 100, 100),
-                  CombatStats = new Rectangle(898,0,372,296),
+                  CombatStats = new Rectangle(898, 0, 372, 296),
                   CombatPlayer = new Rectangle(100, 168, 150, 190),
                   CombatPlayerHp = new Rectangle(50, 418, 250, 100),
                   CombatPlayerHpBar = new Rectangle(50, 418, 250, 100),
                   CombatBox = new Rectangle(0, 0, 898, 297),
-                  CombatItemDesc = new Rectangle(436,1,321,296)
-
-
-                                                               ;
+                  CombatItemDesc = new Rectangle(436, 1, 321, 296);
         Rectangle[] CombatMenu = new Rectangle[5];
         Rectangle[] CombatFoe = new Rectangle[3]{
             new Rectangle(800,30,150,190), 
@@ -74,7 +72,7 @@ namespace Grid_based_map
         Rectangle[] FoeHpFill = new Rectangle[3];
         int TileID = 0, SelectedItem = -1, SelectedAction= -1, SelectedFoe=-1,UnableToFight,Second=0,Minute=0,Hour=0;
         public int tileX = 10, tileY = 10;
-        bool CharOnScrn, CaneraControl, GameStart = false, BossFight = false;
+        bool CharOnScrn, CameraControl, GameStart = false, BossFight = false;
         string SelectedCat, OldCat, PlayerAction="None";
         Image Error_Image = Image.FromFile("../../../Items/Images/Error.png");
         Image Item_Image;
@@ -98,7 +96,8 @@ namespace Grid_based_map
         Font Stats = new Font(FontFamily.GenericMonospace, 10, FontStyle.Regular);
         StringFormat Center = new StringFormat();
         StringFormat CenterTop = new StringFormat();
-        public FrmGame()
+        //Variable, class creation and Misc stuff (Like fonts and pens) ends here^^
+        public Game_Frm()
         {
             InitializeComponent();
             //Double buffering all major/highly used pannels 
@@ -116,9 +115,11 @@ namespace Grid_based_map
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
-            CaneraControl = false;
+            CameraControl = false;
+            //checks the game has started
             if (GameStart)
             {
+                //Makes sure the player isn't in a fight currently
                 if (Encounter.Infight != true)
                 {
                     //Movement of the camera
@@ -128,7 +129,7 @@ namespace Grid_based_map
                         {
                             tileX--;
                         }
-                        CaneraControl = true;
+                        CameraControl = true;
                     }
                     if (e.KeyData == Keys.Right)
                     {
@@ -136,7 +137,7 @@ namespace Grid_based_map
                         {
                             tileX++;
                         }
-                        CaneraControl = true;
+                        CameraControl = true;
                     }
                     if (e.KeyData == Keys.Up)
                     {
@@ -144,7 +145,7 @@ namespace Grid_based_map
                         {
                             tileY--;
                         }
-                        CaneraControl = true;
+                        CameraControl = true;
                     }
                     if (e.KeyData == Keys.Down)
                     {
@@ -152,7 +153,7 @@ namespace Grid_based_map
                         {
                             tileY++;
                         }
-                        CaneraControl = true;
+                        CameraControl = true;
                     }
                     //Movement of the player
                     Map.Tiles[Character.PlayerYPos, Character.PlayerXPos, 1] = 0;
@@ -162,7 +163,7 @@ namespace Grid_based_map
                         if (e.KeyData == Keys.A && Character.PlayerXPos > 0 && Map.Tiles[Character.PlayerYPos, Character.PlayerXPos - 1, 2] != 1 && Map.Tiles[Character.PlayerYPos, Character.PlayerXPos - 1, 2] != 2)
                         {
                             Character.PlayerXPos--;
-                            CaneraControl = false;
+                            CameraControl = false;
                             EncounterTick();
                             if (tileX > 3)
                             {
@@ -176,13 +177,13 @@ namespace Grid_based_map
                                 tileX++;
                             }
                             Character.PlayerXPos++;
-                            CaneraControl = false;
+                            CameraControl = false;
                             EncounterTick();
                         }
                         if (e.KeyData == Keys.W && Character.PlayerYPos > 0 && Map.Tiles[Character.PlayerYPos - 1, Character.PlayerXPos, 2] != 1 && Map.Tiles[Character.PlayerYPos - 1, Character.PlayerXPos, 2] != 4)
                         {
                             Character.PlayerYPos--;
-                            CaneraControl = false;
+                            CameraControl = false;
                             EncounterTick();
                             if (tileY > 3)
                             {
@@ -196,11 +197,12 @@ namespace Grid_based_map
                                 tileY++;
                             }
                             Character.PlayerYPos++;
-                            CaneraControl = false;
+                            CameraControl = false;
                             EncounterTick();
                         }
                     }
-                    if (CaneraControl == false)
+                    //if either of these things are true calls CameraSnap method to bring camera back onto the player
+                    if (CameraControl == false)
                     {
                         CameraSnap();
                     }
@@ -214,38 +216,40 @@ namespace Grid_based_map
                 DrawGrid();
             }          
         }
-
         private void CombatInfo_TxtBox_TextChanged(object sender, EventArgs e)
         {
+            //This just makes it so when the text box has new text placed in it, it automatically scrolls to the bottom of the box
             CombatInfo_TxtBox.SelectionStart = CombatInfo_TxtBox.Text.Length;
             CombatInfo_TxtBox.ScrollToCaret();
         }
-
         private void NameInsert_Txt_KeyPress(object sender, KeyPressEventArgs e)
         {
+            //This just filters out anything that is inputed into the text box that isn't a letter or a whitespace
             if (!char.IsLetter(e.KeyChar) && !char.IsControl(e.KeyChar) && !char.IsWhiteSpace(e.KeyChar))
             {
                 e.Handled = true;
             }
         }
-
         private void Instructions_Btn_Click(object sender, EventArgs e)
         {
+            //Shows instructions in a message box when clicked
             MessageBox.Show("How to play:\nThis game is about exploring a new land in hopes of taking down the Crystal Empress.\nTo get closer to her tower you will need to travel through underground" +
                 " tunnels that are idicated by holes in the ground.\nYour stats and inventory are on the right-hand side of your screen, you can click on items to select them and get more detailed information on them." +
                 " You can switch between item types by clicking on the buttons above the inventory. These are Equipped, Key, Item and Gear.\nWASD to move around the map. Arrow keys to move the camera around the map" +
-                " and plan your routes if you so wish to.\nYour journey wont be easy as the wildlife under the Crystal Empress's control will impede your progress. Protect yourself and get items from them to heal and" +
+                " and plan your routes if you so wish to." + "\nFind the cave enterances to make progress on your journey and travel to new areas! Make sure that you have some extra levels before doing so as the enemies may be too hard for you!" +
+                "\nYour journey wont be easy as the wildlife under the Crystal Empress's control will impede your progress. Protect yourself and get items from them to heal and" +
                 " become better equiped for your fight against her!\nMake sure to equip your sowrd and armour before venturing out into the world!");
         }
-
-        private void Btn_Quit_Click(object sender, EventArgs e)
+        
+        private void Quit_Btn_Click(object sender, EventArgs e)
         {
+            //This button just calls the PlayerDead method to restart the game and go back to the main menu
             PlayerDead();
         }
-
         private void Start_Pnl_Click(object sender, EventArgs e)
         {
-            if(NameInsert_Txt.Text != "")
+            //When clicked resets everything back to the default state
+            if (NameInsert_Txt.Text != "")
             {
                 Inv.Reset();
                 Character.Reset();
@@ -258,7 +262,7 @@ namespace Grid_based_map
                 Inv.AddItem(1, "SwordBasic", false);
                 Inv.AddItem(5, "Apple", false);
                 Inv.AddItem(10, "Walnut", false);
-                Map.LoadMap("4.1");
+                Map.LoadMap("1.1");
                 Second = 0;
                 Minute = 0;
                 Hour = 0;
@@ -277,11 +281,12 @@ namespace Grid_based_map
         }
         private void CombatInfo_TxtBox_Click(object sender, EventArgs e)
         {
+            //Stops the player from selecting the combat log box
             this.ActiveControl = null;
         }
-
         private void PlayTime_Tmr_Tick(object sender, EventArgs e)
         {
+            //This timer only handles playtime and just shows the player how long they have been playing the game for
             Second++;
             if(Second>= 60)
             {
@@ -332,6 +337,7 @@ namespace Grid_based_map
 
         public void CameraSnap()
         {
+            //Snaps the camera to the player and makes sure to not go outside the bounds of the map
             tileX = Character.PlayerXPos;
             tileY = Character.PlayerYPos;
             if (tileX > Map.XLimit - 4)
@@ -360,7 +366,7 @@ namespace Grid_based_map
             g = e.Graphics;
             g.Clear(Color.White);
             TileID = 0;
-            //Colouring tiles based off their visual indicator
+            //giving tiles sprites based off their visual indicator
             for (int h = 0; h < 7; h++)
             {
                 for (int w = 0; w < 7; w++)
@@ -410,6 +416,7 @@ namespace Grid_based_map
                         g.FillRectangle(Brushes.Red, Character.Char);
                         CharOnScrn = true;
                     }
+                    //Draws an outline of the tiles
                     g.DrawRectangle(Pens.Black, Tile[TileID]);
                     TileID++;
                 }
@@ -485,6 +492,7 @@ namespace Grid_based_map
         {
             Item_Image = null;
             g = e.Graphics;
+            //If the selected category doesn't match the old category it wipes the pannel
             if (SelectedCat != OldCat)
             {
                 g.Clear(Color.Gray);
@@ -492,6 +500,7 @@ namespace Grid_based_map
             else
             {
                 int count = 0;
+                //Goes through all items in selected catergory and draws them
                 foreach (Tuple<Rectangle, Rectangle, string, Rectangle, int, string, Tuple<int, int, int, int, int, string>, Tuple<bool, bool, string, string>> tuple in Items)
                 {
                     if (count == SelectedItem)
@@ -506,6 +515,7 @@ namespace Grid_based_map
                         {
                             g.DrawImage(Error_Image, ItemImage);
                         }
+                        //Shows the description and stats of an item by displaying them on screen
                         g.DrawString(tuple.Rest.Item4, Item, Brushes.Black, ItemDesc, CenterTop);
                         string ItemStat = "", stat = "";
                         for (int i = 0; i < 6; i++)
@@ -551,6 +561,7 @@ namespace Grid_based_map
         {
             int count = 0;
             Items.Clear();
+            //If current category doesn't match the old category refresh the pannels for the inventory
             if (SelectedCat != OldCat)
             {
                 Item_Pnl.Invalidate();
@@ -574,7 +585,7 @@ namespace Grid_based_map
             }
             Item_Pnl.Invalidate();
         }
-
+        //The next 4 buttons just switch the category selected in the inventory
         private void Key_btn_Click(object sender, EventArgs e)
         {
             SelectedCat = "Key";
@@ -605,8 +616,10 @@ namespace Grid_based_map
             SelectedItem = -1;
             InventoryUISetUp();
         }
+        //buttons for inventory end here^
         private void Item_Pnl_MouseDown(object sender, MouseEventArgs e)
         {
+            //takes the mouse positon and sees if it is inside any of the rectangles for an item to select it
             int count = 0;
             Point Mouse = new Point(e.X, e.Y - Item_Pnl.AutoScrollPosition.Y);
             foreach (Tuple<Rectangle, Rectangle, string, Rectangle, int, string, Tuple<int, int, int, int, int, string>, Tuple<bool, bool, string, string>> tuple in Items)
@@ -621,6 +634,7 @@ namespace Grid_based_map
                 count++;
             }
         }
+        //button calls UseItem method
         private void Use_Btn_Click(object sender, EventArgs e)
         {
             UseItem();
@@ -631,6 +645,8 @@ namespace Grid_based_map
         private void UseItem()
         {
             int count = 0;
+            //Checks if the item is a gear peice and remove or equips them respectively and increases or decreases stats respectively
+            //If the item being used is under the item category it is used and increases the players hp by the amount stated
             foreach (Tuple<Rectangle, Rectangle, string, Rectangle, int, string, Tuple<int, int, int, int, int, string>, Tuple<bool, bool, string, string>> tuple in Items)
             {
                 if (tuple.Rest.Item1 == true && SelectedItem == count)
@@ -733,6 +749,7 @@ namespace Grid_based_map
                     InventoryUISetUp();
                     break;
                 }
+                //This is for items to heal the player and for when in combat and using items
                 else if (count == SelectedItem && SelectedCat != "Key")
                 {
                     Character.Hp = Character.Hp + tuple.Item7.Item1;
@@ -742,6 +759,7 @@ namespace Grid_based_map
                     }
                     if (Encounter.Infight == true)
                     {
+                        //if in combat do this as well
                         CombatInfo_TxtBox.Text += "\n-> You consumed the "+tuple.Item6 + " and regained " + tuple.Item7.Item1 +" Hp!";
                         EnemyTurn();
                     }
@@ -760,8 +778,10 @@ namespace Grid_based_map
         }
         private void EncounterTick()
         {
+            //Checks the tile the player is on and decides what to do if it is a special tile
             if(Map.Tiles[Character.PlayerYPos, Character.PlayerXPos, 0] == Map.LevelIndicator + .5)
             {
+                //This is for the final boss fight
                 Map_Pnl.Hide();
                 Info_Pnl.Hide();
                 CombatUISetup();
@@ -774,6 +794,7 @@ namespace Grid_based_map
             }
             else if (Map.Tiles[Character.PlayerYPos, Character.PlayerXPos, 3] == 0)
             {
+                //if tile is basic roll for an encounter and start combat if an encounter starts
                 Encounter.EncounterRoll(Map.LevelIndicator);
                 if (Encounter.Infight == true)
                 {
@@ -788,6 +809,7 @@ namespace Grid_based_map
             }
             else
             {
+                //else if tile is a area transition tile grab the data from the map and use it to set up the new encounter list and place the character at the respective location in the new map
                 string MapTransition = "" + Map.Tiles[Character.PlayerYPos, Character.PlayerXPos, 3];
                 string PlayerPosition = "" + Map.Tiles[Character.PlayerYPos, Character.PlayerXPos, 4];
                 string[] Positions = PlayerPosition.Split(".");
@@ -806,6 +828,7 @@ namespace Grid_based_map
         }
         private void EnemySetup()
         {
+            //goes through and gives the Enemy class all of the stats it needs
             string Element="", Name="";
             int Hp=0, Atk=0, Def=0, Spd=0, Crit=0, Pos=0;
             for (int i = 0; i < Encounter.CurrentEncounter.Count; i++)
@@ -824,12 +847,15 @@ namespace Grid_based_map
         }
         private void EnemyTurn()
         {
+            //Logic for enemies turn
             Combat_Pnl.Invalidate();
             UnableToFight = 0;
             for (int i = 0; i < Encounter.CurrentEncounter.Count; i++)
             {
+                //if still in combat
                 if (Enemies[i].Fled == false)
                 {
+                    //If enemy is still defending stop defending
                     if (Enemies[i].Defending == true)
                     {
                         Enemies[i].Def = Enemies[i].TrueDef;
@@ -837,28 +863,33 @@ namespace Grid_based_map
                     }
                     int Ec, Dmg;                  
                     Ec = Enemies[i].EnemyDecision();
+                    //Attack the player
                     if (Ec >= 0 && Ec <= 80)
                     {
                         CombatInfo_TxtBox.Text += "\n->" + Enemies[i].Name + (i+1) + " attacked you!";
                         Dmg = (int)Math.Round((Enemies[i].Atk * (double)(DmgMulti.Next(8, 15) / 10)) - Character.Def/2);                       
                         int CritRolled = CritRoll.Next(0, 101);
+                        //See if enemy crits
                         if (CritRolled <= Enemies[i].Crit)
                         {
                             Dmg = Dmg * 2;
                             CombatInfo_TxtBox.Text += "\n->The enemy got a critical strike against you!";
                         }
+                        //Cannot deal less than 1 damage
                         if(Dmg <= 0)
                         {
                             Dmg = 1;
                         }
                         Character.Hp -= Dmg;
                         CombatInfo_TxtBox.Text += "\n->" +"And dealt " +Dmg+"!";
+                        //if attack kills player call PlayerDead method which ends game
                         if(Character.Hp <= 0)
                         {
                             PlayerDead();
                             break;
                         }
                     }
+                    //Else defend from the players next attack
                     if (Ec >= 81 && Ec <= 100)
                     {
                         Enemies[i].Def = (int)Math.Round(Enemies[i].Def * 1.2);
@@ -869,6 +900,7 @@ namespace Grid_based_map
                 else
                 {
                     UnableToFight++;
+                    //if all enemies are unable to fight end the current combat encounter
                     if(UnableToFight>= Encounter.CurrentEncounter.Count)
                     {
                         CombatEnd();
@@ -876,12 +908,14 @@ namespace Grid_based_map
                 }
                
             }
+            //Set player defence back to normal (just in case the player defended this turn)
             Character.Def = Character.TrueDef;
             PlayerAction = "None";
             Action_Pnl.Invalidate();
         }
         private void PlayerTurn(string Action)
         {
+            //Player fight action
             if (Action == "Fight")
             {
                 int Dmg;
@@ -892,6 +926,7 @@ namespace Grid_based_map
                     Dmg = Dmg / 2;
                 }
                 int CritRolled = CritRoll.Next(0, 101);
+                //if player crits double the damage they deal
                 if (CritRolled <= Character.Crit)
                 {
                     Dmg = Dmg * 2;
@@ -903,6 +938,7 @@ namespace Grid_based_map
                 }
                 Enemies[SelectedFoe].Hp -= Dmg;
                 CombatInfo_TxtBox.Text += "\n->" + "And delt " + Dmg + "!";
+                //If player kills enemy remove from them from the fight
                 if(Enemies[SelectedFoe].Hp <= 0)
                 {
                     Enemies[SelectedFoe].Fled = true;
@@ -911,7 +947,7 @@ namespace Grid_based_map
                 }
                 EnemyTurn();
             }
-            
+            //Player flee action
             if(Action == "Flee")
             {
                 int EnemyTotSpd=0;
@@ -920,6 +956,7 @@ namespace Grid_based_map
                     EnemyTotSpd = EnemyTotSpd + Enemies[i].Spd;
                 }
                 int EscapeChance = Character.Spd / EnemyTotSpd * 100;
+                //if player escape
                 if (EscapeChance <= Flee.Next(0, 101) || EscapeChance > 100)
                 {
                     for (int i = 0; i < 5; i++)
@@ -934,6 +971,7 @@ namespace Grid_based_map
                     {
                         Enemies[i] = null;
                     }
+                    //Clean up variables no longer being used
                     GC.Collect();
                     Encounter.CurrentEncounter.Clear();
                     Encounter.Infight = false;
@@ -941,6 +979,7 @@ namespace Grid_based_map
                 }
                 else
                 {
+                    //if player fails to flee from combat start the enemies turn
                     CombatInfo_TxtBox.Text += "\n->You Attempted to flee but couldn't find an opening!";
                     EnemyTurn();
                 }
@@ -949,9 +988,11 @@ namespace Grid_based_map
         }
         private void Action_Pnl_MouseDown(object sender, MouseEventArgs e)
         {
+           //looks at mouse position in relation to certain rectangles present in the UI
            SelectedAction = 0;
            SelectedFoe = 0;
            Point Mouse = new Point(e.X, e.Y);
+           //For selecting which action the player wants based off mouse postion and if the rectangle contains the mouse
            foreach (Rectangle Rec in CombatMenu)
            {
                if (Rec.Contains(Mouse))
@@ -970,6 +1011,7 @@ namespace Grid_based_map
                }
                SelectedAction++;
            }
+           //Similar thing but just for selecting which enemy the player wants to attack
            if(PlayerAction == "Fight")
             {
                 foreach (Rectangle Rec in FoeSelection)
@@ -988,7 +1030,9 @@ namespace Grid_based_map
         }
         private void CombatUISetup()
         {
+            //gets everything ready for combat
             int RectCount = 0;
+            //if player hp is above their max reset it back to the current max hp
             if(Character.Hp>Character.MaxHp)
             {
                 Character.Hp = Character.MaxHp;
@@ -997,10 +1041,12 @@ namespace Grid_based_map
             {
                 for (int h = 0; h < 2; h++)
                 {
+                    //draw combat option boxes
                     CombatMenu[RectCount] = new Rectangle(1 + (448 * w), 0 + (148 * h), 448, 148);
                     RectCount++;
                 }
             }
+            //Box for back "button"
             CombatMenu[4] = new Rectangle(898, 0, 372, 297);
             Map_Pnl.Hide();
             Info_Pnl.Hide();
@@ -1011,6 +1057,7 @@ namespace Grid_based_map
         }
         private void Action_Pnl_Paint(object sender, PaintEventArgs e)
         {
+            //Drawing UI information for the player depending on what the current action selected is
             g = e.Graphics;         
             if (PlayerAction == "None")
             {
@@ -1041,6 +1088,7 @@ namespace Grid_based_map
             }
             if (PlayerAction == "Fight")
             {
+                //Shows the player specific hp infomation of the enemies and shows where the player needs to click to attack the enemies
                 g.DrawRectangle(Outliner, CombatBox);
                 for(int i = 0; i < Encounter.CurrentEncounter.Count; i++)
                 {
@@ -1063,6 +1111,7 @@ namespace Grid_based_map
                 InventoryUISetUp();
                 CombatInfo_TxtBox.Hide();
                 int count = 0;
+                //Draws all items from the item category and their relevant information
                 foreach (Tuple<Rectangle, Rectangle, string, Rectangle, int, string, Tuple<int, int, int, int, int, string>, Tuple<bool, bool, string, string>> tuple in Items)
                 {
                     if (count == SelectedItem)
@@ -1109,8 +1158,9 @@ namespace Grid_based_map
         }
         private void Combat_Pnl_Paint(object sender, PaintEventArgs e)
         {
+            //Draws hp bars and enemy sprites
             g = e.Graphics;
-            g.DrawRectangle(Black, CombatPlayer);
+            g.FillRectangle(Brushes.Red, CombatPlayer);
             CombatPlayerHpBar = new Rectangle(50, 418, (int)Math.Round((double)250 * ((double)Character.Hp / (double)Character.MaxHp)), 100);
             g.FillRectangle(Brushes.Red, CombatPlayerHpBar);
             g.DrawRectangle(Black, CombatPlayerHp);
@@ -1178,6 +1228,7 @@ namespace Grid_based_map
         }
         private void CombatItem_Pnl_MouseDown(object sender, MouseEventArgs e)
         {
+            //compares mouse position to item rectangles for selecting an item
             int count = 0;
             Point Mouse = new Point(e.X, e.Y - CombatItem_Pnl.AutoScrollPosition.Y);
             foreach (Tuple<Rectangle, Rectangle, string, Rectangle, int, string, Tuple<int, int, int, int, int, string>, Tuple<bool, bool, string, string>> tuple in Items)
@@ -1192,6 +1243,7 @@ namespace Grid_based_map
                 count++;
             }
         }
+        //Uses an item through calling UseItem method
         private void BattleUse_Btn_Click(object sender, EventArgs e)
         {
             UseItem();
@@ -1232,9 +1284,11 @@ namespace Grid_based_map
 
 
         }
+        //Ends combat
         private void CombatEnd()
         {
             int XPGainedTotal = 0;
+            //For every enemy in combat grab their loot table and roll for loot
             for (int i = 0; i < Encounter.CurrentEncounter.Count; i++)
             {
                 Loot.GetLootTable(Enemies[i].Name);
@@ -1248,9 +1302,11 @@ namespace Grid_based_map
                     Desc_Pnl.Invalidate();
                     InventoryUISetUp();
                 }
+                //give player xp from enemy loot table
                 XPGainedTotal += Loot.XPGained;
                 Character.Xp += Loot.XPGained;
             }
+            //Deal with leftover enemy information and reset everything back to how it was before the player started combat
             CombatInfo_TxtBox.Text += "\n ->You Gained " + XPGainedTotal + " XP!";
             Character.XpCheck();
             Encounter.Infight = false;
@@ -1269,6 +1325,7 @@ namespace Grid_based_map
             GC.Collect();
             Encounter.CurrentEncounter.Clear();
             PlayerAction = "None";
+            //If the combat encounter was the final boss fight display a pop-up box on the users screen
             if (BossFight)
             {
                 MessageBox.Show("You defeated the Crystal Empress and saved the rest of the world from the crystal corruption!");
@@ -1276,8 +1333,10 @@ namespace Grid_based_map
         }
         private void PlayerDead()
         {
+            //Stop and reset everthing back to before the encounter started and show the player the pop-up box
             PlayTime_Tmr.Stop();
             MessageBox.Show("You have perished! \nTo start a new game just hit the ok button and press start in the main menu.");
+            //Shows main menu again for the player to start another game
             Menu_Pnl.Show();
             Menu_Pnl.BringToFront();
             Menu_Pnl.Invalidate();
@@ -1295,6 +1354,7 @@ namespace Grid_based_map
             {
                 Enemies[i] = null;
             }
+            //Clears any garbage information that is no longer needed
             GC.Collect();
             Encounter.CurrentEncounter.Clear();
             PlayerAction = "None";

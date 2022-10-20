@@ -25,7 +25,7 @@ namespace Grid_based_map
             string ItemName = "", ItemType = "", Element = "", Description = "";
             bool Equipabble = false;
             int Hp = 0, Atk = 0, Def = 0, Spd = 0, Crit = 0;
-            //Reads Item file for item data
+            //Reads Item file for item data until blank line
             using (StreamReader ItemReader = new StreamReader("../../../Items/" + FileName + ".txt"))
             {
                 string line;
@@ -132,7 +132,7 @@ namespace Grid_based_map
             string ItemName = "", ItemType = "", Element = "", Description = "";
             bool Equipabble = false;
             int Hp = 0, Atk = 0, Def = 0, Spd = 0, Crit = 0;
-            //Finds item data
+            //Finds item data until blank line
             using (StreamReader MapReader = new StreamReader("../../../Items/" + FileName + ".txt"))
             {
                 string line;

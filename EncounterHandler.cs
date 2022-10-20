@@ -32,6 +32,7 @@ namespace Grid_based_map
             EncounterData.Clear();
             using (StreamReader FileReader = new StreamReader("../../../CombatData/EncounterTables/" + LevelData + ".txt"))
             {
+                //Adds all lines from the file into a list to be read from to get encounter data from txt files
                 string line;
                 while ((line = FileReader.ReadLine()) != null)
                 {
@@ -40,6 +41,7 @@ namespace Grid_based_map
             }
             foreach (string FightData in EncounterTable)
             {
+                //Reads txt files to find which enemies will be a part of the encounter
                 using (StreamReader FileReader = new StreamReader("../../../CombatData/Encounters/" + FightData + ".txt"))
                 {
                     string line, Foe1 = "", Foe2 = "", Foe3 = "";
