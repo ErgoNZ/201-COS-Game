@@ -39,7 +39,6 @@ namespace Grid_based_map
             this.Item_Btn = new System.Windows.Forms.Button();
             this.Equiped_Btn = new System.Windows.Forms.Button();
             this.Desc_Pnl = new System.Windows.Forms.Panel();
-            this.Drop_Btn = new System.Windows.Forms.Button();
             this.Use_Btn = new System.Windows.Forms.Button();
             this.Combat_Pnl = new System.Windows.Forms.Panel();
             this.Action_Pnl = new System.Windows.Forms.Panel();
@@ -167,26 +166,12 @@ namespace Grid_based_map
             // Desc_Pnl
             // 
             this.Desc_Pnl.BackColor = System.Drawing.Color.Gray;
-            this.Desc_Pnl.Controls.Add(this.Drop_Btn);
             this.Desc_Pnl.Controls.Add(this.Use_Btn);
             this.Desc_Pnl.Location = new System.Drawing.Point(0, 541);
             this.Desc_Pnl.Name = "Desc_Pnl";
             this.Desc_Pnl.Size = new System.Drawing.Size(433, 195);
             this.Desc_Pnl.TabIndex = 2;
             this.Desc_Pnl.Paint += new System.Windows.Forms.PaintEventHandler(this.Desc_Pnl_Paint);
-            // 
-            // Drop_Btn
-            // 
-            this.Drop_Btn.BackColor = System.Drawing.Color.LightSlateGray;
-            this.Drop_Btn.FlatAppearance.BorderSize = 0;
-            this.Drop_Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Drop_Btn.Location = new System.Drawing.Point(359, 107);
-            this.Drop_Btn.Name = "Drop_Btn";
-            this.Drop_Btn.Size = new System.Drawing.Size(74, 88);
-            this.Drop_Btn.TabIndex = 0;
-            this.Drop_Btn.TabStop = false;
-            this.Drop_Btn.Text = "Discard";
-            this.Drop_Btn.UseVisualStyleBackColor = false;
             // 
             // Use_Btn
             // 
@@ -195,7 +180,7 @@ namespace Grid_based_map
             this.Use_Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.Use_Btn.Location = new System.Drawing.Point(359, 0);
             this.Use_Btn.Name = "Use_Btn";
-            this.Use_Btn.Size = new System.Drawing.Size(74, 88);
+            this.Use_Btn.Size = new System.Drawing.Size(74, 195);
             this.Use_Btn.TabIndex = 0;
             this.Use_Btn.TabStop = false;
             this.Use_Btn.Text = "Use/Equip";
@@ -357,7 +342,6 @@ namespace Grid_based_map
         private System.Windows.Forms.Button Item_Btn;
         private System.Windows.Forms.Button Key_Btn;
         private System.Windows.Forms.Panel Desc_Pnl;
-        private System.Windows.Forms.Button Drop_Btn;
         private System.Windows.Forms.Button Use_Btn;
         private System.Windows.Forms.Button Equiped_Btn;
         private System.Windows.Forms.Panel Combat_Pnl;

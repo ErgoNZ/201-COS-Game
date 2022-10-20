@@ -246,6 +246,7 @@ namespace Grid_based_map
             //This button just calls the PlayerDead method to restart the game and go back to the main menu
             PlayerDead();
         }
+
         private void Start_Pnl_Click(object sender, EventArgs e)
         {
             //When clicked resets everything back to the default state
